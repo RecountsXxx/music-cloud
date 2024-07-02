@@ -4,10 +4,10 @@ services:
   laravel.api:
     build:
       dockerfile: Dockerfile_api
-      context: backend/
+      context: backend/php/
     container_name: laravel.api
     volumes:
-      - ./backend/src:/var/www/html
+      - ./backend/php/src:/var/www/html
     ports:
       - '8000:8000'
     networks:
