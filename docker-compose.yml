@@ -1,0 +1,71 @@
+version: '3'
+services:
+
+  laravel.api:
+    build:
+      dockerfile: Dockerfile_api
+      context: backend/
+    container_name: laravel.api
+    volumes:
+      - ./backend/src:/var/www/html
+    ports:
+      - '8000:8000'
+    networks:
+      - sne
+    depends_on:
+      - db.mysql
+
+  nginx.router:
+    build:
+      dockerfile: ./services/nginx/Dockerfile
+      context: .
+    volumes:
+      - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '80:80'
+    networks:
+      - sne
+    depends_on:
+      - laravel.api
+      - db.mysql
+
+  db.redis:
+    build:
+      dockerfile: ./services/redis/Dockerfile
+      context: .
+    container_name: db.redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./volumes/db/redis/jobs:/data
+    networks:
+      - sne
+
+  db.mysql:
+    build:
+      dockerfile: ./services/mysql/Dockerfile
+      context: .
+    container_name: db.mysql
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/db/mysql/main:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    networks:
+      - sne
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 9090:80
+    environment:
+      - PMA_HOST=db.mysql
+      - PMA_PORT=3306
+    networks:
+      - sne
+
+
+networks:
+  sne:
+    driver: bridge
