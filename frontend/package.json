@@ -1,6 +1,6 @@
 {
   "name": "vibe_cloud",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
