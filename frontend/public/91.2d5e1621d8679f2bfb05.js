@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkvibe_cloud=self.webpackChunkvibe_cloud||[]).push([[91],{91:e=>{e.exports=JSON.parse('{"messages":{"LoginButton":"Увiйти"}}')}}]);
