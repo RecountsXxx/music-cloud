@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
 
   laravel.api:
@@ -20,6 +20,7 @@ services:
       dockerfile: ./services/nginx/Dockerfile
       context: .
     volumes:
+      - ./frontend/public:/var/www/html/public
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - '80:80'
@@ -64,7 +65,6 @@ services:
       - PMA_PORT=3306
     networks:
       - sne
-
 
 networks:
   sne:
