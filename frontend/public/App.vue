@@ -1,4 +1,5 @@
 <template>
+  <Header/>
   <router-view/>
 </template>
 
@@ -13,27 +14,9 @@ export default defineComponent({
     return {}
   }
 });
-// import './styles/resetCSS.css'
 </script>
 
-<style lang="css">
-:root {
-  --main-background-color: linear-gradient(to bottom, #131313, #000000)
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body, #app {
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-image: var(--main-background-color);
-}
-
+<style lang="scss">
+@import "./styles/resetCSS.css";
+@import "styles/App.scss";
 </style>

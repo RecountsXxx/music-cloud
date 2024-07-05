@@ -1,5 +1,8 @@
 {
-  "messages": {
-    "LoginButton": "Войти"
+  "loginForm": {
+    "placeholder": {
+      "email": "Введите электронную почту",
+      "password": "Введите пароль"
+    }
   }
 }

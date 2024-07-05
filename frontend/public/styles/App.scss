@@ -1,0 +1,14 @@
+$background-color: #111111;
+
+main, body {
+  width: 100%;
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+}
+
+body {
+  background-color: $background-color;
+}
