@@ -1,1 +1,1 @@
-тут надо поднять ноду на docker + nginx
+тут надо поднять Node JS на docker + nginx
