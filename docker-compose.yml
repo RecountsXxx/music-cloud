@@ -1,4 +1,3 @@
-version: '3.8'
 services:
 
   laravel.api:
@@ -14,6 +13,18 @@ services:
       - sne
     depends_on:
       - db.mysql
+
+  java.api:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/api
+    container_name: java.api
+    depends_on:
+      - db.mysql
+    ports:
+      - "8080:8080"
+    networks:
+      - sne
 
   nginx.router:
     build:
