@@ -366,3 +366,48 @@
 2024-07-08 04:03:31,458 INFO reaped unknown pid 40 (exit status 78)
 2024-07-08 04:03:32,460 INFO gave up: php-fpm entered FATAL state, too many start retries too quickly
 2024-07-08 04:03:49,054 INFO exited: composer (exit status 0; expected)
+2024-07-08 04:33:50,630 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-07-08 04:33:50,633 INFO supervisord started with pid 1
+2024-07-08 04:33:51,635 INFO spawned: 'composer' with pid 7
+2024-07-08 04:33:51,636 INFO spawned: 'laravel' with pid 8
+2024-07-08 04:33:51,639 INFO spawned: 'laravel-jobs-queue' with pid 9
+2024-07-08 04:33:51,640 INFO spawned: 'php-fpm' with pid 10
+2024-07-08 04:33:51,985 WARN exited: php-fpm (exit status 0; not expected)
+2024-07-08 04:33:53,032 INFO success: composer entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:33:53,033 INFO success: laravel entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:33:53,033 INFO success: laravel-jobs-queue entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:33:53,034 INFO spawned: 'php-fpm' with pid 28
+2024-07-08 04:33:53,059 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:33:53,059 INFO reaped unknown pid 29 (exit status 78)
+2024-07-08 04:33:55,606 INFO spawned: 'php-fpm' with pid 37
+2024-07-08 04:33:55,631 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:33:55,631 INFO reaped unknown pid 38 (exit status 78)
+2024-07-08 04:33:58,635 INFO spawned: 'php-fpm' with pid 39
+2024-07-08 04:33:58,661 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:33:58,661 INFO reaped unknown pid 40 (exit status 78)
+2024-07-08 04:33:59,662 INFO gave up: php-fpm entered FATAL state, too many start retries too quickly
+2024-07-08 04:34:16,277 INFO exited: composer (exit status 0; expected)
+2024-07-08 04:41:38,727 WARN received SIGQUIT indicating exit request
+2024-07-08 04:41:38,727 INFO waiting for laravel, laravel-jobs-queue to die
+2024-07-08 04:41:40,731 WARN stopped: laravel-jobs-queue (terminated by SIGTERM)
+2024-07-08 04:41:41,733 WARN stopped: laravel (terminated by SIGTERM)
+2024-07-08 04:41:54,041 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-07-08 04:41:54,044 INFO supervisord started with pid 1
+2024-07-08 04:41:55,046 INFO spawned: 'composer' with pid 7
+2024-07-08 04:41:55,047 INFO spawned: 'laravel' with pid 8
+2024-07-08 04:41:55,052 INFO spawned: 'laravel-jobs-queue' with pid 9
+2024-07-08 04:41:55,054 INFO spawned: 'php-fpm' with pid 10
+2024-07-08 04:41:55,304 WARN exited: php-fpm (exit status 0; not expected)
+2024-07-08 04:41:56,337 INFO success: composer entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:41:56,337 INFO success: laravel entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:41:56,338 INFO success: laravel-jobs-queue entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:41:56,339 INFO spawned: 'php-fpm' with pid 28
+2024-07-08 04:41:56,386 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:41:56,386 INFO reaped unknown pid 29 (exit status 78)
+2024-07-08 04:41:59,131 INFO spawned: 'php-fpm' with pid 37
+2024-07-08 04:41:59,156 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:41:59,156 INFO reaped unknown pid 38 (exit status 78)
+2024-07-08 04:42:02,160 INFO spawned: 'php-fpm' with pid 39
+2024-07-08 04:42:02,186 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:42:02,186 INFO reaped unknown pid 40 (exit status 78)
+2024-07-08 04:42:03,187 INFO gave up: php-fpm entered FATAL state, too many start retries too quickly
