@@ -309,3 +309,60 @@
 2024-07-04 01:12:16,311 INFO waiting for laravel, laravel-jobs-queue to die
 2024-07-04 01:12:18,316 WARN stopped: laravel-jobs-queue (terminated by SIGTERM)
 2024-07-04 01:12:19,319 WARN stopped: laravel (terminated by SIGTERM)
+2024-07-08 04:01:37,283 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-07-08 04:01:37,286 INFO supervisord started with pid 1
+2024-07-08 04:01:38,288 INFO spawned: 'composer' with pid 7
+2024-07-08 04:01:38,289 INFO spawned: 'laravel' with pid 8
+2024-07-08 04:01:38,292 INFO spawned: 'laravel-jobs-queue' with pid 9
+2024-07-08 04:01:38,294 INFO spawned: 'php-fpm' with pid 10
+2024-07-08 04:01:38,307 WARN exited: laravel (exit status 255; not expected)
+2024-07-08 04:01:38,309 WARN exited: laravel-jobs-queue (exit status 255; not expected)
+2024-07-08 04:01:38,411 WARN exited: php-fpm (exit status 0; not expected)
+2024-07-08 04:01:39,438 INFO success: composer entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:01:39,439 INFO spawned: 'laravel' with pid 28
+2024-07-08 04:01:39,442 INFO spawned: 'laravel-jobs-queue' with pid 29
+2024-07-08 04:01:39,442 INFO spawned: 'php-fpm' with pid 30
+2024-07-08 04:01:39,456 WARN exited: laravel (exit status 255; not expected)
+2024-07-08 04:01:39,460 WARN exited: laravel-jobs-queue (exit status 255; not expected)
+2024-07-08 04:01:39,472 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:01:39,473 INFO reaped unknown pid 31 (exit status 78)
+2024-07-08 04:01:41,525 INFO spawned: 'laravel' with pid 67
+2024-07-08 04:01:41,528 INFO spawned: 'laravel-jobs-queue' with pid 69
+2024-07-08 04:01:41,529 INFO spawned: 'php-fpm' with pid 70
+2024-07-08 04:01:41,546 WARN exited: laravel (exit status 255; not expected)
+2024-07-08 04:01:41,546 WARN exited: laravel-jobs-queue (exit status 255; not expected)
+2024-07-08 04:01:41,565 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:01:41,565 INFO reaped unknown pid 71 (exit status 78)
+2024-07-08 04:01:45,298 INFO spawned: 'laravel' with pid 134
+2024-07-08 04:01:45,304 INFO spawned: 'laravel-jobs-queue' with pid 135
+2024-07-08 04:01:45,305 INFO spawned: 'php-fpm' with pid 136
+2024-07-08 04:01:45,337 WARN exited: laravel (exit status 255; not expected)
+2024-07-08 04:01:45,338 WARN exited: laravel-jobs-queue (exit status 255; not expected)
+2024-07-08 04:01:45,340 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:01:45,342 INFO gave up: laravel entered FATAL state, too many start retries too quickly
+2024-07-08 04:01:45,343 INFO gave up: laravel-jobs-queue entered FATAL state, too many start retries too quickly
+2024-07-08 04:01:45,343 INFO gave up: php-fpm entered FATAL state, too many start retries too quickly
+2024-07-08 04:01:46,345 INFO reaped unknown pid 137 (exit status 78)
+2024-07-08 04:03:16,701 INFO exited: composer (exit status 0; expected)
+2024-07-08 04:03:21,707 WARN received SIGQUIT indicating exit request
+2024-07-08 04:03:23,323 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-07-08 04:03:23,327 INFO supervisord started with pid 1
+2024-07-08 04:03:24,329 INFO spawned: 'composer' with pid 7
+2024-07-08 04:03:24,331 INFO spawned: 'laravel' with pid 8
+2024-07-08 04:03:24,334 INFO spawned: 'laravel-jobs-queue' with pid 9
+2024-07-08 04:03:24,336 INFO spawned: 'php-fpm' with pid 10
+2024-07-08 04:03:24,563 WARN exited: php-fpm (exit status 0; not expected)
+2024-07-08 04:03:25,600 INFO success: composer entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:03:25,600 INFO success: laravel entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:03:25,600 INFO success: laravel-jobs-queue entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-07-08 04:03:25,601 INFO spawned: 'php-fpm' with pid 28
+2024-07-08 04:03:25,630 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:03:25,630 INFO reaped unknown pid 29 (exit status 78)
+2024-07-08 04:03:28,400 INFO spawned: 'php-fpm' with pid 37
+2024-07-08 04:03:28,426 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:03:28,426 INFO reaped unknown pid 38 (exit status 78)
+2024-07-08 04:03:31,431 INFO spawned: 'php-fpm' with pid 39
+2024-07-08 04:03:31,458 WARN exited: php-fpm (exit status 70; not expected)
+2024-07-08 04:03:31,458 INFO reaped unknown pid 40 (exit status 78)
+2024-07-08 04:03:32,460 INFO gave up: php-fpm entered FATAL state, too many start retries too quickly
+2024-07-08 04:03:49,054 INFO exited: composer (exit status 0; expected)

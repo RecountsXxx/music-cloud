@@ -2,10 +2,10 @@
   "name": "vibe_cloud",
   "version": "3.0.0",
   "description": "",
-  "main": "src/webpack.config.js",
+  "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config src/webpack.config.js",
+    "dev": "webpack --config webpack.config.js",
     "start": "webpack serve --mode development --open",
     "build": "webpack --mode production"
   },

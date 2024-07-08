@@ -1,4 +1,20 @@
+version: '3'
 services:
+
+  frontend.public:
+    build:
+      dockerfile: frontend/public/nginx/Dockerfile
+      context: .
+    container_name: frontend.public
+    volumes:
+      - ./frontend/public/dist:/var/www/html
+      - ./frontend/public/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '7000:7000'
+    networks:
+      - sne
+    depends_on:
+      - nginx.router
 
   laravel.api:
     build:
