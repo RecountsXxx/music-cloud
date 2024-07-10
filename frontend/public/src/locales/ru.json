@@ -1,8 +1,16 @@
 {
   "loginForm": {
+    "form__title": "Вход",
     "placeholder": {
       "email": "Введите электронную почту",
       "password": "Введите пароль"
-    }
+    },
+    "buttonSubmit": "Войти",
+    "remember-me": "запомнить меня",
+    "forgot-password": "Забыл пароль?"
+  },
+  "register": {
+    "noRegister": "Еще не зарегистрированы?",
+    "createAccount": "Создать аккаунт"
   }
 }
