@@ -5,19 +5,21 @@
       <form class="login__form" @submit.prevent="handleSubmit">
         <div class="login__field">
           <label class="login-form__label" for="email"></label>
-          <input class="login-form__input" id="email" type="text" required
+          <input class="login-form__input" v-model="email" id="email" type="text" required
                  :placeholder="$t('loginForm.placeholder.email')">
         </div>
         <div class="login_form__field">
           <label class="login-form__label" for="password"></label>
           <div class="password__wrapper">
-            <input class="login-form__input" id="password" ref="passwordField" type="password" required
+            <input class="login-form__input" v-model="password" id="password"
+                   type="password" required
+                   ref="passwordInput"
                    :placeholder="$t('loginForm.placeholder.password')">
-            <input id="showPassword" type="button" value="Показать" ref="pVisible" @click="changeVisiblePassword">
+            <input id="showPassword" type="button" :value="pShowLabel" @click="changeVisiblePassword">
           </div>
         </div>
         <div class="remember-me">
-          <input id="remember-me" name="remember-me" type="checkbox">
+          <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe">
           <label for="remember-me">{{ $t('loginForm.remember-me') }}</label>
         </div>
         <div class="forgot-password">
@@ -33,38 +35,37 @@
     </div>
   </main>
 </template>
-<script lang="js">
-import {defineComponent, ref} from "vue";
+
+<script>
+import axios from 'axios';
 import {showHidePassword} from "../composables/showHidePassword";
-import alert from "bootstrap/js/src/alert";
+import {ref} from "vue";
 
-export default defineComponent({
-  name: "Login",
-  setup() {
-    const passwordField = ref(null);
-    const pVisible = ref('Показать');
-
-
-    function changeVisiblePassword() {
-      if (showHidePassword(passwordField.value)) {
-        pVisible.value = 'Показать';
-      } else {
-        pVisible.value = 'Скрыть';
-      }
-    }
-
-    function handleSubmit() {
-    }
-
+export default {
+  data() {
     return {
-      passwordField,
-      pVisible,
-      changeVisiblePassword,
-      handleSubmit
+      email: '',
+      password: '',
+      rememberMe: false,
+      isPasswordVisible: false
+    };
+  },
+  computed: {
+    pShowLabel() {
+      return this.isPasswordVisible ? this.$t('loginForm.bVisionPassword.hidden') : this.$t('loginForm.bVisionPassword.visible');
+    }
+  },
+  methods: {
+    async handleSubmit() {
+
+    },
+    changeVisiblePassword() {
+      this.isPasswordVisible = showHidePassword(this.$refs.passwordInput)
     }
   }
-});
+}
 </script>
+
 
 <style scoped lang="scss">
 @import "../styles/Login.scss";

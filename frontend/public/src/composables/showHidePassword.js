@@ -1,10 +1,9 @@
 export function showHidePassword(elem) {
-    console.log(elem.type)
     if (elem.type === 'password') {
         elem.type = 'text';
-        return false;
+        return true;
     } else {
         elem.type = 'password';
-        return true;
+        return false;
     }
 }

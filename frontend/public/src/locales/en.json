@@ -1,3 +1,20 @@
 {
-
+  "loginForm": {
+    "form__title": "Login",
+    "placeholder": {
+      "email": "Enter email",
+      "password": "Enter password"
+    },
+    "bVisionPassword": {
+      "visible": "Show",
+      "hidden": "Hide"
+    },
+    "buttonSubmit": "Log in",
+    "remember-me": "Remember me",
+    "forgot-password": "Forgot password?"
+  },
+  "register": {
+    "noRegister": "Not registered yet?",
+    "createAccount": "Create account"
+  }
 }
