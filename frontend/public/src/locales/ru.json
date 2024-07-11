@@ -5,6 +5,10 @@
       "email": "Введите электронную почту",
       "password": "Введите пароль"
     },
+    "bVisionPassword": {
+      "visible": "Показать",
+      "hidden": "Скрыть"
+    },
     "buttonSubmit": "Войти",
     "remember-me": "запомнить меня",
     "forgot-password": "Забыл пароль?"
