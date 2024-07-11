@@ -1,18 +1,46 @@
 'use strict'
+import store from "../../store/store";
+import axios from "axios";
 
-export function Authentication() {
+/**
+ * Аутентифицирует пользователя.
+ *
+ * @param {Object} data - Данные для аутентификации пользователя (email и пароль).
+ * @returns {boolean} - Возвращает `true`, если аутентификация успешна, иначе `false`.
+ */
+export function Authentication(data) {
+    // Отправляет данные для аутентификации на сервер и получает token.
+    // Предположим, что сервер возвращает успешный ответ с token'ом.
+    // В этом примере просто устанавливаем аутентификацию в true для демонстрации.
 
-    return false;
+    const url = '';
+    const email = data.email;
+    const password = data.password;
+
+    // проводим валидацию данных
+    const valid = true; // временно
+
+    if (valid) {
+        const response = (async () => {
+            try {
+                const result = await axios.post(url, JSON.stringify(data));
+                console.log(result.data); // или любая другая обработка ответа
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        })();
+    }
 }
 
+
 export function isLoggedIn() {
+    // МЕТОД ДЛЯ ПРОВЕРКИ АУТЕНТИФИКАЦИИ И ПРОВЕРКИ ЕСТЬ ЛИ ТОКЕН ДЛЯ РОУТИНГА ПО СТРАНИЦАМ И ОТПРАВКИ ДАННЫХ
 
-    // 1 Храниться ли у меня токен доступа
-    // если он есть , то отправляем его на backend ( получаем true or false )
-    // если его нету , перенаправляемся на старницу входа
-
-
-    // Верните true, если пользователь аутентифицирован, и false в противном случае
-    // Например, проверьте наличие токена аутентификации или других данных аутентификации
+    /*
+    * проверяем есть ли токен
+    * если токен есть, отправляем его на backend для верификации
+    * если он валиден, возвращаем true
+    * если нет, возвращаем false, что перенаправит нас на страницу входа
+    **/
     return false;
 }
