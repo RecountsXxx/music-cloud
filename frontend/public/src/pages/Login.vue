@@ -15,7 +15,7 @@
                    type="password" required
                    ref="passwordInput"
                    :placeholder="$t('loginForm.placeholder.password')">
-            <input id="showPassword" type="button" :value="pShowLabel" @click="changeVisiblePassword">
+            <input id="showPassword" type="button" :value="passShowLabel" @click="changeVisiblePassword">
           </div>
         </div>
         <div class="remember-me">
@@ -37,9 +37,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import {showHidePassword} from "../composables/showHidePassword";
-import {ref} from "vue";
+import {Authentication} from "../services/Authentication/Authentication";
 
 export default {
   data() {
@@ -51,13 +50,17 @@ export default {
     };
   },
   computed: {
-    pShowLabel() {
+    passShowLabel() {
       return this.isPasswordVisible ? this.$t('loginForm.bVisionPassword.hidden') : this.$t('loginForm.bVisionPassword.visible');
     }
   },
   methods: {
     async handleSubmit() {
-
+      const data = {
+        email: this.email,
+        password: this.password
+      }
+      Authentication(data);
     },
     changeVisiblePassword() {
       this.isPasswordVisible = showHidePassword(this.$refs.passwordInput)

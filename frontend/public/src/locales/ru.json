@@ -16,5 +16,9 @@
   "register": {
     "noRegister": "Еще не зарегистрированы?",
     "createAccount": "Создать аккаунт"
+  },
+  "Errors": {
+    "IncData": "Некорректные данные",
+    "IncPassOrEmail": "Неверная почта или пароль"
   }
 }
