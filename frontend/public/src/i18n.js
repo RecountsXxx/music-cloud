@@ -1,6 +1,6 @@
 import {createI18n} from 'vue-i18n';
 
-const supportedLanguages = ['en', 'ru']; // Поддерживаемые языки
+const supportedLanguages = ['en', 'ru' , 'ua']; // Поддерживаемые языки
 const loadedLanguages = []; // Загруженные языки
 
 function setI18nLanguage(i18n, lang) {
@@ -52,7 +52,7 @@ export function getPreferredLanguage() {
     if (supportedLanguages.includes(browserLang)) {
         return browserLang; // Возвращаем язык браузера, если он поддерживается
     }
-    return 'en'; // Язык по умолчанию
+    return 'ru'; // Язык по умолчанию
 }
 
 export default i18n;

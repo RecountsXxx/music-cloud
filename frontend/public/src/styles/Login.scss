@@ -1,0 +1,17 @@
+.main-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 50px);
+  align-items: center;
+  justify-content: center;
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .password__wrapper {
+    display: flex;
+  }
+}

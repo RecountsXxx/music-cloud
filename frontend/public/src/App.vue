@@ -1,5 +1,5 @@
 <template>
-  <Header/>
+    <Header/>
   <router-view/>
 </template>
 
@@ -7,9 +7,10 @@
 import {defineComponent} from "vue";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import Header from "./components/Header.vue";
 
 export default defineComponent({
-  components: {},
+  components: {Header},
   setup() {
     return {}
   }
@@ -17,6 +18,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "./styles/resetCSS.css";
+@import "styles/resetCSS.css";
 @import "styles/App.scss";
 </style>
