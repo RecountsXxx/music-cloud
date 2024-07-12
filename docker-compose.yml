@@ -30,17 +30,17 @@ services:
     depends_on:
       - db.mysql
 
-#  java.api:
-#    build:
-#      dockerfile: Dockerfile
-#      context: ./backend/java/api
-#    container_name: java.api
-#    depends_on:
-#      - db.mysql
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - sne
+  java.api:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/api
+    container_name: java.api
+    depends_on:
+      - db.mysql
+    ports:
+      - "8080:8080"
+    networks:
+      - sne
 
   nginx.router:
     build:
