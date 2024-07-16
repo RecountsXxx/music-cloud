@@ -17,6 +17,8 @@
 #COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 #ENTRYPOINT ["java","-cp","app:app/lib/*","org.deus.src.SrcApplication"]
 
+
+
 # First stage: build the application
 FROM eclipse-temurin:22-jdk as build
 WORKDIR /workspace/app
