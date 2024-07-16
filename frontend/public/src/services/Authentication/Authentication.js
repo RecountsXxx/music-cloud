@@ -44,3 +44,7 @@ export function isLoggedIn() {
     **/
     return false;
 }
+
+export function logOut(){
+    // удаляет JWT токен и выходит из аккаунта
+}
