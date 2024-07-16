@@ -16,13 +16,24 @@ services:
     depends_on:
       - nginx.router
 
+  nodejs.api:
+    build:
+      context: ./backend/auth
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/auth/src/:/app
+    container_name: nodejs.api
+    ports:
+      - "3000:3000"
+
+
   laravel.api:
     build:
       dockerfile: Dockerfile_api
       context: backend/php/
     container_name: laravel.api
     volumes:
-      - ./backend/php/src:/var/www/html
+      - ./backend/php/src:/app
     ports:
       - '8000:8000'
     networks:
@@ -30,17 +41,17 @@ services:
     depends_on:
       - db.mysql
 
-#  java.api:
-#    build:
-#      dockerfile: Dockerfile
-#      context: ./backend/java/api
-#    container_name: java.api
-#    depends_on:
-#      - db.mysql
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - sne
+  java.api:
+      build:
+        dockerfile: Dockerfile
+        context: ./backend/java/api
+      container_name: java.api
+      depends_on:
+        - db.mysql
+      ports:
+        - "8080:8080"
+      networks:
+        - sne
 
   nginx.router:
     build:
@@ -56,6 +67,7 @@ services:
     depends_on:
       - laravel.api
       - db.mysql
+
 
   db.redis:
     build:
