@@ -27,9 +27,7 @@ WORKDIR /workspace/app
 COPY ./src/pom.xml .
 COPY ./src/mvnw .
 COPY ./src/.mvn .mvn
-
-RUN sed -i 's/\r$//' mvnw
-#RUN ./mvnw dependency:go-offline
+RUN ./mvnw dependency:go-offline
 
 # Copy source code and build the application
 COPY ./src/src src
