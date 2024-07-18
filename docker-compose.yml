@@ -95,6 +95,21 @@ services:
     networks:
       - sne
 
+  storage.minio:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/minio
+    container_name: storage.minio
+    volumes:
+      - ./volumes/storage/minio/vibecloud:/var/lib/minio
+    env_file:
+      - .env
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - sne
+
   phpmyadmin:
     image: phpmyadmin
     ports:
