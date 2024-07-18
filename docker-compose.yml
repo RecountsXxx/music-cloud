@@ -16,15 +16,18 @@ services:
     depends_on:
       - nginx.router
 
-  nodejs.api:
+  node.auth:
     build:
       context: ./backend/auth
       dockerfile: Dockerfile
     volumes:
       - ./backend/auth/src/:/app
-    container_name: nodejs.api
+    container_name: node.auth
     ports:
       - "3000:3000"
+    networks:
+      - sne
+
 
 
   laravel.api:

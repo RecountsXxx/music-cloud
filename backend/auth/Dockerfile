@@ -1,22 +1,40 @@
-# Используем официальный образ Node.js в качестве базового
-FROM node:14
+## Используем официальный образ Ubuntu в качестве базового
+#FROM ubuntu:20.04
+#
+## Устанавливаем Node.js и необходимые зависимости
+#RUN apt-get update && apt-get install -y \
+#    curl \
+#    gnupg \
+#    && curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
+#    && apt-get install -y nodejs \
+#    && apt-get clean
+
+# Используем официальный образ Ubuntu в качестве базового
+FROM ubuntu:20.04
+
+# Устанавливаем зависимости для Node.js
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN npm init -y
+RUN npm install express passport passport-oauth2 oauth2orize sequelize mysql2 dotenv
 
 # Создаем рабочую директорию в контейнере
 WORKDIR /app
 
 # Копируем package.json и package-lock.json в рабочую директорию
-#COPY package*.json ./
+COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm init -y
 RUN npm install
 
-#RUN npm install express mysql knex
-#RUN npm install --save-dev knex
-
-
-# Копируем оставшиеся файлы в рабочую директорию
-#COPY ../../services/nodejs .
+# Копируем остальные файлы приложения в рабочую директорию
+#COPY . .
 
 # Указываем порт, который будет использоваться приложением
 EXPOSE 3000

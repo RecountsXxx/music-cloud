@@ -1,25 +1,24 @@
-// index.js
+require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const db = require('./db');
+const passport = require('passport');
+const session = require('express-session');
+const authRoutes = require('./routes/auth');
+const sequelize = require('./models/index');
+require('./config/passport');
 
 const app = express();
-const port = 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Регистрация пользователя
-app.post('/register', async (req, res) => {
-    const {email, password} = req.body;
-    try {
-        await db('users').insert({email, password});
-        res.status(201).json({message: 'User registered successfully'});
-    } catch (error) {
-        res.status(500).json({error: 'Error registering user'});
-    }
-});
+app.use('/auth', authRoutes);
 
-// Запуск сервера
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+
+sequelize.sync().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
 });
