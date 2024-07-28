@@ -1,5 +1,9 @@
 .env
+<<<<<<< HEAD
 /.idea
+=======
+.idea
+>>>>>>> dev
 /volumes/
 supervisord.pid
 node_modules

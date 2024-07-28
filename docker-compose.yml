@@ -15,6 +15,7 @@ services:
     networks:
       - vibecloud_net
 
+
   auth.api:
     container_name: auth.api
     build:
