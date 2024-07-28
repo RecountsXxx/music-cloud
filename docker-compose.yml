@@ -1,108 +1,106 @@
-version: '3'
 services:
 
   frontend.public:
-    build:
-      dockerfile: frontend/public/nginx/Dockerfile
-      context: .
     container_name: frontend.public
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend/public/nginx
     volumes:
       - ./frontend/public/dist:/var/www/html
       - ./frontend/public/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - nginx.router
     ports:
       - '7000:80'
     networks:
-      - sne
-    depends_on:
-      - nginx.router
+      - vibecloud_net
 
-  node.auth:
+
+  auth.api:
+    container_name: auth.api
     build:
-      context: ./backend/auth
       dockerfile: Dockerfile
+      context: ./backend/auth
     volumes:
-      - ./backend/auth/src/:/app
-    container_name: node.auth
+      - ./backend/auth/src:/usr/src/app
     ports:
-      - "3000:3000"
+      - '3000:3000'
     networks:
-      - sne
-
-
+      - vibecloud_net
 
   laravel.api:
+    container_name: laravel.api
     build:
       dockerfile: Dockerfile_api
       context: backend/php/
-    container_name: laravel.api
     volumes:
       - ./backend/php/src:/app
+    depends_on:
+      - db.mysql
     ports:
       - '8000:8000'
     networks:
-      - sne
-    depends_on:
-      - db.mysql
+      - vibecloud_net
 
   java.api:
+    container_name: java.api
     build:
       dockerfile: Dockerfile
       context: ./backend/java/api
-    container_name: java.api
     depends_on:
       - db.mysql
     ports:
       - "8080:8080"
     networks:
-      - sne
+      - vibecloud_net
 
   nginx.router:
     build:
-      dockerfile: ./services/nginx/Dockerfile
-      context: .
+      dockerfile: Dockerfile
+      context: ./services/nginx
     volumes:
       - ./frontend/dist:/var/www/html/public
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - '80:80'
-    networks:
-      - sne
     depends_on:
       - laravel.api
       - db.mysql
+    ports:
+      - '80:80'
+    networks:
+      - vibecloud_net
 
 
   db.redis:
-    build:
-      dockerfile: ./services/redis/Dockerfile
-      context: .
     container_name: db.redis
-    ports:
-      - "6379:6379"
+    build:
+      dockerfile: Dockerfile
+      context: ./services/redis
     volumes:
       - ./volumes/db/redis/jobs:/data
+    ports:
+      - "6379:6379"
     networks:
-      - sne
+      - vibecloud_net
 
   db.mysql:
-    build:
-      dockerfile: ./services/mysql/Dockerfile
-      context: .
     container_name: db.mysql
-    env_file:
-      - .env
+    build:
+      dockerfile: Dockerfile
+      context: ./services/mysql
     volumes:
       - ./volumes/db/mysql/main:/var/lib/mysql
+    env_file:
+      - .env
     ports:
       - '3306:3306'
     networks:
-      - sne
+      - vibecloud_net
 
   storage.minio:
+    container_name: storage.minio
     build:
       dockerfile: Dockerfile
       context: ./services/minio
-    container_name: storage.minio
     volumes:
       - ./volumes/storage/minio/vibecloud:/var/lib/minio
     env_file:
@@ -111,18 +109,18 @@ services:
       - "9000:9000"
       - "9001:9001"
     networks:
-      - sne
+      - vibecloud_net
 
   phpmyadmin:
     image: phpmyadmin
-    ports:
-      - 9090:80
     environment:
       - PMA_HOST=db.mysql
       - PMA_PORT=3306
+    ports:
+      - 9090:80
     networks:
-      - sne
+      - vibecloud_net
 
 networks:
-  sne:
+  vibecloud_net:
     driver: bridge

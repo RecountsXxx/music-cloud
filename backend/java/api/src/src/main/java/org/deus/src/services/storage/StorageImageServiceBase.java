@@ -1,0 +1,57 @@
+package org.deus.src.services.storage;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.deus.src.drivers.StorageDriverInterface;
+import org.deus.src.enums.ImageSize;
+import org.deus.src.exceptions.StorageException;
+import org.deus.src.exceptions.data.DataSavingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
+
+@RequiredArgsConstructor
+public abstract class StorageImageServiceBase {
+    protected final StorageDriverInterface storage;
+    protected final String bucketName;
+    private static final Logger logger = LoggerFactory.getLogger(StorageImageServiceBase.class);
+
+    protected abstract String buildPathToOriginalBytes(long id);
+    protected abstract String buildPathToFile(long id, ImageSize size);
+
+    public void putOriginalBytes(long id, byte[] bytes) throws DataSavingException {
+        try {
+            storage.put(bucketName, buildPathToOriginalBytes(id), bytes);
+        } catch (StorageException e) {
+            String errorMessage = "Error while putting original bytes to storage, bucket/container: \"" + bucketName + "\"";
+            logger.error(errorMessage, e);
+            throw new DataSavingException(errorMessage, e);
+        }
+    }
+
+    public void putNewBytesAsFile(long id, ImageSize size, byte[] bytes) throws DataSavingException {
+        try {
+            storage.put(bucketName, buildPathToFile(id, size), bytes);
+        } catch (StorageException e) {
+            String errorMessage = "Error while putting bytes to storage as a file, bucket/container: \"" + bucketName + "\"";
+            logger.error(errorMessage, e);
+            throw new DataSavingException(errorMessage, e);
+        }
+    }
+
+    public Optional<byte[]> getOriginalBytes(long id) {
+        try {
+            byte[] bytes = storage.getBytes(bucketName, buildPathToOriginalBytes(id));
+            return Optional.ofNullable(bytes);
+        } catch (StorageException e) {
+            logger.error("Error while getting original bytes from storage, bucket/container: \"" + bucketName + "\"", e);
+            return Optional.empty();
+        }
+    }
+
+    public String getPathToFile(long id, ImageSize size) {
+        return storage.getPublicUrl(bucketName, buildPathToFile(id, size));
+    }
+}
