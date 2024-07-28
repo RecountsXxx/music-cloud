@@ -2,3 +2,4 @@
 /.idea
 /volumes/
 supervisord.pid
+node_modules
