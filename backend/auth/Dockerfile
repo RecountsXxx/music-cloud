@@ -1,25 +1,14 @@
-# Используем официальный образ Node.js в качестве базового
-FROM node:14
+FROM node:20-alpine
 
-# Создаем рабочую директорию в контейнере
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Копируем package.json и package-lock.json в рабочую директорию
-#COPY package*.json ./
+COPY --chown=node:node ./src/package*.json ./
+COPY --chown=node:node ./src/tsconfig*.json ./
 
-# Устанавливаем зависимости
-RUN npm init -y
-RUN npm install
+RUN npm ci
 
-#RUN npm install express mysql knex
-#RUN npm install --save-dev knex
+COPY --chown=node:node . .
 
+RUN npm run build
 
-# Копируем оставшиеся файлы в рабочую директорию
-#COPY ../../services/nodejs .
-
-# Указываем порт, который будет использоваться приложением
-EXPOSE 3000
-
-# Определяем команду запуска приложения
-CMD ["node", "app.js"]
+ENTRYPOINT ["/bin/sh", "-c", "npm run start:dev"]
