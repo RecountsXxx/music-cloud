@@ -10,7 +10,7 @@
                type="password" required
                ref="passwordInput"
                :placeholder="$t('loginForm.placeholder.password')">
-        <img class="showHidePassword" src="../images/showPassword.svg" alt="">
+        <img class="showHidePassword" src="../images/showPassword.svg" alt="" @click="changeVisiblePassword">
       </div>
     </form>
   </main>
