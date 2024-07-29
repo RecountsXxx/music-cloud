@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/java/public-api/test")
+@RequestMapping("/api/java/public/test")
 @RequiredArgsConstructor
 public class TestController {
     @GetMapping("/hello-world")

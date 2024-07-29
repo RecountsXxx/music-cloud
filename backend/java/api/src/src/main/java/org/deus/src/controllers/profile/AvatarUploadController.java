@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("java/protected-api/profile/avatar")
+@RequestMapping("/api/java/protected/profile/avatar")
 @RequiredArgsConstructor
 public class AvatarUploadController {
     private final AvatarService avatarService;

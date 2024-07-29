@@ -30,11 +30,11 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (path.startsWith("/java/public-api/") || path.startsWith("/java/internal-api/")) {
+        if (path.startsWith("/api/java/public/")) {
             // allowing requests from outside and internal requests from other microservices inside of system
             filterChain.doFilter(request, response);
             return;
-        } else if (path.startsWith("/java/protected-api/")) {
+        } else if (path.startsWith("/api/java/protected/")) {
             String header = request.getHeader("Authorization");
             if (header != null && header.startsWith("Bearer ")) {
                 String token = header.substring(7);
