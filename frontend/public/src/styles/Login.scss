@@ -1,19 +1,73 @@
+$f_size__login_title: calc(10 * .30vw);
+$font_size: calc(5 * .25vw);
+$placeholder__bc: #525252;
+$form__input__bc: #D9D9D9;
 
-
-.main-content {
+#main__container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100vh - 50px);
+  height: auto;
   align-items: center;
-  justify-content: center;
 
-  .login-container {
-    display: flex;
-    flex-direction: column;
+  .login__title {
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    margin: 50px 0;
+    font-size: $f_size__login_title;
   }
 
-  .password__wrapper {
+  #login__form {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    max-width: 600px;
+
+    .form__input {
+      margin-bottom: 25px;
+      font-size: $font_size;
+      background-color: $form__input__bc;
+      width: 100%;
+      max-width: 450px;
+      padding: 17px 25px;
+      border: none;
+      outline: none;
+      border-radius: 30px;
+
+      &::placeholder {
+        font-size: $font_size;
+        color: $placeholder__bc;
+      }
+    }
+
+    .password__field {
+      width: 100%;
+      max-width: 450px;
+      display: flex;
+      flex-direction: row;
+
+      #password {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .showHidePassword {
+        padding-top: 4px;
+        width: 40px;
+        height: 60px;
+        background-color: $form__input__bc;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        padding-right: 10px;
+        user-select: none;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
