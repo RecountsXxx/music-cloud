@@ -16,15 +16,6 @@
   </main>
 </template>
 
-<!--<template>-->
-<!--  <main class="main-content">-->
-<!--    <section class="login-container">-->
-<!--      <h1 class="login__title">{{ $t('loginForm.form__title') }}</h1>-->
-<!--      <form class="login__form" @submit.prevent="handleSubmit">-->
-<!--        <div class="login__field">-->
-<!--          <label class="login-form__label" for="email"></label>-->
-<!--          <input class="login-form__input" v-model="email" id="email" type="text" required-->
-<!--                 :placeholder="$t('loginForm.placeholder.email')">-->
 <!--        </div>-->
 <!--        <div class="login_form__field">-->
 <!--          <label class="login-form__label" for="password"></label>-->
