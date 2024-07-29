@@ -2,8 +2,8 @@
   "loginForm": {
     "form__title": "Вход",
     "placeholder": {
-      "email": "Введите электронную почту",
-      "password": "Введите пароль"
+      "email": "Электронная почта",
+      "password": "Пароль"
     },
     "bVisionPassword": {
       "visible": "Показать",
