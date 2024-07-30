@@ -1,9 +1,10 @@
-$f_size__login_title: calc(10 * .30vw);
+$f_size__login_title: calc(8 * .30vw);
 $font_size: calc(5 * .25vw);
 $placeholder__bc: #525252;
 $form__input__bc: #D9D9D9;
 
 #main__container {
+  font-family: Inertia, "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -27,15 +28,29 @@ $form__input__bc: #D9D9D9;
     max-width: 600px;
 
     .form__input {
+      color: black;
       margin-bottom: 25px;
       font-size: $font_size;
       background-color: $form__input__bc;
+      height: 60px;
       width: 100%;
-      max-width: 450px;
+      max-width: 480px;
       padding: 17px 25px;
       border: none;
       outline: none;
       border-radius: 30px;
+
+      &:placeholder-shown {
+        background-color: $form__input__bc;
+      }
+
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px $form__input__bc inset !important;
+        -webkit-text-fill-color: black !important;
+      }
 
       &::placeholder {
         font-size: $font_size;
@@ -44,28 +59,78 @@ $form__input__bc: #D9D9D9;
     }
 
     .password__field {
+      height: 60px;
       width: 100%;
-      max-width: 450px;
+      max-width: 480px;
       display: flex;
       flex-direction: row;
+      margin-bottom: 20px;
 
       #password {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
 
-      .showHidePassword {
-        padding-top: 4px;
-        width: 40px;
+      .image__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         height: 60px;
         background-color: $form__input__bc;
         border-top-right-radius: 30px;
         border-bottom-right-radius: 30px;
-        padding-right: 10px;
-        user-select: none;
+        padding-right: 15px;
 
-        &:hover {
-          cursor: pointer;
+        .showHidePassword {
+          user-select: none;
+          width: calc(6 * .25vw);
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .remember-forgot-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .remember-me {
+        user-select: none;
+        #remember-me {
+
+        }
+
+        label {
+          font-size: calc(4 * .25vw);
+          margin-left: 10px;
+        }
+      }
+
+      .forgot-password {
+        font-size: calc(4 * .25vw);
+        a:link {
+          color: #000000;
+        }
+
+        /* visited link */
+        a:visited {
+          color: #000000;
+        }
+
+        /* mouse over link */
+        a:hover {
+          color: #000000;
+        }
+
+        /* selected link */
+        a:active {
+          color: #000000;
         }
       }
     }

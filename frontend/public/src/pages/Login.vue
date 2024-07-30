@@ -10,8 +10,20 @@
                type="password" required
                ref="passwordInput"
                :placeholder="$t('loginForm.placeholder.password')">
-        <img class="showHidePassword" src="../images/showPassword.svg" alt="" @click="changeVisiblePassword">
+        <div class="image__wrapper"><img class="showHidePassword" src="../images/showPassword.svg" alt=""
+                                         @click="changeVisiblePassword"></div>
       </div>
+
+      <div class="remember-forgot-container">
+        <div class="remember-me">
+          <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe">
+          <label for="remember-me">{{ $t('loginForm.remember-me') }}</label>
+        </div>
+        <div class="forgot-password">
+          <router-link to="#">{{ $t('loginForm.forgot-password') }}</router-link>
+        </div>
+      </div>
+
     </form>
   </main>
 </template>
