@@ -23,7 +23,7 @@
           <router-link to="#">{{ $t('loginForm.forgot-password') }}</router-link>
         </div>
       </div>
-
+      <input type="submit" class="submit__button" :value="$t('loginForm.buttonSubmit')">
     </form>
   </main>
 </template>
