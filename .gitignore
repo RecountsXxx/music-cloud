@@ -1,6 +1,7 @@
 .env
 .idea
 *.drawio.bkp
+*frontend/*/dist
 /volumes/
 supervisord.pid
 node_modules
