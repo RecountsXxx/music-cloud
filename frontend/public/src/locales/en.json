@@ -2,19 +2,23 @@
   "loginForm": {
     "form__title": "Login",
     "placeholder": {
-      "email": "Enter email",
-      "password": "Enter password"
+      "email": "Email",
+      "password": "Password"
     },
     "bVisionPassword": {
       "visible": "Show",
       "hidden": "Hide"
     },
-    "buttonSubmit": "Log in",
+    "buttonSubmit": "Login",
     "remember-me": "Remember me",
     "forgot-password": "Forgot password?"
   },
   "register": {
     "noRegister": "Not registered yet?",
-    "createAccount": "Create account"
+    "createAccount": "Create an account"
+  },
+  "Errors": {
+    "IncData": "Incorrect data",
+    "IncPassOrEmail": "Invalid email or password"
   }
 }
