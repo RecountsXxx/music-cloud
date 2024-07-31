@@ -3,6 +3,7 @@ $font_size: calc(5 * .25vw);
 $placeholder__bc: #525252;
 $submit__button__bc: #8F8A8A;
 $form__input__bc: #D9D9D9;
+$error_message_size: calc(4 * .25vw);
 
 #main__container {
   font-family: Inertia, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -11,6 +12,39 @@ $form__input__bc: #D9D9D9;
   width: 100%;
   height: auto;
   align-items: center;
+
+  #error__message {
+    visibility: hidden;
+    font-size: $error_message_size;
+    color: red;
+    margin: 15px 0;
+  }
+
+  .link__create_account {
+    a {
+      font-weight: 600;
+      text-decoration: none
+    }
+
+    a:link {
+      color: #000000;
+    }
+
+    /* visited link */
+    a:visited {
+      color: #000000;
+    }
+
+    /* mouse over link */
+    a:hover {
+      color: #000000;
+    }
+
+    /* selected link */
+    a:active {
+      color: #000000;
+    }
+  }
 
   .login__title {
     font-weight: 600;
@@ -24,6 +58,8 @@ $form__input__bc: #D9D9D9;
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 260px;
+    max-height: 260px;
 
     width: 100%;
     max-width: 600px;
