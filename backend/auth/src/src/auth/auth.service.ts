@@ -65,15 +65,15 @@ export class AuthService {
 
   async validateToken(
     token: string,
-  ): Promise<{ valid: boolean; user: UserDto | null }> {
+  ): Promise<{ valid: boolean; userDTO: UserDto | null }> {
     try {
       const decoded = this.jwtService.verify<JwtPayload>(token);
       const user = await this.usersRepository.findOne({
         where: { id: decoded.userId },
       });
-      return { valid: !!user, user: user ? UserDto.mapUser(user) : null };
+      return { valid: !!user, userDTO: user ? UserDto.mapUser(user) : null };
     } catch (e) {
-      return { valid: false, user: null };
+      return { valid: false, userDTO: null };
     }
   }
 }

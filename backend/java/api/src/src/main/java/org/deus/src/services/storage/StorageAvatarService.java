@@ -11,12 +11,12 @@ public class StorageAvatarService extends StorageImageServiceBase {
     }
 
     @Override
-    protected String buildPathToOriginalBytes(long userId) {
+    protected String buildPathToOriginalBytes(String userId) {
         return "/" + userId + "/originalBytes";
     }
 
     @Override
-    protected String buildPathToFile(long userId, ImageSize size) {
+    protected String buildPathToFile(String userId, ImageSize size) {
         return userId + "/avatar-" + size.toString() + ".webp";
     }
 }
