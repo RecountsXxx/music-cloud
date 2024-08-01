@@ -37,6 +37,7 @@
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "ts-proto": "^1.181.1",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
