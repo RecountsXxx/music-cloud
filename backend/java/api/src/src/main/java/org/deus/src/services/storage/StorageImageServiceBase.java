@@ -18,10 +18,10 @@ public abstract class StorageImageServiceBase {
     protected final String bucketName;
     private static final Logger logger = LoggerFactory.getLogger(StorageImageServiceBase.class);
 
-    protected abstract String buildPathToOriginalBytes(long id);
-    protected abstract String buildPathToFile(long id, ImageSize size);
+    protected abstract String buildPathToOriginalBytes(String id);
+    protected abstract String buildPathToFile(String id, ImageSize size);
 
-    public void putOriginalBytes(long id, byte[] bytes) throws DataSavingException {
+    public void putOriginalBytes(String id, byte[] bytes) throws DataSavingException {
         try {
             storage.put(bucketName, buildPathToOriginalBytes(id), bytes);
         } catch (StorageException e) {
@@ -31,7 +31,7 @@ public abstract class StorageImageServiceBase {
         }
     }
 
-    public void putNewBytesAsFile(long id, ImageSize size, byte[] bytes) throws DataSavingException {
+    public void putNewBytesAsFile(String id, ImageSize size, byte[] bytes) throws DataSavingException {
         try {
             storage.put(bucketName, buildPathToFile(id, size), bytes);
         } catch (StorageException e) {
@@ -41,7 +41,7 @@ public abstract class StorageImageServiceBase {
         }
     }
 
-    public Optional<byte[]> getOriginalBytes(long id) {
+    public Optional<byte[]> getOriginalBytes(String id) {
         try {
             byte[] bytes = storage.getBytes(bucketName, buildPathToOriginalBytes(id));
             return Optional.ofNullable(bytes);
@@ -51,7 +51,7 @@ public abstract class StorageImageServiceBase {
         }
     }
 
-    public String getPathToFile(long id, ImageSize size) {
+    public String getPathToFile(String id, ImageSize size) {
         return storage.getPublicUrl(bucketName, buildPathToFile(id, size));
     }
 }
