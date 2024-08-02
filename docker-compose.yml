@@ -111,6 +111,19 @@ services:
     networks:
       - vibecloud_net
 
+  rabbit.mq:
+    container_name: rabbit.mq
+    build:
+      dockerfile: Dockerfile
+      context: ./services/rabbitmq
+    env_file:
+      - .env
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - vibecloud_net
+
   phpmyadmin:
     image: phpmyadmin
     environment:
