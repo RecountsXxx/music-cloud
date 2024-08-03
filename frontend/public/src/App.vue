@@ -18,6 +18,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "styles/resetCSS.css";
-@import "styles/App.scss";
+@import "assets/styles/resetCSS.css";
+@import "assets/styles/App.scss";
 </style>

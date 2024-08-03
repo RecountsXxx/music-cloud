@@ -1,5 +1,4 @@
 'use strict'
-import store from "../../store/store";
 import axios from "axios";
 
 /**
@@ -35,7 +34,7 @@ export function Authentication(data) {
 
 export function isLoggedIn() {
     // МЕТОД ДЛЯ ПРОВЕРКИ АУТЕНТИФИКАЦИИ И ПРОВЕРКИ ЕСТЬ ЛИ ТОКЕН ДЛЯ РОУТИНГА ПО СТРАНИЦАМ И ОТПРАВКИ ДАННЫХ
-
+    
     /*
     * проверяем есть ли токен
     * если токен есть, отправляем его на backend для верификации
