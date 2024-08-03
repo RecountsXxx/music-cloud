@@ -32,8 +32,21 @@ services:
       context: ./backend/java/api
     depends_on:
       - db.mysql
+      - storage.minio
+      - rabbit.mq
     ports:
       - "8080:8080"
+    networks:
+      - vibecloud_net
+
+  java.image.handler:
+    container_name: java.image.handler
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/image-handler
+    depends_on:
+      - storage.minio
+      - rabbit.mq
     networks:
       - vibecloud_net
 
@@ -46,7 +59,9 @@ services:
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - laravel.api
-      - db.mysql
+      - java.api
+      - auth.api
+      - frontend.public
     ports:
       - '80:80'
     networks:
@@ -91,6 +106,19 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"
+    networks:
+      - vibecloud_net
+
+  rabbit.mq:
+    container_name: rabbit.mq
+    build:
+      dockerfile: Dockerfile
+      context: ./services/rabbitmq
+    env_file:
+      - .env
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - vibecloud_net
 
