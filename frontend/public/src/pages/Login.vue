@@ -10,7 +10,7 @@
                type="password" required
                ref="passwordInput"
                :placeholder="$t('loginForm.placeholder.password')">
-        <div class="image__wrapper"><img class="showHidePassword" src="../images/showPassword.svg" alt=""
+        <div class="image__wrapper"><img class="showHidePassword" src="../assets/images/showPassword.svg" alt=""
                                          @click="changeVisiblePassword"></div>
       </div>
       <div class="remember-forgot-container">
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {showHidePassword} from "../composables/showHidePassword";
+import {showHidePassword} from "../utils/showHidePassword";
 import {Authentication} from "../services/Authentication/Authentication";
 
 export default {
@@ -55,7 +55,8 @@ export default {
         email: this.email,
         password: this.password
       }
-      Authentication(data);
+      console.log(data);
+      // Authentication(data);
     },
     changeVisiblePassword() {
       this.isPasswordVisible = showHidePassword(this.$refs.passwordInput)
@@ -66,5 +67,5 @@ export default {
 
 
 <style scoped lang="scss">
-@import "../styles/Login.scss";
+@import "../assets/styles/Login.scss";
 </style>
