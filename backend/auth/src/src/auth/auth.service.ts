@@ -8,6 +8,7 @@ import { JwtPayload } from './jwt-payload.interface';
 import { UserDto } from './dtos/user.dto';
 import { AuthResponse } from './responses/auth.response';
 import { InvalidCredentialsException } from '../exceptions/invalid-credentials.exception';
+import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
+    private rabbitMQService: RabbitMQService
   ) {}
 
   async register(
@@ -32,7 +34,11 @@ export class AuthService {
     const payload = { userId: savedUser.id };
     const access_token = this.jwtService.sign(payload);
 
-    return new AuthResponse(UserDto.mapUser(savedUser), access_token);
+    const userDto = UserDto.mapUser(savedUser);
+
+    await this.rabbitMQService.sendMessage('user.register', userDto);
+
+    return new AuthResponse(userDto, access_token);
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {
