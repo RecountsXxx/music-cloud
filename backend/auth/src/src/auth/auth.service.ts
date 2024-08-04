@@ -36,7 +36,7 @@ export class AuthService {
 
     const userDto = UserDto.mapUser(savedUser);
 
-    this.rabbitMQService.sendMessage('user.register', userDto);
+    await this.rabbitMQService.sendMessage('user.register', userDto);
 
     return new AuthResponse(userDto, access_token);
   }
