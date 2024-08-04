@@ -9,6 +9,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthGrpcController } from './grpc/auth-grpc.controller';
+import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
+import { RabbitMQModule } from '../rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -22,8 +24,9 @@ import { AuthGrpcController } from './grpc/auth-grpc.controller';
         signOptions: { expiresIn: configService.get<string>('JWT_EXPIRES_IN') },
       }),
     }),
+    RabbitMQModule,
   ],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  providers: [AuthService, RabbitMQService, JwtStrategy, JwtAuthGuard],
   controllers: [AuthController, AuthGrpcController],
 })
 export class AuthModule {}
