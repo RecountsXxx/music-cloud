@@ -59,12 +59,10 @@ export default {
       if (validator(data, 1)) {
         this.isError = false;
         this.$refs.errorMessage.style.visibility = 'hidden';
-        // Authentication(data);
-        console.log('Valid Data')
+        Authentication(data);
       } else {
         this.isError = true;
         this.$refs.errorMessage.style.visibility = 'visible';
-        console.log('Invalid Data')
       }
     },
     changeVisiblePassword() {
