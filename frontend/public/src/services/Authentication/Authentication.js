@@ -12,29 +12,30 @@ export function Authentication(data) {
     // Предположим, что сервер возвращает успешный ответ с token'ом.
     // В этом примере просто устанавливаем аутентификацию в true для демонстрации.
 
-    const url = '';
-    const email = data.email;
-    const password = data.password;
 
-    // проводим валидацию данных
-    const valid = true; // временно
+    const url = "http://localhost:3000/api/auth/login";
 
-    if (valid) {
-        const response = (async () => {
-            try {
-                const result = await axios.post(url, JSON.stringify(data));
-                console.log(result.data); // или любая другая обработка ответа
-            } catch (error) {
-                console.error('Ошибка:', error);
+    // Отправка POST-запроса
+    sendPostRequest(url, data);
+}
+
+async function sendPostRequest(url, respData) {
+    try {
+        const response = await axios.post(url, respData, {
+            headers: {
+                'content-type': 'application/json'
             }
-        })();
+        });
+        console.log(response.data);
+
+    } catch (error) {
+        console.log('Error: ', error);
     }
 }
 
-
 export function isLoggedIn() {
     // МЕТОД ДЛЯ ПРОВЕРКИ АУТЕНТИФИКАЦИИ И ПРОВЕРКИ ЕСТЬ ЛИ ТОКЕН ДЛЯ РОУТИНГА ПО СТРАНИЦАМ И ОТПРАВКИ ДАННЫХ
-    
+
     /*
     * проверяем есть ли токен
     * если токен есть, отправляем его на backend для верификации
@@ -44,6 +45,6 @@ export function isLoggedIn() {
     return false;
 }
 
-export function logOut(){
+export function logOut() {
     // удаляет JWT токен и выходит из аккаунта
 }
