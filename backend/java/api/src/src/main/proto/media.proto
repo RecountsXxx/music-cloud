@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package media;
+
+service MediaService {
+  rpc GetAvatars (GetAvatarsRequest) returns (GetAvatarsResponse);
+}
+
+message GetAvatarsRequest {
+  string userId = 1;
+}
+
+message AvatarSet {
+  string small = 1;
+  string medium = 2;
+  string large = 3;
+}
+
+message GetAvatarsResponse {
+  AvatarSet avatars = 1;
+}

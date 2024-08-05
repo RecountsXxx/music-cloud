@@ -16,7 +16,7 @@ public class GrpcClient {
 
     private static final Logger logger = LoggerFactory.getLogger(GrpcClient.class);
 
-    public GrpcClient(@Value("${grpc.server.host}") String host, @Value("${grpc.server.port}") int port) {
+    public GrpcClient(@Value("${grpc.server.host}") String host, @Value("${grpc.server.port.for.client}") int port) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
                 .build();
