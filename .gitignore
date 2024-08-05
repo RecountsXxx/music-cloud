@@ -5,3 +5,4 @@
 /volumes/
 supervisord.pid
 node_modules
+frontend/dist

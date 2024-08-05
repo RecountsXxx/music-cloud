@@ -11,6 +11,7 @@ services:
       - '7000:80'
     networks:
       - vibe_cloud_net
+
   auth.api:
     container_name: auth.api
     build:
@@ -71,7 +72,7 @@ services:
       - storage.minio
       - rabbit.mq
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   nginx.router:
     build:
