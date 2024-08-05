@@ -29,10 +29,22 @@ public class AvatarService {
 
             rabbitMQService.sendUserDTO("convert.avatar", userDTO);
 
-            return ResponseEntity.ok("Process of updating avatar has started. Please wait...");
+            return ResponseEntity.ok("Process of uploading avatar has started. Please wait...");
         }
         catch (IOException | DataSavingException | MessageSendingException e) {
             String message = "Failed to upload avatar file!";
+            logger.error(message, e);
+            throw new StatusException(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<String> gravatarUpdate(UserDTO userDTO) throws StatusException {
+        try {
+            rabbitMQService.sendUserDTO("reset.gravatar", userDTO);
+
+            return ResponseEntity.ok("The gravatar update process started. Please wait...");
+        } catch (MessageSendingException e) {
+            String message = "The gravatar update process failed. Try later...";
             logger.error(message, e);
             throw new StatusException(message, HttpStatus.INTERNAL_SERVER_ERROR);
         }

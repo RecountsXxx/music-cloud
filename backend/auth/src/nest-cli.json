@@ -6,7 +6,7 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "auth/grpc/*.proto",
+        "include": "grpc/*/*.proto",
         "outDir": "dist"
       }
     ]

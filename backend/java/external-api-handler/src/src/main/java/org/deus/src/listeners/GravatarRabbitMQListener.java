@@ -29,7 +29,7 @@ public class GravatarRabbitMQListener {
     private static final Logger logger = LoggerFactory.getLogger(GravatarRabbitMQListener.class);
 
     @RabbitListener(queues = {"user.register", "reset.gravatar"})
-    public void userRegister(Message message) {
+    public void gravatar(Message message) {
         Optional<UserDTO> optionalUserDTO = this.rabbitMQService.receiveUserDTO(message);
 
         if (optionalUserDTO.isEmpty()) {

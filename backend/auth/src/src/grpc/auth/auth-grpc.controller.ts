@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
-import { AuthService } from '../auth.service';
-import { UserDto } from '../dtos/user.dto';
+import { AuthService } from '../../auth/auth.service';
+import { UserDto } from '../../auth/dtos/user.dto';
 
 @Controller('grpc-auth')
 export class AuthGrpcController {

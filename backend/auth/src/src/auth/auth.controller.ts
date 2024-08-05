@@ -8,7 +8,6 @@ import {
   Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { User } from './user.entity';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { UserDto } from './dtos/user.dto';
 import { AuthResponse } from './responses/auth.response';

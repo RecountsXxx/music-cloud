@@ -1,7 +1,7 @@
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module';
-import {grpcClientOptions} from './auth/grpc/grpc-options';
-import {HttpExceptionFilter} from './filters/http-exception.filter';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { grpcClientOptions } from './grpc/auth/grpc-options';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
