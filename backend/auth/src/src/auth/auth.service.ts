@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { JwtPayload } from './jwt-payload.interface';
 import { UserDto } from './dtos/user.dto';
 import { AuthResponse } from './responses/auth.response';
 import { InvalidCredentialsException } from '../exceptions/invalid-credentials.exception';
 import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
+import { firstValueFrom } from 'rxjs';
+import { MediaGrpcService } from '../grpc/media/media.service';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +18,8 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
-    private rabbitMQService: RabbitMQService
+    private rabbitMQService: RabbitMQService,
+    private mediaGrpcService: MediaGrpcService
   ) {}
 
   async register(
@@ -38,7 +41,9 @@ export class AuthService {
 
     await this.rabbitMQService.sendMessage('user.register', userDto);
 
-    return new AuthResponse(userDto, access_token);
+    const avatarsResponse = await firstValueFrom(this.mediaGrpcService.getAvatars(user.id));
+
+    return new AuthResponse(userDto, access_token, avatarsResponse.avatars);
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -66,7 +71,9 @@ export class AuthService {
     const payload = { userId: user.id };
     const access_token = this.jwtService.sign(payload);
 
-    return new AuthResponse(UserDto.mapUser(user), access_token);
+    const avatarsResponse = await firstValueFrom(this.mediaGrpcService.getAvatars(user.id));
+
+    return new AuthResponse(UserDto.mapUser(user), access_token, avatarsResponse.avatars);
   }
 
   async validateToken(

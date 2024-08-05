@@ -4,13 +4,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { AuthGrpcController } from './grpc/auth-grpc.controller';
+import { AuthGrpcController } from '../grpc/auth/auth-grpc.controller';
 import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
 import { RabbitMQModule } from '../rabbitmq/rabbitmq.module';
+import { MediaGrpcService } from '../grpc/media/media.service';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { RabbitMQModule } from '../rabbitmq/rabbitmq.module';
     }),
     RabbitMQModule,
   ],
-  providers: [AuthService, RabbitMQService, JwtStrategy, JwtAuthGuard],
+  providers: [AuthService, RabbitMQService, JwtStrategy, JwtAuthGuard, MediaGrpcService],
   controllers: [AuthController, AuthGrpcController],
 })
 export class AuthModule {}
