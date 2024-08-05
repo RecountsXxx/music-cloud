@@ -60,7 +60,7 @@ services:
       - storage.minio
       - rabbit.mq
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   nginx.router:
     build:
@@ -73,7 +73,7 @@ services:
       - laravel.api
       - java.api
       - auth.api
-      - frontend.public
+      - app.frontend
     ports:
       - '80:80'
     networks:
@@ -132,7 +132,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   phpmyadmin:
     image: phpmyadmin
