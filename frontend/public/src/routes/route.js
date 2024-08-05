@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import routes from "./routes";
-import {checkAuthentication, handleAuthNavigation} from "../utils/authUtils";
+import {checkAuthentication, handleAuthNavigation} from "../utils/routeAuth";
 
 const router = new createRouter(
     {
@@ -11,7 +11,7 @@ const router = new createRouter(
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
-    checkAuthentication();
+    // checkAuthentication();
     handleAuthNavigation(to, from, next);
 });
 

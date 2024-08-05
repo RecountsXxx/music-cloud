@@ -1,19 +1,16 @@
 services:
-
-  frontend.public:
-    container_name: frontend.public
+  app.frontend:
+    container_name: app.frontend
     build:
       dockerfile: Dockerfile
-      context: ./frontend/public/nginx
+      context: frontend/nginx
     volumes:
-      - ./frontend/public/dist:/var/www/html
-      - ./frontend/public/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend/dist:/var/www/html
+      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - '7000:80'
     networks:
-      - vibecloud_net
-
-
+      - vibe_cloud_net
   auth.api:
     container_name: auth.api
     build:
@@ -24,7 +21,7 @@ services:
     ports:
       - '3000:3000'
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   laravel.api:
     container_name: laravel.api
@@ -38,7 +35,7 @@ services:
     ports:
       - '8000:8000'
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   java.api:
     container_name: java.api
@@ -52,7 +49,7 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   java.image.handler:
     container_name: java.image.handler
@@ -63,7 +60,7 @@ services:
       - storage.minio
       - rabbit.mq
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   external.api.handler:
     container_name: external.api.handler
@@ -81,17 +78,17 @@ services:
       dockerfile: Dockerfile
       context: ./services/nginx
     volumes:
-      - ./frontend/dist:/var/www/html/public
+      - ./frontend/dist:/var/www/html
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - laravel.api
       - java.api
       - auth.api
-      - frontend.public
+      - app.frontend
     ports:
       - '80:80'
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
 
   db.redis:
@@ -104,7 +101,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   db.mysql:
     container_name: db.mysql
@@ -118,7 +115,7 @@ services:
     ports:
       - '3306:3306'
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   storage.minio:
     container_name: storage.minio
@@ -133,7 +130,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   rabbit.mq:
     container_name: rabbit.mq
@@ -146,7 +143,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
   phpmyadmin:
     image: phpmyadmin
@@ -156,8 +153,8 @@ services:
     ports:
       - 9090:80
     networks:
-      - vibecloud_net
+      - vibe_cloud_net
 
 networks:
-  vibecloud_net:
+  vibe_cloud_net:
     driver: bridge
