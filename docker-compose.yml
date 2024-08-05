@@ -62,6 +62,17 @@ services:
     networks:
       - vibe_cloud_net
 
+  external.api.handler:
+    container_name: external.api.handler
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/external-api-handler
+    depends_on:
+      - storage.minio
+      - rabbit.mq
+    networks:
+      - vibecloud_net
+
   nginx.router:
     build:
       dockerfile: Dockerfile
