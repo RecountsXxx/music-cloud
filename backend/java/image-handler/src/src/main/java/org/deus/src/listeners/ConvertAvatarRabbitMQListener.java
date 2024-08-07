@@ -59,7 +59,7 @@ public class ConvertAvatarRabbitMQListener {
         catch (DataIsNotPresentException | DataProcessingException e) {
             logger.error("Some problems have occurred while trying to convert avatar for user with id \"" + userDTO.getId() + "\"", e);
 
-            // send message via rabbitmq to websoket microservice: conversion of avatars have failed.
+            // send message via rabbitmq to websoket microservice: conversion of avatar have failed.
         }
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.deus.src.dtos.fromModels.UserDTO;
+import org.deus.src.dtos.helpers.CoverConvertingDTO;
 import org.deus.src.exceptions.message.MessageSendingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +45,19 @@ public class RabbitMQService {
         }
     }
 
-    public void sendUserDTO(String queueName, UserDTO userDTO) throws MessageSendingException {
-        this.serializeAndSendMessage(queueName, userDTO, UserDTO.class);
+    public void sendUserDTO(String queueName, UserDTO object) throws MessageSendingException {
+        this.serializeAndSendMessage(queueName, object, UserDTO.class);
     }
 
     public Optional<UserDTO> receiveUserDTO(Message message) {
         return this.deserializeMessage(message, UserDTO.class);
+    }
+
+    public void sendCoverConvertingDTO(String queueName, CoverConvertingDTO object) throws MessageSendingException {
+        this.serializeAndSendMessage(queueName, object, CoverConvertingDTO.class);
+    }
+
+    public Optional<CoverConvertingDTO> receiveCoverConvertingDTO(Message message) {
+        return this.deserializeMessage(message, CoverConvertingDTO.class);
     }
 }
