@@ -3,12 +3,12 @@ import { AvatarSetDto } from '../dtos/avatar-set.dto';
 
 export class AuthResponse {
   user: UserDto;
-  access_token: string
+  accessToken: string
   avatars: AvatarSetDto;
 
-  public constructor(user: UserDto, access_token: string, avatars: AvatarSetDto) {
+  public constructor(user: UserDto, accessToken: string, avatars: AvatarSetDto) {
     this.user = user;
-    this.access_token = access_token;
+    this.accessToken = accessToken;
     this.avatars = avatars;
   }
 }

@@ -35,7 +35,7 @@ export class AuthService {
     });
     const savedUser = await this.usersRepository.save(user);
     const payload = {userId: savedUser.id};
-    const access_token = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload);
 
     const userDto = UserDto.mapUser(savedUser);
 
@@ -43,7 +43,7 @@ export class AuthService {
 
     const avatarsResponse = await firstValueFrom(this.mediaGrpcService.getAvatars(userDto.id));
 
-    return new AuthResponse(userDto, access_token, avatarsResponse.avatars);
+    return new AuthResponse(userDto, accessToken, avatarsResponse.avatars);
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -69,11 +69,11 @@ export class AuthService {
     }
 
     const payload = {userId: user.id};
-    const access_token = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload);
 
     const avatarsResponse = await firstValueFrom(this.mediaGrpcService.getAvatars(user.id));
 
-    return new AuthResponse(UserDto.mapUser(user), access_token, avatarsResponse.avatars);
+    return new AuthResponse(UserDto.mapUser(user), accessToken, avatarsResponse.avatars);
   }
 
 
