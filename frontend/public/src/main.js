@@ -3,7 +3,10 @@ import App from "./App.vue";
 import router from "./routes/route";
 import i18n, {changeLanguage, getPreferredLanguage} from "./i18n";
 import {createPinia} from "pinia";
-import {useAuthStore} from "./store/auth";
+import {useMainStore} from "./store/mainStore";
+import {useUserStore} from "./store/userStore";
+import {User} from "./models/User";
+import {useAuthStore} from "./store/authStore";
 
 
 const app = createApp(App);
@@ -20,7 +23,7 @@ changeLanguage(preferredLanguages).then(() => {
     app.mount('#app')
 });
 
-export const authStore = useAuthStore();
-authStore.initializeAuth(); // инициализируем authStore
+export const mainStore = useMainStore();
+mainStore.Initialization();
 
 // app.use(i18n).use(router).mount("#app");

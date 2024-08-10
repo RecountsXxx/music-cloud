@@ -57,9 +57,11 @@ export default {
         password: this.password
       }
       if (validator(data, 1)) {
-        this.isError = false;
-        this.$refs.errorMessage.style.visibility = 'hidden';
-        Authentication(data);
+        if (!this.isError) {
+          this.isError = false;
+          this.$refs.errorMessage.style.visibility = 'hidden';
+          Authentication(data);
+        }
       } else {
         this.isError = true;
         this.$refs.errorMessage.style.visibility = 'visible';
