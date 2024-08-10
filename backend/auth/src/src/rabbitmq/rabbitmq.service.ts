@@ -16,11 +16,18 @@ export class RabbitMQService  {
   async connect() {
     try {
       const url = this.configService.get<string>('RABBITMQ_URL');
-      this.connection = await amqp.connect(url);
-      this.channel = await this.connection.createChannel();
-      console.log('RABBITMQ CONNECTION IS SUCCESSFUL');
-    } catch (e) {
-      console.log('RABBITMQ CONNECTION HAVE FAILED', e);
+      this.connection = amqp.connect([url]);
+      this.channel = this.connection.createChannel({
+        json: true,
+        setup: (channel) => {
+          return channel.assertQueue('my-queue', { durable: true });
+        },
+      });
+      // this.connection = await amqp.connect(url);
+      // this.channel = await this.connection.createChannel();
+      console.log('RabbitMQ Connection is Successful');
+    } catch (error) {
+      console.log('RabbitMQ Connection Failed:\', error', error);
     }
   }
 

@@ -1,6 +1,8 @@
 'use strict'
 import axios from "axios";
+import {checkRememberMe} from "../../utils/checkRememberMe";
 
+// import {authStore} from "../../main";
 /**
  * Аутентифицирует пользователя.
  *
@@ -17,6 +19,18 @@ export function Authentication(data) {
 
     // Отправка POST-запроса
     sendPostRequest(url, data);
+        // .then(result => {
+        // if (result === false) {
+        //     return false;
+        // } else {
+        //     console.log(result);
+        //     сохраняем jwt toke и user в localStorage если стоит remember me
+            // console.log(checkRememberMe());
+            // if (checkRememberMe()) {
+            //
+            // }
+        // }
+    // });
 }
 
 async function sendPostRequest(url, respData) {
@@ -26,10 +40,10 @@ async function sendPostRequest(url, respData) {
                 'content-type': 'application/json'
             }
         });
-        console.log(response.data);
+        return response.data;
 
     } catch (error) {
-        console.log('Error: ', error);
+        return false;
     }
 }
 
@@ -46,5 +60,8 @@ export function isLoggedIn() {
 }
 
 export function logOut() {
-    // удаляет JWT токен и выходит из аккаунта
+    // удаляет JWT токен
+    // authStore.clearToken();
+    // удаляем данные пользовтаеля
+
 }
