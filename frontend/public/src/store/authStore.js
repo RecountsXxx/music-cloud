@@ -4,7 +4,7 @@ function loadJwtTokenFromLocalStorage() {
     return localStorage.getItem("jwtToken");
 }
 
-function saveJwtTokenInLocalStorage(token) {
+export function saveJwtTokenInLocalStorage(token) {
     localStorage.setItem("jwtToken", token);
 }
 
@@ -19,22 +19,22 @@ export const useAuthStore = defineStore('useAuthStore', {
     },
     actions: {
         setJWT(jwt) {
-            // console.log("setJWT", jwt);
             if (jwt) {
                 this.jwtToken = jwt;
-                saveJwtTokenInLocalStorage(jwt);
+                this.isAuthenticated = true;
             }
-        }
-        ,
+        },
         Initialization() {
             const jwtToken = loadJwtTokenFromLocalStorage();
             if (jwtToken) {
                 this.isAuthenticated = true;
                 this.jwtToken = jwtToken;
             }
+            this.isAuthenticated = false;
         }
         , clearJWT() {
             this.isAuthenticated = false;
+            this.jwtToken = null;
             localStorage.removeItem("jwtToken");
         }
     }

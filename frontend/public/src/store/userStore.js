@@ -4,7 +4,7 @@ function loadUserFromLocalStore() {
     return localStorage.getItem("userStore");
 }
 
-function saveUserFromLocalStore(user) {
+export function saveUserFromLocalStore(user) {
     localStorage.setItem("userStore", JSON.stringify(user));
 }
 
@@ -19,7 +19,6 @@ export const useUserStore = defineStore('useUserStore', {
         setUser(user) {
             if (user) {
                 this.user = user;
-                saveUserFromLocalStore(user);
             }
         },
         clearUser() {

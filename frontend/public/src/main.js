@@ -26,4 +26,5 @@ changeLanguage(preferredLanguages).then(() => {
 export const mainStore = useMainStore();
 mainStore.Initialization();
 
+
 // app.use(i18n).use(router).mount("#app");

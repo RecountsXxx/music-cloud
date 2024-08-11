@@ -1,11 +1,3 @@
-
-
-// export function checkAuthentication() {
-    // const authenticated = isLoggedIn();
-    // return authenticated;
-    // return false;
-// }
-
 import {useAuthStore} from "../store/authStore";
 
 export function handleAuthNavigation(to, from, next) {

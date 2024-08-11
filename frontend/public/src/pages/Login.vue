@@ -60,7 +60,18 @@ export default {
         if (!this.isError) {
           this.isError = false;
           this.$refs.errorMessage.style.visibility = 'hidden';
-          Authentication(data);
+          // делаем запрос на аутентификацию
+          Authentication(data).then(res => {
+            if (res !== false) {
+              const remember = document.getElementById('remember-me');
+              if (remember.checked) {
+
+              }
+            } else {
+              this.isError = true;
+              this.$refs.errorMessage.style.visibility = 'visible';
+            }
+          })
         }
       } else {
         this.isError = true;
