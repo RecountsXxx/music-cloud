@@ -3,24 +3,41 @@ import App from "./App.vue";
 import router from "./routes/route";
 import i18n, {changeLanguage, getPreferredLanguage} from "./i18n";
 import {createPinia} from "pinia";
-import {useAuthStore} from "./store/auth";
+import {useMainStore} from "./store/mainStore";
+import {useAuthStore} from "./store/authStore";
 
-
+// Создание приложения Vue
 const app = createApp(App);
 const pinia = createPinia();
 
+// Подключение плагинов и роутера
 app.use(i18n);
 app.use(router);
 app.use(pinia);
 
-// получаем язык для локализации
-const preferredLanguages = getPreferredLanguage();
+// Инициализация основного хранилища
+export const mainStore = useMainStore();
 
-changeLanguage(preferredLanguages).then(() => {
-    app.mount('#app')
-});
+async function initializeApp() {
+    try {
+        // Получаем язык для локализации
+        const preferredLanguage = getPreferredLanguage();
 
-export const authStore = useAuthStore();
-authStore.initializeAuth(); // инициализируем authStore
+        // Меняем язык и сразу монтируем приложение
+        changeLanguage(preferredLanguage).finally(() => {
+            app.mount('#app');
+        });
 
-// app.use(i18n).use(router).mount("#app");
+        // Инициализация основного хранилища
+        mainStore.Initialization();
+
+        // Подписываемся на изменения авторизации
+        useAuthStore().subscribeToAuthChanges();
+
+    } catch (error) {
+        console.error('Ошибка при инициализации приложения:', error);
+    }
+}
+
+// Инициализация приложения
+initializeApp();

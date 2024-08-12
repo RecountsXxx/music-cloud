@@ -1,17 +1,18 @@
-import {createRouter, createWebHistory} from "vue-router";
-import routes from "./routes";
-import {checkAuthentication, handleAuthNavigation} from "../utils/routeAuth";
+import {createRouter, createWebHistory} from "vue-router"; // Импорт необходимых модулей из Vue Router
+import routes from "./routes"; // Импорт конфигурации маршрутов
+import {handleAuthNavigation} from "../utils/routeAuth"; // Импорт функции для обработки авторизации маршрутов
 
-const router = new createRouter(
-    {
-        history: createWebHistory(),
-        routes: routes
-    }
-);
+const router = createRouter({
+    history: createWebHistory(),
+    routes: routes
+});
 
+// Глобальный перехватчик маршрутов
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title;
-    // checkAuthentication();
+    // Установка заголовка страницы на основе метаданных маршрута
+    document.title = to.meta.title || 'Vibe Cloud';
+
+    // Проверка доступа к маршруту на основе состояния аутентификации
     handleAuthNavigation(to, from, next);
 });
 

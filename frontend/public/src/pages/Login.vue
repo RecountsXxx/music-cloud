@@ -37,6 +37,7 @@
 import {showHidePassword} from "../utils/showHidePassword";
 import {validator} from "../services/Validator/validator";
 import {Authentication} from "../services/Authentication/Authentication";
+import {saveJwtTokenInLocalStorage, useAuthStore} from "../store/authStore";
 
 export default {
   computed: {},
@@ -57,9 +58,22 @@ export default {
         password: this.password
       }
       if (validator(data, 1)) {
-        this.isError = false;
-        this.$refs.errorMessage.style.visibility = 'hidden';
-        Authentication(data);
+        if (!this.isError) {
+          this.clearError();
+          // делаем запрос на аутентификацию
+          Authentication(data).then(res => {
+            if (res !== false) {
+              const remember = document.getElementById('remember-me');
+              useAuthStore().setJWT(res.accessToken);
+              if (remember.checked) {
+                saveJwtTokenInLocalStorage(res.accessToken);
+              }
+            } else {
+              this.isError = true;
+              this.$refs.errorMessage.style.visibility = 'visible';
+            }
+          })
+        }
       } else {
         this.isError = true;
         this.$refs.errorMessage.style.visibility = 'visible';

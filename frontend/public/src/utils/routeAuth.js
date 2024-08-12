@@ -1,33 +1,28 @@
-import {useAuthStore} from "../store/auth";
-import {authStore} from "../main";
-
-// export function checkAuthentication() {
-    // const authenticated = isLoggedIn();
-    // return authenticated;
-    // return false;
-// }
+import {useAuthStore} from "../store/authStore";
 
 export function handleAuthNavigation(to, from, next) {
     /*
-    * если маршрут требующий аутентификацию
-    * если токен валиден переходим на главную
-    * если токен невалиден переходим на страницу входа
-    **/
+     * если маршрут требующий аутентификацию
+     * если токен валиден переходим на главную
+     * если токен невалиден переходим на страницу входа
+     **/
 
-    console.log(authStore.getIsAuth);
+    const authStore = useAuthStore();
+
+    // Если маршрут требует аутентификации
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!authStore.getIsAuth) {
-            next({path: '/login'});
+        if (!authStore.getIsAuthenticated) {
+            next({path: '/login'}); // Перенаправляем на страницу входа
         } else {
-            next();
+            next(); // Разрешаем переход
         }
     } else if (to.name === 'Login' || to.name === 'Register') {
-        if (authStore.getIsAuth) {
-            next({path: '/'});
+        if (authStore.getIsAuthenticated) {
+            next({path: '/'}); // Перенаправляем на главную, если пользователь уже авторизован
         } else {
-            next();
+            next(); // Разрешаем переход на страницу логина/регистрации
         }
     } else {
-        next();
+        next(); // Разрешаем переход на любые другие маршруты
     }
 }
