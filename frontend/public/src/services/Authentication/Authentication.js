@@ -11,7 +11,6 @@ import {checkRememberMe} from "../../utils/checkRememberMe";
 export async function Authentication(data) {
     // Отправляет данные для аутентификации на сервер и получает token.
     // Предположим, что сервер возвращает успешный ответ с token'ом.
-
     const url = "http://localhost:3000/api/auth/login";
 
     // Отправка POST-запроса и ожидание результата
