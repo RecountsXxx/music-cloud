@@ -23,10 +23,7 @@ public class TusFileUploadWrapperService {
     private final Path uploadDirectoryPath;
     private static final Logger logger = LoggerFactory.getLogger(TusFileUploadWrapperService.class);
 
-    @Value("${app.tus.upload-directory}")
-    private String uploadDirectory;
-
-    public TusFileUploadWrapperService(TusFileUploadService tusFileUploadService) {
+    public TusFileUploadWrapperService(TusFileUploadService tusFileUploadService, @Value("${app.tus.upload-directory}") String uploadDirectory) {
         this.tusFileUploadService = tusFileUploadService;
         this.uploadDirectoryPath = Path.of(uploadDirectory);
     }
