@@ -7,30 +7,20 @@ import {checkRememberMe} from "../../utils/checkRememberMe";
  * Аутентифицирует пользователя.
  *
  * @param {Object} data - Данные для аутентификации пользователя (email и пароль).
- * @returns {boolean} - Возвращает `true`, если аутентификация успешна, иначе `false`.
  */
-export function Authentication(data) {
+export async function Authentication(data) {
     // Отправляет данные для аутентификации на сервер и получает token.
     // Предположим, что сервер возвращает успешный ответ с token'ом.
-    // В этом примере просто устанавливаем аутентификацию в true для демонстрации.
-
-
     const url = "http://localhost:3000/api/auth/login";
 
-    // Отправка POST-запроса
-    sendPostRequest(url, data);
-        // .then(result => {
-        // if (result === false) {
-        //     return false;
-        // } else {
-        //     console.log(result);
-        //     сохраняем jwt toke и user в localStorage если стоит remember me
-            // console.log(checkRememberMe());
-            // if (checkRememberMe()) {
-            //
-            // }
-        // }
-    // });
+    // Отправка POST-запроса и ожидание результата
+    const res = await sendPostRequest(url, data);
+
+    // Проверка результата и возврат значение
+    if (res !== false) {
+        return res;
+    }
+    return false;
 }
 
 async function sendPostRequest(url, respData) {
@@ -41,7 +31,6 @@ async function sendPostRequest(url, respData) {
             }
         });
         return response.data;
-
     } catch (error) {
         return false;
     }

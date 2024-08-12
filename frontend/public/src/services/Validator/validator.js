@@ -1,5 +1,5 @@
 export function validator(data, validator) {
-    // validator 1 - login , 2 - registration
+    // validator 1 - login form , 2 - registration form
     if (validator === 1) {
         return validationEmail(data.email) && validationPassword(data.password);
     }

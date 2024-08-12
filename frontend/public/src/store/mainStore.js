@@ -7,10 +7,12 @@ export const useMainStore = defineStore('useMainStore', {
     getters: {},
     actions: {
         Initialization() {
-            const userStore = useUserStore();
-            const authStore = useAuthStore();
-            userStore.Initialization();
-            authStore.Initialization();
+            useAuthStore().Initialization();
+            useUserStore().Initialization();
         },
+        clearStore() {
+            useAuthStore().clearJWT();
+            useUserStore().clearUser();
+        }
     }
 })
