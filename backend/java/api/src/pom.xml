@@ -64,8 +64,6 @@
 		</dependency>
 
 
-
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -114,6 +112,13 @@
 			<version>4.28.0-RC1</version>
 		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/me.desair.tus/tus-java-server -->
+		<dependency>
+			<groupId>me.desair.tus</groupId>
+			<artifactId>tus-java-server</artifactId>
+			<version>1.0.0-3.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

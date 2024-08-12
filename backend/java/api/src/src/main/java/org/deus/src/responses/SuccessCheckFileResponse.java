@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SuccessMessageResponse {
-    private String message;
+public class SuccessCheckFileResponse {
+    private Boolean isFileExists;
 }

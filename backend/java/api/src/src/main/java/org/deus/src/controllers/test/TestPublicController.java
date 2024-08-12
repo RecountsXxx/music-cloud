@@ -1,4 +1,4 @@
-package org.deus.src.controllers;
+package org.deus.src.controllers.test;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
