@@ -60,7 +60,7 @@ module.exports = {
             directory: path.resolve(__dirname, 'public'),
         },
         compress: true,
-        port: 8081,
+        port: 7000,
         historyApiFallback: true, // Перенаправление всех запросов к вашему приложению Vue
     }
 };
