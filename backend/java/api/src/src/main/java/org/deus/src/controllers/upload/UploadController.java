@@ -22,7 +22,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api/upload")
+@RequestMapping("/api/java/protected/upload")
 public class UploadController {
     private final UploadService uploadService;
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);

@@ -6,6 +6,8 @@ import {createPinia} from "pinia";
 import {useMainStore} from "./store/mainStore";
 import {useAuthStore} from "./store/authStore";
 
+import "bootstrap/dist/css/bootstrap.min.css"
+
 // Создание приложения Vue
 const app = createApp(App);
 const pinia = createPinia();
@@ -33,7 +35,6 @@ async function initializeApp() {
 
         // Подписываемся на изменения авторизации
         useAuthStore().subscribeToAuthChanges();
-
     } catch (error) {
         console.error('Ошибка при инициализации приложения:', error);
     }
