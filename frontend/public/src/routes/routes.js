@@ -2,7 +2,7 @@ const title = 'Vibe Cloud';
 const routes = [
     {
         path: '/',
-        component: () => import('../pages/Home.vue'),
+        component: () => import('../pages/home/Home.vue'),
         name: "Home",
         meta: {
             title: title,
@@ -11,7 +11,7 @@ const routes = [
     },
     {
         path: '/login',
-        component: () => import('../pages/Login.vue'),
+        component: () => import('../pages/auth/Login.vue'),
         name: 'Login',
         meta: {
             title: title,
@@ -19,12 +19,21 @@ const routes = [
     },
     {
         path: '/register',
-        component: () => import('../pages/Registration.vue'),
+        component: () => import('../pages/auth/Registration.vue'),
         name: 'Register',
         meta: {
             title: title,
         }
-    }
+    },
+    {
+        path: '/upload',
+        component: () => import('../pages/upload/Upload.vue'),
+        name: "Upload",
+        meta: {
+            title: title,
+            requiresAuth: true,
+        },
+    },
 ]
 
 export default routes;

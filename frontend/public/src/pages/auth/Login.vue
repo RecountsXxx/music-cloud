@@ -12,7 +12,7 @@
                ref="passwordInput"
                :placeholder="$t('loginForm.placeholder.password')"
                @input="clearError">
-        <div class="image__wrapper"><img class="showHidePassword" src="../assets/images/showPassword.svg" alt=""
+        <div class="image__wrapper"><img class="showHidePassword" src="../../assets/images/showPassword.svg" alt=""
                                          @click="changeVisiblePassword"></div>
       </div>
       <div class="remember-forgot-container">
@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import {showHidePassword} from "../utils/showHidePassword";
-import {validator} from "../services/Validator/validator";
-import {Authentication} from "../services/Authentication/Authentication";
-import {saveJwtTokenInLocalStorage, useAuthStore} from "../store/authStore";
+import {showHidePassword} from "../../utils/showHidePassword";
+import {validator} from "../../services/Validator/validator";
+import {Authentication} from "../../services/Authentication/Authentication";
+import {saveJwtTokenInLocalStorage, useAuthStore} from "../../store/authStore";
 
 export default {
   computed: {},
@@ -94,5 +94,5 @@ export default {
 
 
 <style scoped lang="scss">
-@import "../assets/styles/Login.scss";
+@import "../../assets/styles/Login.scss";
 </style>
