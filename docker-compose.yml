@@ -8,11 +8,8 @@ services:
       - ./frontend/public/src:/frontend/public/app
       - /frontend/public/app/node_modules
     ports:
-      - '7000:7000'
-    environment:
-      - WDS_SOCKET_HOST=127.0.0.1
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
+      - '5173:5173'
+    restart: always
     networks:
       - vibe_cloud_net
 
@@ -23,6 +20,7 @@ services:
       context: ./backend/auth
     volumes:
       - ./backend/auth/src:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - '3000:3000'
     networks:

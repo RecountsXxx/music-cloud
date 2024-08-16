@@ -1,0 +1,24 @@
+{
+  "loginForm": {
+    "form__title": "Вход",
+    "placeholder": {
+      "email": "Электронная почта",
+      "password": "Пароль"
+    },
+    "bVisionPassword": {
+      "visible": "Показать",
+      "hidden": "Скрыть"
+    },
+    "buttonSubmit": "Войти",
+    "remember-me": "Запомнить меня",
+    "forgot-password": "Забыл пароль?"
+  },
+  "register": {
+    "noRegister": "Еще не зарегистрированы?",
+    "createAccount": "Создать аккаунт"
+  },
+  "Errors": {
+    "IncData": "Некорректные данные",
+    "IncPassOrEmail": "Неверная почта или пароль"
+  }
+}
