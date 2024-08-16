@@ -36,7 +36,7 @@
 <script>
 import {showHidePassword} from "../../utils/showHidePassword";
 import {validator} from "../../services/validator/validator.js";
-import {Authentication} from "../../services/Authentication/Authentication";
+import {Authentication} from "../../services/authentication/Authentication";
 import {saveJwtTokenInLocalStorage, useAuthStore} from "../../stores/authStore.js";
 
 export default {
