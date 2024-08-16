@@ -8,7 +8,7 @@ import {checkRememberMe} from "../../utils/checkRememberMe";
  *
  * @param {Object} data - Данные для аутентификации пользователя (email и пароль).
  */
-export async function Authentication(data) {
+export async function authenticateUser(data) {
     // Отправляет данные для аутентификации на сервер и получает token.
     // Предположим, что сервер возвращает успешный ответ с token'ом.
     const url = "http://localhost:3000/api/auth/login";
