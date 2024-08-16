@@ -1,16 +1,16 @@
 <template>
-    <Header/>
-  <router-view/>
+  <MainHeader/>
+  <RouterView />
 </template>
 
 <script lang="js">
 import {defineComponent} from "vue";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import Header from "./components/Header.vue";
+import MainHeader from "./components/MainHeader.vue";
 
 export default defineComponent({
-  components: {Header},
+  components: {MainHeader},
   setup() {
     return {}
   }

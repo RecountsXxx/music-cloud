@@ -2,7 +2,7 @@ const title = 'Vibe Cloud';
 const routes = [
     {
         path: '/',
-        component: () => import('../pages/home/Home.vue'),
+        component: () => import('../pages/home/HomePage.vue'),
         name: "Home",
         meta: {
             title: title,
@@ -11,7 +11,7 @@ const routes = [
     },
     {
         path: '/login',
-        component: () => import('../pages/auth/Login.vue'),
+        component: () => import('../pages/auth/LoginPage.vue'),
         name: 'Login',
         meta: {
             title: title,
@@ -19,7 +19,7 @@ const routes = [
     },
     {
         path: '/register',
-        component: () => import('../pages/auth/Registration.vue'),
+        component: () => import('../pages/auth/RegistrationPage.vue'),
         name: 'Register',
         meta: {
             title: title,
@@ -27,7 +27,7 @@ const routes = [
     },
     {
         path: '/upload',
-        component: () => import('../pages/upload/Upload.vue'),
+        component: () => import('../pages/upload/UploadPage.vue'),
         name: "Upload",
         meta: {
             title: title,

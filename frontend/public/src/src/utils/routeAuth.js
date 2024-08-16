@@ -1,4 +1,4 @@
-import {useAuthStore} from "../store/authStore";
+import {useAuthStore} from "../stores/authStore";
 
 export function handleAuthNavigation(to, from, next) {
     /*

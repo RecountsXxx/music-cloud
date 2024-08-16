@@ -16,7 +16,7 @@ async function loadLocaleMessages(i18n, lang) {
     }
 
     try {
-        const messages = await import(`./locales/${lang}.json`); // Загружаем сообщения для выбранного языка
+        const messages = await import(`./src/locales/${lang}.json`); // Загружаем сообщения для выбранного языка
         i18n.global.setLocaleMessage(lang, messages.default); // Устанавливаем загруженные сообщения в i18n
         loadedLanguages.push(lang); // Добавляем язык в список загруженных
         return setI18nLanguage(i18n, lang); // Устанавливаем язык в i18n и возвращаем его

@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {watch} from "vue";
-import router from "../routes/route";
+import router from "../router/router.js";
 
 function loadJwtTokenFromLocalStorage() {
     return localStorage.getItem("jwtToken");
