@@ -8,10 +8,12 @@ import App from './App.vue'
 import router from './router/router.js'
 
 import "bootstrap/dist/css/bootstrap.min.css"
+import "./assets/scss/styles.scss"
+import "bootstrap"
 
 const app = createApp(App)
 
-app.use(i18n);
+app.use(i18n)
 app.use(createPinia())
 app.use(router)
 
@@ -38,4 +40,4 @@ async function initializeApp() {
 }
 
 // Инициализация приложения
-initializeApp();
+await initializeApp();

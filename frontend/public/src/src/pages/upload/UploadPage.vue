@@ -277,10 +277,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-@import "~node_modules/vue-multiselect/dist/vue-multiselect.css";
-@import "~vue-multiselect-bootstrap-theme/dist/vue-multiselect-bootstrap5.scss";
-
+<style lang="scss">
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -313,7 +310,7 @@ form {
 }
 
 .input-group .multiselect {
-  margin-left: 15px;
+  margin-left: 30px;
 }
 
 .input-group .input-group-text {
