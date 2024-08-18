@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {ApiError} from '@/errors/apiError.js';
+import { QueryPaths } from '@/utils/query-system/queryPaths.js'
 
 /**
  * Выполняет запрос к API с указанным методом, путем и данными.
@@ -15,7 +16,7 @@ import {ApiError} from '@/errors/apiError.js';
  */
 export async function PerformQuery(method, path, data = null, contentType = 'application/json', token = null) {
     // Формируем полный URL для запроса
-    const url = `${import.meta.env.VITE_API_BASE_URL}${path}`;
+    const url = `${QueryPaths.baseApi()}${path}`;
 
     try {
         // Устанавливаем заголовки запроса
