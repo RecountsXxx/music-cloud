@@ -41,6 +41,8 @@
 <script lang="js">
 import {defineComponent} from "vue";
 import {showHidePassword} from "@/utils/showHidePassword.js";
+import {registerUser} from "@/services/authentication/Authentication.js";
+import {saveUserData} from "@/utils/saveUserData.js";
 
 export default defineComponent({
   data() {
@@ -55,7 +57,7 @@ export default defineComponent({
     }
   },
   methods: {
-    registerSubmit() {
+    async registerSubmit() {
       // получаем данные из формы
       // валидируем данные из формы
       // отправляем данные на сервер
@@ -67,7 +69,19 @@ export default defineComponent({
         }
         console.log(data);
 
-
+        // Попытка аутентификации пользователя
+        try {
+          const res = await registerUser(data);
+          if (res) {
+            saveUserData(res, true)
+          } else {
+            this.showError(); // Показ ошибки при неудачной аутентификации
+          }
+        } catch (error) {
+          this.showError(); // Показ ошибки в случае исключения
+        }
+      } else {
+        this.showError(); // Показ ошибки при невалидных данных
       }
     },
     changeVisiblePassword() {
