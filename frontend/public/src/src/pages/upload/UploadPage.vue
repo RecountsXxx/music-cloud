@@ -146,7 +146,6 @@
 
 <script>
 import { Upload } from 'tus-js-client';
-import axios from 'axios';
 import draggable from "vuedraggable"
 import Vue3TagsInput from 'vue3-tags-input';
 import Multiselect from 'vue-multiselect';
