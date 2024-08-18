@@ -122,9 +122,12 @@ $error_message_size: calc(4 * .25vw);
         .showHidePassword {
           user-select: none;
           width: calc(6 * .25vw);
-
+          border-radius: 30px;
           &:hover {
             cursor: pointer;
+            padding: 2px;
+            background-color: #c7c7c7;
+            transition: 300ms all linear;
           }
         }
       }
