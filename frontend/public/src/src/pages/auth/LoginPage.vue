@@ -79,6 +79,10 @@ import {authenticateUser} from "@/services/authentication/Authentication.js";
 import {validator} from "@/services/validator/validator.js";
 import {showHidePassword} from "@/utils/showHidePassword.js";
 import {saveUserData} from "@/utils/saveUserData.js";
+import {PerformQuery} from "@/utils/query-system/performQuery.js";
+import {QueryMethods} from "@/utils/query-system/queryMethods.js";
+import {QueryContentTypes} from "@/utils/query-system/queryContentTypes.js";
+import {QueryActions} from "@/utils/query-system/queryActions.js";
 
 export default {
   data() {
@@ -106,7 +110,7 @@ export default {
         try {
           const res = await authenticateUser(data);
           if (res) {
-            saveUserData(res,this.rememberMe)
+            saveUserData(res, this.rememberMe)
           } else {
             this.showError(); // Показ ошибки при неудачной аутентификации
           }
