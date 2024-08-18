@@ -41,7 +41,7 @@
 <script lang="js">
 import {defineComponent} from "vue";
 import {showHidePassword} from "@/utils/showHidePassword.js";
-import {registerUser} from "@/services/authentication/authentication.js";
+import {register} from "@/utils/query-system/query-actions/authActions.js";
 import {saveUserData} from "@/utils/saveUserData.js";
 
 export default defineComponent({
@@ -71,7 +71,7 @@ export default defineComponent({
 
         // Попытка аутентификации пользователя
         try {
-          const res = await registerUser(data);
+          const res = await register(data);
           if (res) {
             saveUserData(res, true)
           } else {
