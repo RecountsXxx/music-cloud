@@ -41,7 +41,7 @@
 <script lang="js">
 import {defineComponent} from "vue";
 import {showHidePassword} from "@/utils/showHidePassword.js";
-import {registerUser} from "@/services/authentication/Authentication.js";
+import {registerUser} from "@/services/authentication/authentication.js";
 import {saveUserData} from "@/utils/saveUserData.js";
 
 export default defineComponent({

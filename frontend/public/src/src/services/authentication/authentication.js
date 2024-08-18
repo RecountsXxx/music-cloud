@@ -1,7 +1,7 @@
 'use strict';
 import {PerformQuery} from "@/utils/query-system/performQuery.js";
 import {QueryMethods} from "@/utils/query-system/queryMethods.js";
-import {QueryActions} from "@/utils/query-system/queryActions.js";
+import {QueryPaths} from "@/utils/query-system/queryPaths.js";
 import {QueryContentTypes} from "@/utils/query-system/queryContentTypes.js";
 
 /**
@@ -12,7 +12,7 @@ import {QueryContentTypes} from "@/utils/query-system/queryContentTypes.js";
  */
 export async function authenticateUser(data) {
     try {
-        return await PerformQuery(QueryMethods.POST, QueryActions.login(), data, QueryContentTypes.applicationJson);
+        return await PerformQuery(QueryMethods.POST, QueryPaths.login(), data, QueryContentTypes.applicationJson);
     } catch (error) {
         handleError(error);
         return false;
@@ -21,7 +21,7 @@ export async function authenticateUser(data) {
 
 export async function registerUser(data) {
     try {
-        return await PerformQuery(QueryMethods.POST, QueryActions.register(), data, QueryContentTypes.applicationJson);
+        return await PerformQuery(QueryMethods.POST, QueryPaths.register(), data, QueryContentTypes.applicationJson);
     } catch (error) {
         handleError(error);
         return false;

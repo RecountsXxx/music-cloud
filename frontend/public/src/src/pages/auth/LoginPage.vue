@@ -74,7 +74,7 @@
 
 <script>
 
-import {authenticateUser} from "@/services/authentication/Authentication.js";
+import {authenticateUser} from "@/services/authentication/authentication.js";
 // import {saveUserData} from "@/utils/saveUserData.js";
 import {validator} from "@/services/validator/validator.js";
 import {showHidePassword} from "@/utils/showHidePassword.js";
@@ -82,7 +82,7 @@ import {saveUserData} from "@/utils/saveUserData.js";
 import {PerformQuery} from "@/utils/query-system/performQuery.js";
 import {QueryMethods} from "@/utils/query-system/queryMethods.js";
 import {QueryContentTypes} from "@/utils/query-system/queryContentTypes.js";
-import {QueryActions} from "@/utils/query-system/queryActions.js";
+import {QueryPaths} from "@/utils/query-system/queryPaths.js";
 
 export default {
   data() {
