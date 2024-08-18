@@ -251,7 +251,7 @@ export default {
 
     startUpload(track) {
       const upload = new Upload(track.file, {
-        endpoint: `http://localhost/api/java/protected/upload/file`,
+        endpoint: `${QueryPaths.baseApi()}${QueryPaths.uploadChunkedFile()}`,
         retryDelays: [0, 3000, 5000, 10000, 20000],
         chunkSize: 1000000,
         metadata: {
