@@ -146,7 +146,6 @@
 
 <script>
 import { Upload } from 'tus-js-client';
-import axios from 'axios';
 import draggable from "vuedraggable"
 import Vue3TagsInput from 'vue3-tags-input';
 import Multiselect from 'vue-multiselect';
@@ -155,7 +154,7 @@ import ImageCropper from '@/components/ImageCropper.vue'
 import { PerformQuery } from '@/utils/query-system/performQuery.js'
 import { QueryMethods } from '@/utils/query-system/queryMethods.js'
 import { QueryContentTypes } from '@/utils/query-system/queryContentTypes.js'
-import { QueryActions } from '@/utils/query-system/queryActions.js'
+import { QueryPaths } from '@/utils/query-system/queryPaths.js'
 
 const authStore = useAuthStore();
 
@@ -245,7 +244,7 @@ export default {
 
 
     async requestFileId() {
-      const data = await PerformQuery(QueryMethods.POST, QueryActions.requestFileId(), null, QueryContentTypes.applicationJson, authStore.getJWT);
+      const data = await PerformQuery(QueryMethods.POST, QueryPaths.requestFileId(), null, QueryContentTypes.applicationJson, authStore.getJWT);
       return data.fileId;
     },
 
