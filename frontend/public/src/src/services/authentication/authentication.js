@@ -19,9 +19,15 @@ export async function authenticateUser(data) {
     }
 }
 
-export function registerUser(data) {
-    const url = "http://localhost/api/auth/register";
+export async function registerUser(data) {
+    try {
+        return await PerformQuery(QueryMethods.POST, QueryPaths.register(), data, QueryContentTypes.applicationJson);
+    } catch (error) {
+        handleError(error);
+        return false;
+    }
 }
+
 
 /**
  * Обрабатывает ошибку при запросе.

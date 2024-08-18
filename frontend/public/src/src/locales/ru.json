@@ -5,20 +5,36 @@
       "email": "Электронная почта",
       "password": "Пароль"
     },
-    "bVisionPassword": {
-      "visible": "Показать",
-      "hidden": "Скрыть"
-    },
     "buttonSubmit": "Войти",
     "remember-me": "Запомнить меня",
-    "forgot-password": "Забыл пароль?"
-  },
-  "register": {
-    "noRegister": "Еще не зарегистрированы?",
-    "createAccount": "Создать аккаунт"
+    "forgot-password": "Забыл пароль?",
+    "register": {
+      "noRegister": "Еще не зарегистрированы?",
+      "createAccount": "Создать аккаунт"
+    }
   },
   "Errors": {
     "IncData": "Некорректные данные",
     "IncPassOrEmail": "Неверная почта или пароль"
+  },
+  "RegisterForm": {
+    "form__title": "Регистрация",
+    "placeholder": {
+      "username": "Имя пользователя",
+      "email": "Электронная почта",
+      "password": "Пароль",
+      "confirmPassword": "Подтвердите пароль"
+    },
+    "login": {
+      "haveAcc": "Уже есть аккаунт?",
+      "signIn": "Войти"
+    },
+    "accept": {
+      "IAccept": "я принимаю",
+      "terms": "Условия использования",
+      "and": "и",
+      "privacy_policy": "Полтитику конфинденциальности"
+    },
+    "buttonSubmit": "Регистрация"
   }
 }

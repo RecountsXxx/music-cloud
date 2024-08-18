@@ -1,36 +1,43 @@
 import {defineStore} from "pinia";
 
+// Функция для загрузки пользователя из локального хранилища
 function loadUserFromLocalStore() {
-    return localStorage.getItem("userStore");
+    const user = localStorage.getItem("userStore");
+    return user ? JSON.parse(user) : null;
 }
 
-export function saveUserFromLocalStore(user) {
+// Функция для сохранения пользователя в локальном хранилище
+export function saveUserToLocalStore(user) {
     localStorage.setItem("userStore", JSON.stringify(user));
 }
 
+// Определение хранилища пользователя с помощью Pinia
 export const useUserStore = defineStore('useUserStore', {
     state: () => ({
-        user: null
+        user: null // Начальное состояние - пользователь не задан
     }),
     getters: {
         getUser: (state) => state.user
     },
     actions: {
+        // Метод для установки пользователя
         setUser(user) {
             if (user) {
                 this.user = user;
+                saveUserToLocalStore(user);
             }
         },
+        // Метод для очистки пользователя
         clearUser() {
             localStorage.removeItem("userStore");
             this.user = null;
-        }
-        ,
-        Initialization() {
+        },
+        // Метод для инициализации состояния из локального хранилища
+        initialize() {
             const user = loadUserFromLocalStore();
             if (user) {
                 this.user = user;
             }
         }
     }
-})
+});

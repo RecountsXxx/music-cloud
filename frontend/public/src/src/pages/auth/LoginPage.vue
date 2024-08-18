@@ -1,97 +1,149 @@
 <template>
   <main id="main__container">
+    <!-- Заголовок формы входа -->
     <div class="login__title">{{ $t('loginForm.form__title') }}</div>
-    <form id="login__form" @submit.prevent="handleSubmit">
-      <input class="form__input" v-model="email" id="email" type="text"
-             :placeholder="$t('loginForm.placeholder.email')"
-             @input="clearError">
 
+    <!-- Форма для входа в систему -->
+    <form id="login__form" @submit.prevent="loginSubmit">
+
+      <!-- Поле ввода для email -->
+      <input
+          class="form__input"
+          v-model="email"
+          id="email"
+          type="text"
+          :placeholder="$t('loginForm.placeholder.email')"
+          @input="clearError">
+
+      <!-- Поле ввода для пароля с возможностью показа/скрытия пароля -->
       <div class="password__field">
-        <input class="form__input" v-model="password" id="password"
-               type="password"
-               ref="passwordInput"
-               :placeholder="$t('loginForm.placeholder.password')"
-               @input="clearError">
-        <div class="image__wrapper"><img class="showHidePassword" src="../../assets/images/showPassword.svg" alt=""
-                                         @click="changeVisiblePassword"></div>
+        <input
+            class="form__input"
+            v-model="password"
+            id="password"
+            type="password"
+            ref="passwordInput"
+            :placeholder="$t('loginForm.placeholder.password')"
+            @input="clearError">
+
+        <!-- Кнопка для показа/скрытия пароля -->
+        <div class="image__wrapper">
+          <img
+              class="showHidePassword"
+              src="../../assets/images/showPassword.svg"
+              alt=""
+              @click="changeVisiblePassword">
+        </div>
       </div>
+
+      <!-- Блок для чекбокса "Запомнить меня" и ссылки "Забыли пароль?" -->
       <div class="remember-forgot-container">
+        <!-- Чекбокс "Запомнить меня" -->
         <div class="remember-me">
-          <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe">
+          <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              v-model="rememberMe">
           <label for="remember-me">{{ $t('loginForm.remember-me') }}</label>
         </div>
+
+        <!-- Ссылка на страницу восстановления пароля -->
         <div class="forgot-password">
           <router-link to="#">{{ $t('loginForm.forgot-password') }}</router-link>
         </div>
       </div>
-      <input type="submit" class="submit__button" :value="$t('loginForm.buttonSubmit')">
+
+      <!-- Кнопка отправки формы -->
+      <input
+          type="submit"
+          class="submit__button"
+          :value="$t('loginForm.buttonSubmit')">
     </form>
+
+    <!-- Сообщение об ошибке -->
     <div id="error__message" ref="errorMessage">{{ $t('Errors.IncPassOrEmail') }}</div>
-    <div class="link__create_account">{{ $t('register.noRegister') }}
-      <router-link to="">{{ $t('register.createAccount') }}</router-link>
+
+    <!-- Ссылка для создания нового аккаунта -->
+    <div class="link__create_account">
+      {{ $t('loginForm.register.noRegister') }}
+      <router-link :to="{ name: 'Register' }">{{ $t('loginForm.register.createAccount') }}</router-link>
     </div>
   </main>
 </template>
 
 <script>
-import {showHidePassword} from "../../utils/showHidePassword";
-import {validator} from "../../services/validator/validator.js";
-import {Authentication} from "../../services/authentication/authentication.js";
-import {saveJwtTokenInLocalStorage, useAuthStore} from "../../stores/authStore.js";
+
+import {authenticateUser} from "@/services/authentication/authentication.js";
+// import {saveUserData} from "@/utils/saveUserData.js";
+import {validator} from "@/services/validator/validator.js";
+import {showHidePassword} from "@/utils/showHidePassword.js";
+import {saveUserData} from "@/utils/saveUserData.js";
+import {PerformQuery} from "@/utils/query-system/performQuery.js";
+import {QueryMethods} from "@/utils/query-system/queryMethods.js";
+import {QueryContentTypes} from "@/utils/query-system/queryContentTypes.js";
+import {QueryPaths} from "@/utils/query-system/queryPaths.js";
 
 export default {
-  computed: {},
   data() {
     return {
-      isError: false,
-      email: '',
-      password: '',
-      rememberMe: false,
-      isPasswordVisible: false
+      isError: false, // состояние ошибки
+      email: '', // введенный email
+      password: '', // введенный пароль
+      rememberMe: false, // запомнить пользователя
+      isPasswordVisible: false // видимость пароля
     };
   },
   methods: {
-    async handleSubmit() {
-      // валидируем данные
+    // Метод отправки формы для входа в систему
+    async loginSubmit() {
       const data = {
         email: this.email,
         password: this.password
-      }
+      };
+
+      // Валидация данных
       if (validator(data, 1)) {
-        if (!this.isError) {
-          this.clearError();
-          // делаем запрос на аутентификацию
-          Authentication(data).then(res => {
-            if (res !== false) {
-              const remember = document.getElementById('remember-me');
-              useAuthStore().setJWT(res.accessToken);
-              if (remember.checked) {
-                saveJwtTokenInLocalStorage(res.accessToken);
-              }
-            } else {
-              this.isError = true;
-              this.$refs.errorMessage.style.visibility = 'visible';
-            }
-          })
+        this.clearError(); // Скрываем ошибки, если они были
+
+        // Попытка аутентификации пользователя
+        try {
+          const res = await authenticateUser(data);
+          if (res) {
+            saveUserData(res, this.rememberMe)
+          } else {
+            this.showError(); // Показ ошибки при неудачной аутентификации
+          }
+        } catch (error) {
+          this.showError(); // Показ ошибки в случае исключения
         }
       } else {
-        this.isError = true;
-        this.$refs.errorMessage.style.visibility = 'visible';
+        this.showError(); // Показ ошибки при невалидных данных
       }
     },
+
+    // Метод для изменения видимости пароля
     changeVisiblePassword() {
-      this.isPasswordVisible = showHidePassword(this.$refs.passwordInput)
+      this.isPasswordVisible = showHidePassword(this.$refs.passwordInput);
     },
+
+    // Метод для очистки состояния ошибки
     clearError() {
       if (this.isError) {
         this.isError = false;
         this.$refs.errorMessage.style.visibility = 'hidden';
       }
+    },
+
+    // Метод для показа ошибки
+    showError() {
+      this.isError = true;
+      this.$refs.errorMessage.style.visibility = 'visible';
     }
   }
 }
-</script>
 
+</script>
 
 <style scoped lang="scss">
 @import "../../assets/styles/Login.scss";
