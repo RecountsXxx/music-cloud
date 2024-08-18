@@ -1,4 +1,4 @@
-export const QueryPaths = {
+export const QueryActions = {
   // Возвращает URL-адрес для регистрации пользователя
   register: () => "/auth/register",
 

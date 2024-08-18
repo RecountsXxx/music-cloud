@@ -82,7 +82,7 @@ import {saveUserData} from "@/utils/saveUserData.js";
 import {PerformQuery} from "@/utils/query-system/performQuery.js";
 import {QueryMethods} from "@/utils/query-system/queryMethods.js";
 import {QueryContentTypes} from "@/utils/query-system/queryContentTypes.js";
-import {QueryPaths} from "@/utils/query-system/queryPaths.js";
+import {QueryActions} from "@/utils/query-system/queryActions.js";
 
 export default {
   data() {
