@@ -4,6 +4,13 @@
     <h2 class="mb-4">Upload Your Release</h2>
 
     <form>
+      <div class="form-group d-block mb-4">
+        <label for="releaseCover" class="align-content-center p-2">Cover</label>
+        <input type="file" @change="onFileChange" />
+        <image-cropper ref="imageCropper" v-if="this.release.cover" :file="this.release.cover" />
+      </div>
+
+
       <!-- Поля для інформації про альбом -->
       <div class="form-group d-block mb-4">
         <label for="releaseTitle" class="align-content-center p-2">Title</label>
@@ -115,8 +122,7 @@
         <button
             type="button"
             class="btn btn-primary"
-            @click="openFileDialog"
-        >
+            @click="openFileDialog">
           Add tracks
         </button>
         <input
@@ -145,12 +151,18 @@ import draggable from "vuedraggable"
 import Vue3TagsInput from 'vue3-tags-input';
 import Multiselect from 'vue-multiselect';
 import {useAuthStore} from "../../stores/authStore";
+import ImageCropper from '@/components/ImageCropper.vue'
+import { PerformQuery } from '@/utils/query-system/performQuery.js'
+import { QueryMethods } from '@/utils/query-system/queryMethods.js'
+import { QueryContentTypes } from '@/utils/query-system/queryContentTypes.js'
+import { QueryActions } from '@/utils/query-system/queryActions.js'
 
 const authStore = useAuthStore();
 
 export default {
   computed: {},
   components: {
+    ImageCropper,
     draggable,
     Vue3TagsInput,
     Multiselect,
@@ -158,6 +170,7 @@ export default {
   data() {
     return {
       release: {
+        cover: null,
         title: '',
         releaseDate: '',
         type: 'SINGLE',
@@ -184,6 +197,14 @@ export default {
   methods: {
     openFileDialog() {
       this.$refs.fileInput.click();
+    },
+
+
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.release.cover = file;
+      }
     },
 
 
@@ -224,12 +245,8 @@ export default {
 
 
     async requestFileId() {
-      const response = await axios.post(`http://localhost/api/java/protected/upload/request-file-id`, {}, {
-        headers: {
-          Authorization: `Bearer ${authStore.getJWT}`
-        }
-      });
-      return response.data.fileId;
+      const data = await PerformQuery(QueryMethods.POST, QueryActions.requestFileId(), null, QueryContentTypes.applicationJson, authStore.getJWT);
+      return data.fileId;
     },
 
 
@@ -270,18 +287,15 @@ export default {
       });
     },
 
-    saveAlbum() {
+    async saveAlbum() {
       // Логіка для збереження релізу
+      const croppedImageFile = await this.$refs.imageCropper.getCroppedImage();
     }
   }
 };
 </script>
 
-<style scoped lang="scss">
-@import "vue-multiselect-bootstrap-theme/dist/vue-multiselect-bootstrap5.scss";
-
-//@import "vue-multiselect/v";
-
+<style lang="scss">
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -314,7 +328,7 @@ form {
 }
 
 .input-group .multiselect {
-  margin-left: 15px;
+  margin-left: 30px;
 }
 
 .input-group .input-group-text {
