@@ -28,6 +28,7 @@ export async function registerUser(data) {
     }
 }
 
+
 /**
  * Обрабатывает ошибку при запросе.
  *
