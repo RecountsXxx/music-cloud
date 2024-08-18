@@ -1,56 +1,42 @@
-'use strict'
-import axios from "axios";
-import {checkRememberMe} from "../../utils/checkRememberMe";
+'use strict';
+import {PerformQuery} from "@/utils/query-system/performQuery.js";
+import {QueryMethods} from "@/utils/query-system/queryMethods.js";
+import {QueryPaths} from "@/utils/query-system/queryPaths.js";
+import {QueryContentTypes} from "@/utils/query-system/queryContentTypes.js";
 
-// import {authStore} from "../../main";
 /**
  * Аутентифицирует пользователя.
  *
  * @param {Object} data - Данные для аутентификации пользователя (email и пароль).
+ * @returns {Object|boolean} - Возвращает ответ сервера с данными или false в случае ошибки.
  */
-export async function Authentication(data) {
-    // Отправляет данные для аутентификации на сервер и получает token.
-    // Предположим, что сервер возвращает успешный ответ с token'ом.
-    const url = "http://localhost:3000/api/auth/login";
-
-    // Отправка POST-запроса и ожидание результата
-    const res = await sendPostRequest(url, data);
-
-    // Проверка результата и возврат значение
-    if (res !== false) {
-        return res;
-    }
-    return false;
-}
-
-async function sendPostRequest(url, respData) {
+export async function authenticateUser(data) {
     try {
-        const response = await axios.post(url, respData, {
-            headers: {
-                'content-type': 'application/json'
-            }
-        });
-        return response.data;
+        return await PerformQuery(QueryMethods.POST, QueryPaths.login(), data, QueryContentTypes.applicationJson);
     } catch (error) {
+        handleError(error);
         return false;
     }
 }
 
-export function isLoggedIn() {
-    // МЕТОД ДЛЯ ПРОВЕРКИ АУТЕНТИФИКАЦИИ И ПРОВЕРКИ ЕСТЬ ЛИ ТОКЕН ДЛЯ РОУТИНГА ПО СТРАНИЦАМ И ОТПРАВКИ ДАННЫХ
-
-    /*
-    * проверяем есть ли токен
-    * если токен есть, отправляем его на backend для верификации
-    * если он валиден, возвращаем true
-    * если нет, возвращаем false, что перенаправит нас на страницу входа
-    **/
-    return false;
+export function registerUser(data) {
+    const url = "http://localhost/api/auth/register";
 }
 
-export function logOut() {
-    // удаляет JWT токен
-    // authStore.clearToken();
-    // удаляем данные пользовтаеля
-
+/**
+ * Обрабатывает ошибку при запросе.
+ *
+ * @param {Object} error - Ошибка, возникшая при запросе.
+ */
+function handleError(error) {
+    if (error.response) {
+        // Сервер вернул ответ с ошибкой
+        console.error("Ошибка ответа сервера:", error.response.data);
+    } else if (error.request) {
+        // Запрос был отправлен, но ответа не получено
+        console.error("Запрос отправлен, но ответа нет:", error.request);
+    } else {
+        // Ошибка при настройке запроса
+        console.error("Ошибка настройки запроса:", error.message);
+    }
 }
