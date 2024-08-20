@@ -39,10 +39,12 @@
 </template>
 
 <script lang="js">
+
+
 import {defineComponent} from "vue";
+import {saveUserData} from "@/utils/saveUserData.js";
 import {showHidePassword} from "@/utils/showHidePassword.js";
 import {register} from "@/utils/query-system/query-actions/authActions.js";
-import {saveUserData} from "@/utils/saveUserData.js";
 
 export default defineComponent({
   data() {
@@ -92,11 +94,16 @@ export default defineComponent({
         this.isError = false;
         this.$refs.errorMessage.style.visibility = 'hidden';
       }
+    },
+    // Метод для показа ошибки
+    showError() {
+      this.isError = true;
+      this.$refs.errorMessage.style.visibility = 'visible';
     }
   }
 });
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/styles/Registration.scss";
+@import "../../assets/styles/auth/Registration";
 </style>

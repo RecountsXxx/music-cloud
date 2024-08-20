@@ -37,7 +37,7 @@ async function initializeApp() {
     // Подписываемся на изменения авторизации
     useAuthStore().subscribeToAuthChanges();
   } catch (error) {
-    console.error('Ошибка при инициализации приложения:', error);
+    console.error('Error when initializing the application:', error);
   }
 }
 

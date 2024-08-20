@@ -39,10 +39,10 @@ export async function PerformQuery(method, path, data = null, contentType = 'app
     } catch (error) {
         // Обрабатываем ошибки, связанные с ответом API
         if (error.response) {
-            throw new ApiError(`Ошибка API: ${error.response.data}`, error.response);
+            throw new ApiError(`Error API: ${error.response.data}`, error.response);
         } else {
             // Обрабатываем сетевые ошибки (например, если API недоступен)
-            throw new Error(`Сетевая ошибка: ${error.message}`);
+            throw new Error(`Network Error: ${error.message}`);
         }
     }
 }
