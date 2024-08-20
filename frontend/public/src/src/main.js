@@ -1,14 +1,15 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import ToastPlugin from 'vue-toast-notification';
 import i18n, {changeLanguage, getPreferredLanguage} from "../i18n.js";
-import {useMainStore} from "./stores/mainStore";
-import {useAuthStore} from "./stores/authStore";
+import {useMainStore} from "@/stores/mainStore";
+import {useAuthStore} from "@/stores/authStore";
 
 import App from './App.vue'
-import router from './router/router.js'
+import router from '@/router/router.js'
 
 import "bootstrap/dist/css/bootstrap.min.css"
-import "./assets/scss/styles.scss"
+import "@/assets/scss/styles.scss"
 import "bootstrap"
 
 const app = createApp(App)
@@ -16,6 +17,7 @@ const app = createApp(App)
 app.use(i18n)
 app.use(createPinia())
 app.use(router)
+app.use(ToastPlugin);
 
 export const mainStore = useMainStore();
 

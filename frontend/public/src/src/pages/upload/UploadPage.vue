@@ -1,17 +1,16 @@
 <template>
   <div class="container mt-5">
-    <!-- Заголовок форми -->
     <h2 class="mb-4">Upload Your Release</h2>
 
     <form>
       <div class="form-group d-block mb-4">
         <label for="releaseCover" class="align-content-center p-2">Cover</label>
-        <input type="file" @change="onFileChange" />
+        <input type="file" @change="onFileCoverChange" />
         <image-cropper ref="imageCropper" v-if="this.release.cover" :file="this.release.cover" />
       </div>
 
 
-      <!-- Поля для інформації про альбом -->
+      <!-- Fields for album information -->
       <div class="form-group d-block mb-4">
         <label for="releaseTitle" class="align-content-center p-2">Title</label>
         <input
@@ -55,7 +54,7 @@
 
       <div class="form-group d-block mb-4">
         <label for="privacy" class="align-content-center p-2">Privacy</label>
-        <div class="d-block mb-4">
+        <div class="d-block">
           <div class="form-check form-check-inline">
             <input
                 class="form-check-input"
@@ -81,7 +80,29 @@
         </div>
       </div>
 
-      <!-- Трек-лист -->
+      <div class="form-group d-block mb-4">
+        <label for="releaseBuyLink" class="align-content-center p-2">Buy-link</label>
+        <input
+            type="text"
+            id="releaseBuyLink"
+            v-model="release.buyLink"
+            class="form-control"
+            placeholder="Enter buy-link"
+        />
+      </div>
+
+      <div class="form-group d-block mb-5">
+        <label for="releaseRecordLabel" class="align-content-center p-2">Record label</label>
+        <input
+            type="text"
+            id="releaseRecordLabel"
+            v-model="release.recordLabel"
+            class="form-control"
+            placeholder="Enter record label"
+        />
+      </div>
+
+      <!-- Track list -->
       <h4 class="mb-3">Tracks:</h4>
       <draggable v-model="tracks" :item-key="item => item.id" @end="updateTrackPositions">
         <template #item="{ element : track }">
@@ -112,12 +133,12 @@
             >
             </multiselect>
 
-            <vue3-tags-input :tags="track.tags" placeholder="Add tags" @tags-changed="updateTags(track, $event)" class="mt-3"/>
+            <vue3-tags-input :tags="track.tags" placeholder="Add tags" @on-tags-changed="updateTags(track, $event)" class="mt-3"/>
           </div>
         </template>
       </draggable>
 
-      <!-- Кнопка для додавання ще пісень -->
+      <!-- Button for adding songs -->
       <div class="mb-4">
         <button
             type="button"
@@ -134,9 +155,9 @@
         />
       </div>
 
-      <!-- Кнопка для збереження альбому -->
+      <!-- Button to save the release -->
       <div class="form-group">
-        <button type="button" class="btn btn-success" @click="saveAlbum">
+        <button type="button" class="btn btn-success" @click="uploadRelease">
           Save
         </button>
       </div>
@@ -145,18 +166,17 @@
 </template>
 
 <script>
-import { Upload } from 'tus-js-client';
 import draggable from "vuedraggable"
 import Vue3TagsInput from 'vue3-tags-input';
 import Multiselect from 'vue-multiselect';
-import {useAuthStore} from "../../stores/authStore";
-import ImageCropper from '@/components/ImageCropper.vue'
-import { PerformQuery } from '@/utils/query-system/performQuery.js'
-import { QueryMethods } from '@/utils/query-system/queryMethods.js'
-import { QueryContentTypes } from '@/utils/query-system/queryContentTypes.js'
-import { QueryPaths } from '@/utils/query-system/queryPaths.js'
-
-const authStore = useAuthStore();
+import ImageCropper from '@/components/ImageCropper.vue';
+import {
+  createRelease,
+  requestFileId,
+  startUpload,
+  uploadCover
+} from "@/utils/query-system/query-actions/releaseActions.js";
+import {toastInfo} from "@/utils/toast/toastNotification.js";
 
 export default {
   computed: {},
@@ -171,6 +191,8 @@ export default {
       release: {
         cover: null,
         title: '',
+        buyLink: '',
+        recordLabel: '',
         releaseDate: '',
         type: 'SINGLE',
         description: '',
@@ -182,13 +204,13 @@ export default {
     };
   },
   async created() {
-    // Отримання жанрів із бекенду при завантаженні компонента
+    // Getting genres from the backend when loading a component
     try {
       this.genres = [
         { id: '1', name: "Rock" },
         { id: '2', name: "Pop" },
         { id: '3', name: "Rap" },
-      ] // Передбачається, що бекенд повертає список об'єктів з полями id і name
+      ] // It is assumed that the backend returns a list of objects with the id and name fields
     } catch (error) {
       console.error('Error fetching genres:', error);
     }
@@ -199,7 +221,7 @@ export default {
     },
 
 
-    onFileChange(event) {
+    onFileCoverChange(event) {
       const file = event.target.files[0];
       if (file) {
         this.release.cover = file;
@@ -212,13 +234,14 @@ export default {
 
       for (let file of selectedFiles) {
         try {
-          const fileId = await this.requestFileId();
+          const fileId = await requestFileId();
           const track = {
             file,
             name: file.name,
             id: fileId,
             position: this.tracks.length + 1,
-            tags: []
+            genres: [],
+            tags: [],
           };
           this.tracks.push(track);
           this.uploadProgress = { ...this.uploadProgress, [track.id]: 0 };
@@ -233,7 +256,6 @@ export default {
     updateTrackPositions() {
       this.tracks.forEach((track, index) => {
         track.position = index + 1;
-        console.log("track name: " + track.name + ";   position in release:" + track.position);
       });
     },
 
@@ -243,166 +265,54 @@ export default {
     },
 
 
-    async requestFileId() {
-      const data = await PerformQuery(QueryMethods.POST, QueryPaths.requestFileId(), null, QueryContentTypes.applicationJson, authStore.getJWT);
-      return data.fileId;
-    },
-
-
     startUpload(track) {
-      const upload = new Upload(track.file, {
-        endpoint: `${QueryPaths.baseApi()}${QueryPaths.uploadChunkedFile()}`,
-        retryDelays: [0, 3000, 5000, 10000, 20000],
-        chunkSize: 1000000,
-        metadata: {
-          filename: track.name,
-          filetype: track.file.type,
-          fileId: track.id,
-        },
-        headers: {
-          Authorization: `Bearer ${authStore.getJWT}`
-        },
-        onError: (error) => {
-          console.error('Upload failed:', error);
-        },
-        onProgress: (bytesUploaded, bytesTotal) => {
-          const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
-          console.log(this.uploadProgress, track.id, percentage);
-          this.uploadProgress = { ...this.uploadProgress, [track.id]: percentage };
-        },
-        onSuccess: () => {
-          console.log("The file was successfully uploaded.");
-        },
-      });
+      const onProgress = (percentage) => {
+        this.uploadProgress = { ...this.uploadProgress, [track.id]: percentage };
+      }
 
-      upload.findPreviousUploads().then((previousUploads) => {
-        if (previousUploads.length) {
-          console.info("Resuming previous upload.");
-          upload.resumeFromPreviousUpload(previousUploads[0]);
-        } else {
-          console.info("Starting upload.");
-          upload.start();
-        }
-      });
+      startUpload(track, onProgress);
     },
 
-    async saveAlbum() {
-      // Логіка для збереження релізу
-      const croppedImageFile = await this.$refs.imageCropper.getCroppedImage();
+
+    async uploadRelease() {
+      const releaseData = {
+        title: this.release.title,
+        releaseDate: this.release.releaseDate,
+        type: this.release.type,
+        description: this.release.description,
+        privacy: this.release.privacy,
+        buyLink: this.release.buyLink,
+        recordLabel: this.release.recordLabel,
+        tracks: this.tracks.map(track => ({
+          fileId: track.id,
+          name: track.name,
+          position: track.position,
+          genreIds: track.genres.map(genre => genre.id),
+          tags: track.tags.map(tag => tag)
+        }))
+      };
+
+      const collectionId = await createRelease(releaseData);
+
+      await this.uploadCover(collectionId);
+    },
+
+
+    async uploadCover(collectionId) {
+      const croppedImage = await this.$refs.imageCropper.getCroppedImage();
+
+      const formData = new FormData();
+      formData.append('cover', croppedImage);
+
+      const message = await uploadCover(collectionId, formData);
+      if(message) {
+        toastInfo(message);
+      }
     }
   }
 };
 </script>
 
 <style lang="scss">
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h2, h4 {
-  color: #333;
-  margin-bottom: 15px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-group input,
-.input-group .multiselect {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  flex: 1;
-}
-
-.input-group .multiselect {
-  margin-left: 30px;
-}
-
-.input-group .input-group-text {
-  padding: 10px 15px;
-  background-color: #fff;
-  border-left: none;
-  border-radius: 0 4px 4px 0;
-  color: #555;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-primary {
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-
-.btn:hover {
-  background-color: #0056b3;
-}
-
-.form-group {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.track-item {
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-.track-item .input-group {
-  align-items: center;
-}
-
-.track-item .multiselect {
-  min-width: 200px;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-.track-item {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.multiselect {
-  --multiselect-primary: #007bff;
-  --multiselect-placeholder: #6c757d;
-  --multiselect-background: #fff;
-  --multiselect-border: #ced4da;
-  --multiselect-selected-text: #fff;
-  --multiselect-selected-background: #007bff;
-}
-
-.multiselect__option--selected {
-  background-color: var(--multiselect-selected-background) !important;
-  color: var(--multiselect-selected-text) !important;
-}
+@import "@/assets/styles/upload/UploadPage";
 </style>

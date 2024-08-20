@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
-import {useUserStore} from "./userStore";
-import {useAuthStore} from "./authStore";
+import {useUserStore} from "@/stores/userStore";
+import {useAuthStore} from "@/stores/authStore";
 import {useAvatarsStore} from "@/stores/avatarsStore.js";
 
 export const useMainStore = defineStore('useMainStore', {

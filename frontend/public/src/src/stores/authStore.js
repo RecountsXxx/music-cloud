@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { watch } from "vue";
-import router from "../router/router.js";
+import router from "@/router/router.js";
 
 // Функция для загрузки JWT токена из Local Storage
 function loadJwtTokenFromLocalStorage() {
