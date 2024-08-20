@@ -1,0 +1,110 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2, h4 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group input,
+.input-group .multiselect {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+
+.input-group .multiselect {
+  margin-left: 30px;
+}
+
+.input-group .input-group-text {
+  padding: 10px 15px;
+  background-color: #fff;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  color: #555;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.form-group {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.track-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.track-item .input-group {
+  align-items: center;
+}
+
+.track-item .multiselect {
+  min-width: 200px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.track-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.multiselect {
+  --multiselect-primary: #007bff;
+  --multiselect-placeholder: #6c757d;
+  --multiselect-background: #fff;
+  --multiselect-border: #ced4da;
+  --multiselect-selected-text: #fff;
+  --multiselect-selected-background: #007bff;
+}
+
+.multiselect__option--selected {
+  background-color: var(--multiselect-selected-background) !important;
+  color: var(--multiselect-selected-text) !important;
+}

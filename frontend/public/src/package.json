@@ -24,6 +24,7 @@
     "vue-multiselect": "^3.0.0",
     "vue-multiselect-bootstrap-theme": "^1.0.7",
     "vue-router": "^4.3.3",
+    "vue-toast-notification": "^3.1.2",
     "vue3-tags-input": "^1.0.12",
     "vuedraggable": "^4.1.0"
   },

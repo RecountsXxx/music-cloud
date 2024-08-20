@@ -13,4 +13,17 @@ export const QueryPaths = {
 
   // Возвращает URL-адрес для запросов по загрузке файлов в формате чанков
   uploadChunkedFile: () => "/java/protected/upload/file",
+
+  // Возвращает URL-адрес для запроса по загрузке обложки релиза или плейлиста
+  uploadCover: (id) => `/java/protected/collection/${id}/cover`,
+
+  // Возвращает URL-адрес для запросов по менеджменту релизами
+  crudReleases: (id = null) =>  {
+    if(id) {
+      return `/php/collection/releases/${id}`;
+    }
+    else {
+      return `/php/collection/releases`;
+    }
+  },
 };
