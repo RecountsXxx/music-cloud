@@ -94,18 +94,18 @@ export default {
       if (cropper) {
         const { coordinates, imageSize } = cropper;
         if (
-          imageSize.width / imageSize.height >
-          coordinates.width / coordinates.height
+            imageSize.width / imageSize.height >
+            coordinates.width / coordinates.height
         ) {
           // Determine the position of slider bullet
           // It's 0 if the stencil has the maximum size and it's 1 if the has the minimum size
           this.zoom =
-            (cropper.imageSize.height - cropper.coordinates.height) /
-            (cropper.imageSize.height - cropper.sizeRestrictions.minHeight);
+              (cropper.imageSize.height - cropper.coordinates.height) /
+              (cropper.imageSize.height - cropper.sizeRestrictions.minHeight);
         } else {
           this.zoom =
-            (cropper.imageSize.width - cropper.coordinates.width) /
-            (cropper.imageSize.width - cropper.sizeRestrictions.minWidth);
+              (cropper.imageSize.width - cropper.coordinates.width) /
+              (cropper.imageSize.width - cropper.sizeRestrictions.minWidth);
         }
       }
     },
@@ -120,15 +120,15 @@ export default {
           // Determine the current absolute zoom and the new absolute zoom
           // to calculate the sought relative zoom value
           cropper.zoom(
-            (imageHeight - this.zoom * (imageHeight - minHeight)) /
-            (imageHeight - value * (imageHeight - minHeight))
+              (imageHeight - this.zoom * (imageHeight - minHeight)) /
+              (imageHeight - value * (imageHeight - minHeight))
           );
         } else {
           const minWidth = cropper.sizeRestrictions.minWidth;
           const imageWidth = cropper.imageSize.width;
           cropper.zoom(
-            (imageWidth - this.zoom * (imageWidth - minWidth)) /
-            (imageWidth - value * (imageWidth - minWidth))
+              (imageWidth - this.zoom * (imageWidth - minWidth)) /
+              (imageWidth - value * (imageWidth - minWidth))
           );
         }
       }
@@ -140,13 +140,13 @@ export default {
 <template>
   <div>
     <Cropper
-      ref="cropper"
-      class="twitter-cropper"
-      background-class="twitter-cropper__background"
-      foreground-class="twitter-cropper__foreground"
-      image-restriction="stencil"
-      :stencil-size="stencilSize"
-      :stencil-props="{
+        ref="cropper"
+        class="twitter-cropper"
+        background-class="twitter-cropper__background"
+        foreground-class="twitter-cropper__foreground"
+        image-restriction="stencil"
+        :stencil-size="stencilSize"
+        :stencil-props="{
         lines: {},
         handlers: {},
         movable: false,
@@ -154,28 +154,31 @@ export default {
         aspectRatio: this.aspectRatio,
         previewClass: 'twitter-cropper__stencil',
       }"
-      :transitions="false"
-      :canvas="true"
-      :debounce="false"
-      :default-size="defaultSize"
-      :min-width="150"
-      :min-height="150"
-      :src="imageSrc"
-      @change="onChange"
+        :transitions="false"
+        :canvas="true"
+        :debounce="false"
+        :default-size="defaultSize"
+        :min-width="150"
+        :min-height="150"
+        :src="imageSrc"
+        @change="onChange"
     />
-    <navigation-for-cropper :zoom="zoom" @change="onZoom" />
+    <navigation-for-cropper :zoom="zoom" @change="onZoom"/>
   </div>
 </template>
 
 <style scoped lang="scss">
 .twitter-cropper {
   height: 521px;
+
   &__background {
     background-color: #edf2f4;
   }
+
   &__foreground {
     background-color: #edf2f4;
   }
+
   &__stencil {
     border: solid 5px rgb(29, 161, 242);
   }
