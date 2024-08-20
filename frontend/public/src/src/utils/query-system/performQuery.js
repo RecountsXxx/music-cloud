@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {ApiError} from '@/errors/apiError.js';
 import { QueryPaths } from '@/utils/query-system/queryPaths.js'
-import {toastError} from "@/utils/toast/toastNotification.js";
 
 /**
  * Выполняет запрос к API с указанным методом, путем и данными.
