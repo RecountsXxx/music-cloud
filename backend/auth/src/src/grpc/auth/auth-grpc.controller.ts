@@ -8,11 +8,13 @@ export class AuthGrpcController {
   constructor(private readonly authService: AuthService) {}
 
   @GrpcMethod('AuthService', 'ValidateToken')
-  async validateToken(data: { token: string }) : Promise<{ valid: boolean; userDTO: UserDto | null }> {
+  async validateToken(data: {
+    token: string;
+  }): Promise<{ valid: boolean; userDTO: UserDto | null }> {
     const { valid, userDTO } = await this.authService.validateToken(data.token);
     return {
       valid,
-      userDTO
+      userDTO,
     };
   }
 }
