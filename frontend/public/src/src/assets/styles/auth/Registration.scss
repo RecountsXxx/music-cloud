@@ -1,7 +1,11 @@
-$f_size__form_title: calc(8 * .30vw);
+$f_size__form_title: calc(8 * 0.3vw);
+$font_size: calc(5 * 0.25vw);
+$placeholder__bc: #525252;
+$submit__button__bc: #8f8a8a;
+$form__input__bc: #d9d9d9;
 
 #main__container {
-  font-family: Inertia, "Helvetica Neue", Helvetica, Arial, serif;
+  font-family: Inertia, 'Helvetica Neue', Helvetica, Arial, serif;
   display: flex;
   width: 100%;
   height: auto;
@@ -11,18 +15,173 @@ $f_size__form_title: calc(8 * .30vw);
     font-weight: 600;
     text-align: center;
     width: 100%;
-    margin: 80px 0;
+    margin: 30px 0 10px 0;
     font-size: $f_size__form_title;
+  }
+
+  .link__login__account {
+    font-size: 16px;
+    margin-bottom: 50px;
+
+    a {
+      text-decoration: none;
+      color: black;
+      font-weight: 600;
+    }
   }
 
   #register__form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 260px;
-    max-height: 260px;
+    height: 300px;
+    max-height: 300px;
 
     width: 100%;
     max-width: 600px;
+
+    .input__container {
+      width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .form__input {
+        color: black;
+        font-size: $font_size;
+        background-color: $form__input__bc;
+        height: 60px;
+        width: 100%;
+        max-width: 480px;
+        padding: 17px 25px;
+        border: none;
+        outline: none;
+        border-radius: 30px;
+
+        &:placeholder-shown {
+          background-color: $form__input__bc;
+        }
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 30px $form__input__bc inset !important;
+          -webkit-text-fill-color: black !important;
+        }
+
+        &::placeholder {
+          font-size: $font_size;
+          color: $placeholder__bc;
+        }
+      }
+    }
+
+    .Errors__Message {
+      visibility: hidden;
+      margin: 10px 0 10px 10px;
+      color: red;
+      align-self: start;
+    }
+
+    .password__field {
+      height: 60px;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: row;
+
+      .password {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .image__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 60px;
+        background-color: $form__input__bc;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        padding-right: 15px;
+
+        .showHidePassword {
+          user-select: none;
+          width: calc(6 * 0.25vw);
+          border-radius: 30px;
+
+          &:hover {
+            cursor: pointer;
+            padding: 2px;
+            background-color: #c7c7c7;
+            transition: 300ms all linear;
+          }
+        }
+      }
+    }
+
+    .submit__button {
+      font-size: 23px;
+      color: white;
+      border-radius: 30px;
+      margin-top: 25px;
+      padding: 15px 30px;
+      width: 100%;
+      max-width: 450px;
+      border: none;
+      outline: none;
+      background-color: $submit__button__bc;
+
+      inset: 0;
+      transition: 100ms ease-in-out;
+
+      &:hover {
+        transform: scale(0.95);
+        background-color: white;
+        color: $submit__button__bc;
+        border: 1px solid $submit__button__bc;
+      }
+    }
+
+    .acceptPrivacyPolicy {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+
+      #acceptCheckBox {
+        margin-bottom: 2px;
+        transform: scale(1.2);
+      }
+      label {
+        margin-left: 5px;
+        a:link {
+          color: #000000;
+        }
+
+        /* visited link */
+        a:visited {
+          color: #000000;
+        }
+
+        /* mouse over link */
+        a:hover {
+          color: #000000;
+        }
+
+        /* selected link */
+        a:active {
+          color: #000000;
+        }
+      }
+    }
   }
+}
+
+.borderError {
+  border: 1px solid red;
 }

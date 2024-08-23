@@ -4,28 +4,28 @@ import { grpcClientOptions } from './grpc/auth/grpc-options';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
 
-    app.enableCors({
-        origin: true,
-        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-        credentials: true,
-    });
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    credentials: true,
+  });
 
-    app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api');
 
-    app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
-    app.connectMicroservice(grpcClientOptions);
-    await app.startAllMicroservices();
+  app.connectMicroservice(grpcClientOptions);
+  await app.startAllMicroservices();
 
-    await app.listen(3000);
+  await app.listen(3000);
 }
 
 bootstrap()
-    .then(() => {
-        console.log('Application started successfully');
-    })
-    .catch((error) => {
-        console.error('Error starting application:', error);
-    });
+  .then(() => {
+    console.log('Application started successfully');
+  })
+  .catch((error) => {
+    console.error('Error starting application:', error);
+  });
