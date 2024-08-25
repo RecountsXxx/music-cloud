@@ -121,20 +121,21 @@ export default defineComponent({
           password: this.password,
           username: this.username
         }
-        console.log(data)
 
-        try {
-          const res = await register(data) // Регистрация пользователя
-          if (res) {
-            saveUserData(res, true) // Сохранение данных пользователя
-          } else {
-            // this.showError() // Показ ошибки при неудачной регистрации
-          }
-        } catch (error) {
-          // this.showError() // Показ ошибки в случае исключения
-        }
+        const res = await register(data) // Регистрация пользователя
+
+        // try {
+        //   const res = await register(data) // Регистрация пользователя
+        //   console.log(res)
+        //   if (res) {
+        //     saveUserData(res, true) // Сохранение данных пользователя
+        //   } else {
+        //     // this.showError() // Показ ошибки при неудачной регистрации
+        //   }
+        // } catch (error) {
+        //
+        // }
       } else {
-        // this.showError() // Показ ошибки, если условия не приняты
       }
     },
     changeVisiblePassword(elem) {

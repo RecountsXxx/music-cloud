@@ -11,6 +11,8 @@ import { InvalidCredentialsException } from '../exceptions/invalid-credentials.e
 import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
 import { firstValueFrom } from 'rxjs';
 import { MediaGrpcService } from '../grpc/media/media.service';
+import { EmailAlreadyExistsException } from '../exceptions/email-already-exists.exception';
+import { UsernameAlreadyExistsException } from '../exceptions/username-already-exists-exception';
 
 @Injectable()
 export class AuthService {
@@ -19,22 +21,36 @@ export class AuthService {
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
     private rabbitMQService: RabbitMQService,
-    private mediaGrpcService: MediaGrpcService
-  ) {}
+    private mediaGrpcService: MediaGrpcService,
+  ) {
+  }
 
   async register(
     email: string,
     username: string,
     password: string,
   ): Promise<AuthResponse> {
+
+    const emailExists = await this.usersRepository.findOneBy({ email });
+    if (emailExists) {
+      throw new EmailAlreadyExistsException();
+    }
+
+    const usernameExists = await this.usersRepository.findOneBy({ username });
+    if (usernameExists) {
+      throw new UsernameAlreadyExistsException();
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
       email,
       username,
       password: hashedPassword,
     });
+
+
     const savedUser = await this.usersRepository.save(user);
-    const payload = {userId: savedUser.id};
+    const payload = { userId: savedUser.id };
     const accessToken = this.jwtService.sign(payload);
 
     const userDto = UserDto.mapUser(savedUser);
@@ -47,7 +63,7 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.usersRepository.findOne({where: {email}});
+    const user = await this.usersRepository.findOne({ where: { email } });
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
@@ -55,12 +71,12 @@ export class AuthService {
   }
 
   async validateUserById(id: string): Promise<User | null> {
-    return this.usersRepository.findOne({where: {id}});
+    return this.usersRepository.findOne({ where: { id } });
   }
 
   async login(
     email: string,
-    password: string
+    password: string,
   ): Promise<AuthResponse> {
     const user = await this.validateUser(email, password);
 
@@ -68,7 +84,7 @@ export class AuthService {
       throw new InvalidCredentialsException();
     }
 
-    const payload = {userId: user.id};
+    const payload = { userId: user.id };
     const accessToken = this.jwtService.sign(payload);
 
     const avatarsResponse = await firstValueFrom(this.mediaGrpcService.getAvatars(user.id));
@@ -83,11 +99,11 @@ export class AuthService {
     try {
       const decoded = this.jwtService.verify<JwtPayload>(token);
       const user = await this.usersRepository.findOne({
-        where: {id: decoded.userId},
+        where: { id: decoded.userId },
       });
-      return {valid: !!user, userDTO: user ? UserDto.mapUser(user) : null};
+      return { valid: !!user, userDTO: user ? UserDto.mapUser(user) : null };
     } catch (e) {
-      return {valid: false, userDTO: null};
+      return { valid: false, userDTO: null };
     }
   }
 }
