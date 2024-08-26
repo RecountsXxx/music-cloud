@@ -56,7 +56,6 @@
 		</dependency>
 
 
-
 		<!-- https://mvnrepository.com/artifact/software.amazon.awssdk/s3 -->
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
@@ -65,11 +64,15 @@
 		</dependency>
 
 
-
 		<dependency>
-			<groupId>com.github.gotson</groupId>
-			<artifactId>webp-imageio</artifactId>
-			<version>0.2.2</version>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv-platform</artifactId>
+			<version>1.5.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>ffmpeg-platform</artifactId>
+			<version>6.1.1-1.5.10</version>
 		</dependency>
 
 

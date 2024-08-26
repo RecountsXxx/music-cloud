@@ -1,5 +1,8 @@
 # First stage: build the application
 FROM eclipse-temurin:21-jdk as build
+
+RUN apt-get update && apt-get install -y ffmpeg
+
 WORKDIR /workspace/app
 
 # Copy and cache dependencies
@@ -16,6 +19,9 @@ RUN ./mvnw clean install -DskipTests
 
 # Second stage: create the runtime image
 FROM eclipse-temurin:21-jre
+
+RUN apt-get update && apt-get install -y ffmpeg
+
 VOLUME /tmp
 WORKDIR /app
 COPY --from=build /workspace/app/target/*.jar app.jar

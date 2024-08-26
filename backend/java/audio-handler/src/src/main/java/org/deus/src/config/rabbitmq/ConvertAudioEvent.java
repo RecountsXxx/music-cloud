@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ResetGravatarEvent {
+public class ConvertAudioEvent {
     @Bean
-    public Queue resetGravatar() {
-        return new Queue("reset.gravatar", true);
+    public Queue convertAudio() {
+        return new Queue("convert.audio", true);
     }
 }
