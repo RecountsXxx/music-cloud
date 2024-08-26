@@ -1,4 +1,3 @@
-
 export class AvatarSetDto {
   small: string;
   medium: string;

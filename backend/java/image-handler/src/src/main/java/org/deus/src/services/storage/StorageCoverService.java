@@ -5,7 +5,7 @@ import org.deus.src.enums.ImageSize;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StorageCoverService extends StorageImageServiceBase {
+public class StorageCoverService  extends StorageImageServiceBase {
     public StorageCoverService(StorageDriverInterface storage) {
         super(storage, "covers");
     }

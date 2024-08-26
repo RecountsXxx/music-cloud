@@ -17,6 +17,11 @@ export const QueryPaths = {
   // Возвращает URL-адрес для запроса по загрузке обложки релиза или плейлиста
   uploadCover: (id) => `/java/protected/collection/${id}/cover`,
 
+  songConvert: (songId, fileId) => `/java/protected/audio/${songId}/${fileId}/convert`,
+
+  // Возвращает URL-адрес для запроса для стриминга песни
+  streamAudio: (songId, quality) => `/java/protected/stream/playlist/${songId}/${quality}`,
+
   // Возвращает URL-адрес для запросов по менеджменту релизами
   crudReleases: (id = null) =>  {
     if(id) {

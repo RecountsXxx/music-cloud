@@ -65,11 +65,22 @@ services:
     networks:
       - vibe_cloud_net
 
-  external.api.handler:
-    container_name: external.api.handler
+  java.external.api.handler:
+    container_name: java.external.api.handler
     build:
       dockerfile: Dockerfile
       context: ./backend/java/external-api-handler
+    depends_on:
+      - storage.minio
+      - rabbit.mq
+    networks:
+      - vibe_cloud_net
+
+  java.audio.handler:
+    container_name: java.audio.handler
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/audio-handler
     depends_on:
       - storage.minio
       - rabbit.mq

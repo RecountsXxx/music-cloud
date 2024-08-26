@@ -1,7 +1,7 @@
 <script>
 import { Cropper } from "vue-advanced-cropper";
 import "vue-advanced-cropper/dist/style.css";
-import NavigationForCropper from '@/components/NavigationForCropper.vue'
+import NavigationForCropper from '@/components/cropper/NavigationForCropper.vue'
 
 export default {
   components: {

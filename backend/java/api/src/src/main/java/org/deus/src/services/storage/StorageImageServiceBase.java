@@ -1,7 +1,5 @@
 package org.deus.src.services.storage;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.deus.src.drivers.StorageDriverInterface;
 import org.deus.src.enums.ImageSize;
@@ -23,7 +21,7 @@ public abstract class StorageImageServiceBase {
 
     public void putOriginalBytes(String id, byte[] bytes) throws DataSavingException {
         try {
-            storage.put(bucketName, buildPathToOriginalBytes(id), bytes);
+            storage.putObject(bucketName, buildPathToOriginalBytes(id), bytes);
         } catch (StorageException e) {
             String errorMessage = "Error while putting original bytes to storage, bucket/container: \"" + bucketName + "\"";
             logger.error(errorMessage, e);
@@ -33,7 +31,7 @@ public abstract class StorageImageServiceBase {
 
     public void putNewBytesAsFile(String id, ImageSize size, byte[] bytes) throws DataSavingException {
         try {
-            storage.put(bucketName, buildPathToFile(id, size), bytes);
+            storage.putObject(bucketName, buildPathToFile(id, size), bytes);
         } catch (StorageException e) {
             String errorMessage = "Error while putting bytes to storage as a file, bucket/container: \"" + bucketName + "\"";
             logger.error(errorMessage, e);
@@ -43,7 +41,7 @@ public abstract class StorageImageServiceBase {
 
     public Optional<byte[]> getOriginalBytes(String id) {
         try {
-            byte[] bytes = storage.getBytes(bucketName, buildPathToOriginalBytes(id));
+            byte[] bytes = storage.getObjectAsBytes(bucketName, buildPathToOriginalBytes(id));
             return Optional.ofNullable(bytes);
         } catch (StorageException e) {
             logger.error("Error while getting original bytes from storage, bucket/container: \"" + bucketName + "\"", e);

@@ -27,7 +27,13 @@ import { MediaGrpcService } from '../grpc/media/media.service';
     }),
     RabbitMQModule,
   ],
-  providers: [AuthService, RabbitMQService, JwtStrategy, JwtAuthGuard, MediaGrpcService],
+  providers: [
+    AuthService,
+    RabbitMQService,
+    JwtStrategy,
+    JwtAuthGuard,
+    MediaGrpcService,
+  ],
   controllers: [AuthController, AuthGrpcController],
 })
 export class AuthModule {}

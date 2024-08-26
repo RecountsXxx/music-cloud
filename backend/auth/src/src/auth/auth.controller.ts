@@ -2,7 +2,6 @@ import {
   Controller,
   Post,
   Body,
-  UnauthorizedException,
   UseGuards,
   Request,
   Get,
@@ -18,7 +17,12 @@ export class AuthController {
 
   @Post('register')
   async register(
-    @Body() createUserDto: { email: string; username: string; password: string; },
+    @Body()
+    createUserDto: {
+      email: string;
+      username: string;
+      password: string;
+    },
   ): Promise<AuthResponse> {
     return await this.authService.register(
       createUserDto.email,

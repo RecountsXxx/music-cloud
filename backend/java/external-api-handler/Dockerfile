@@ -6,7 +6,6 @@ WORKDIR /workspace/app
 COPY ./src/pom.xml .
 COPY ./src/mvnw .
 COPY ./src/.mvn .mvn
-#RUN sed -i 's/\r$//' mvnw
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 

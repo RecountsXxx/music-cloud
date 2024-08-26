@@ -22,15 +22,13 @@ export class AuthService {
     private jwtService: JwtService,
     private rabbitMQService: RabbitMQService,
     private mediaGrpcService: MediaGrpcService,
-  ) {
-  }
+  ) {}
 
   async register(
     email: string,
     username: string,
     password: string,
   ): Promise<AuthResponse> {
-
     const emailExists = await this.usersRepository.findOneBy({ email });
     if (emailExists) {
       throw new EmailAlreadyExistsException();
@@ -48,7 +46,6 @@ export class AuthService {
       password: hashedPassword,
     });
 
-
     const savedUser = await this.usersRepository.save(user);
     const payload = { userId: savedUser.id };
     const accessToken = this.jwtService.sign(payload);
@@ -57,7 +54,9 @@ export class AuthService {
 
     await this.rabbitMQService.sendMessage('user.register', userDto);
 
-    const avatarsResponse = await firstValueFrom(this.mediaGrpcService.getAvatars(userDto.id));
+    const avatarsResponse = await firstValueFrom(
+      this.mediaGrpcService.getAvatars(userDto.id),
+    );
 
     return new AuthResponse(userDto, accessToken, avatarsResponse.avatars);
   }
@@ -74,10 +73,7 @@ export class AuthService {
     return this.usersRepository.findOne({ where: { id } });
   }
 
-  async login(
-    email: string,
-    password: string,
-  ): Promise<AuthResponse> {
+  async login(email: string, password: string): Promise<AuthResponse> {
     const user = await this.validateUser(email, password);
 
     if (!user) {
@@ -87,11 +83,16 @@ export class AuthService {
     const payload = { userId: user.id };
     const accessToken = this.jwtService.sign(payload);
 
-    const avatarsResponse = await firstValueFrom(this.mediaGrpcService.getAvatars(user.id));
+    const avatarsResponse = await firstValueFrom(
+      this.mediaGrpcService.getAvatars(user.id),
+    );
 
-    return new AuthResponse(UserDto.mapUser(user), accessToken, avatarsResponse.avatars);
+    return new AuthResponse(
+      UserDto.mapUser(user),
+      accessToken,
+      avatarsResponse.avatars,
+    );
   }
-
 
   async validateToken(
     token: string,

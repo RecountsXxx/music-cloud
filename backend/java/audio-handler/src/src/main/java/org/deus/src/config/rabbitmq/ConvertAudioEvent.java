@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UserRegisterEvent {
+public class ConvertAudioEvent {
     @Bean
-    public Queue userRegister() {
-        return new Queue("user.register", true);
+    public Queue convertAudio() {
+        return new Queue("convert.audio", true);
     }
 }

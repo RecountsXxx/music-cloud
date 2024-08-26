@@ -1,10 +1,9 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Injectable, Logger } from '@nestjs/common';
 import amqp from 'amqp-connection-manager';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class RabbitMQService  {
+export class RabbitMQService {
   private readonly logger = new Logger(RabbitMQService.name);
   private connection;
   private channel;
@@ -20,8 +19,8 @@ export class RabbitMQService  {
       this.channel = await this.connection.createChannel({
         json: true,
         setup: (channel) => {
-          return channel.assertQueue('user.register', { durable: true })
-        }
+          return channel.assertQueue('user.register', { durable: true });
+        },
       });
       console.log('RabbitMQ Connection is Successful');
     } catch (error) {
@@ -30,7 +29,9 @@ export class RabbitMQService  {
   }
 
   async sendMessage(queue: string, message: any) {
-    this.logger.log(`Sending message to queue ${queue}: ${JSON.stringify(message)}`);
+    this.logger.log(
+      `Sending message to queue ${queue}: ${JSON.stringify(message)}`,
+    );
     if (!this.channel) {
       await this.connect();
     }
