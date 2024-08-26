@@ -23,7 +23,7 @@ public class StorageMinioDriver implements StorageDriverInterface {
     }
 
     @Override
-    public byte[] getBytes(String bucketName, String path) throws StorageException {
+    public byte[] getObjectAsBytes(String bucketName, String path) throws StorageException {
         try (InputStream stream = minioClient.getObject(
                 GetObjectArgs.builder()
                         .bucket(bucketName)
@@ -41,7 +41,25 @@ public class StorageMinioDriver implements StorageDriverInterface {
     }
 
     @Override
-    public void put(String bucketName, String path, byte[] bytes) throws StorageException {
+    public InputStream getObjectAsStream(String bucketName, String path) throws StorageException {
+        try {
+            return minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(path)
+                            .build()
+            );
+        }
+        catch (IOException | InvalidKeyException | NoSuchAlgorithmException |
+               ServerException | InsufficientDataException |
+               ErrorResponseException | InvalidResponseException |
+               XmlParserException | InternalException e) {
+            throw new StorageException("Error getting InputStream", e);
+        }
+    }
+
+    @Override
+    public void putObject(String bucketName, String path, byte[] bytes) throws StorageException {
         try (ByteArrayInputStream bytesStream = new ByteArrayInputStream(bytes)) {
             minioClient.putObject(
                     PutObjectArgs.builder()
@@ -60,7 +78,7 @@ public class StorageMinioDriver implements StorageDriverInterface {
     }
 
     @Override
-    public Boolean isFileExists(String bucketName, String path) throws StorageException {
+    public Boolean isObjectExists(String bucketName, String path) throws StorageException {
         try {
             minioClient.statObject(StatObjectArgs.builder()
                     .bucket(bucketName)

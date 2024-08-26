@@ -22,7 +22,7 @@ public class StorageS3Driver implements StorageDriverInterface {
     }
 
     @Override
-    public byte[] getBytes(String bucketName, String path) throws StorageException {
+    public byte[] getObjectAsBytes(String bucketName, String path) throws StorageException {
         try (InputStream stream = s3Client.getObject(GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(path)
@@ -34,7 +34,19 @@ public class StorageS3Driver implements StorageDriverInterface {
     }
 
     @Override
-    public void put(String bucketName, String path, byte[] bytes) throws StorageException {
+    public InputStream getObjectAsStream(String bucketName, String path) throws StorageException {
+        try {
+            return s3Client.getObject(GetObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(path)
+                    .build());
+        } catch (AwsServiceException | SdkClientException e) {
+            throw new StorageException("Error getting InputStream", e);
+        }
+    }
+
+    @Override
+    public void putObject(String bucketName, String path, byte[] bytes) throws StorageException {
         try {
             s3Client.putObject(PutObjectRequest.builder()
                             .bucket(bucketName)
@@ -47,14 +59,14 @@ public class StorageS3Driver implements StorageDriverInterface {
     }
 
     @Override
-    public Boolean isFileExists(String bucketName, String path) throws StorageException {
+    public Boolean isObjectExists(String bucketName, String path) throws StorageException {
         try {
             s3Client.headObject(HeadObjectRequest.builder()
                     .bucket(bucketName)
                     .key(path).build());
             return true;
         } catch (AwsServiceException | SdkClientException e) {
-            return false;
+            throw new StorageException("Error checking if certain object exists", e);
         }
     }
 
