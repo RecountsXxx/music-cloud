@@ -57,7 +57,7 @@
     </form>
 
     <!-- Сообщение об ошибке -->
-    <div id="error__message" ref="errorMessage">{{ $t('Errors.IncPassOrEmail') }}</div>
+    <div id="error__message" ref="errorMessage">{{ $t('loginForm.Errors.IncPassOrEmail') }}</div>
 
     <!-- Ссылка для создания нового аккаунта -->
     <div class="link__create_account">
