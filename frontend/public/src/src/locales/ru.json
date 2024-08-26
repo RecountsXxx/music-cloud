@@ -11,11 +11,11 @@
     "register": {
       "noRegister": "Еще не зарегистрированы?",
       "createAccount": "Создать аккаунт"
+    },
+    "Errors": {
+      "IncData": "Некорректные данные",
+      "IncPassOrEmail": "Неверная почта или пароль"
     }
-  },
-  "Errors": {
-    "IncData": "Некорректные данные",
-    "IncPassOrEmail": "Неверная почта или пароль"
   },
   "RegisterForm": {
     "form__title": "Регистрация",
@@ -30,11 +30,14 @@
       "signIn": "Войти"
     },
     "accept": {
-      "IAccept": "я принимаю",
+      "IAccept": "Я принимаю",
       "terms": "Условия использования",
       "and": "и",
       "privacy_policy": "Полтитику конфинденциальности"
     },
-    "buttonSubmit": "Регистрация"
+    "buttonSubmit": "Регистрация",
+    "Errors": {
+      "emailExists": "Электронная почта существует"
+    }
   }
 }

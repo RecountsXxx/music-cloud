@@ -11,6 +11,8 @@ import { InvalidCredentialsException } from '../exceptions/invalid-credentials.e
 import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
 import { firstValueFrom } from 'rxjs';
 import { MediaGrpcService } from '../grpc/media/media.service';
+import { EmailAlreadyExistsException } from '../exceptions/email-already-exists.exception';
+import { UsernameAlreadyExistsException } from '../exceptions/username-already-exists-exception';
 
 @Injectable()
 export class AuthService {
@@ -27,12 +29,23 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<AuthResponse> {
+    const emailExists = await this.usersRepository.findOneBy({ email });
+    if (emailExists) {
+      throw new EmailAlreadyExistsException();
+    }
+
+    const usernameExists = await this.usersRepository.findOneBy({ username });
+    if (usernameExists) {
+      throw new UsernameAlreadyExistsException();
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
       email,
       username,
       password: hashedPassword,
     });
+
     const savedUser = await this.usersRepository.save(user);
     const payload = { userId: savedUser.id };
     const accessToken = this.jwtService.sign(payload);
