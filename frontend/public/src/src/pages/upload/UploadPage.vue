@@ -169,10 +169,10 @@
 import draggable from "vuedraggable"
 import Vue3TagsInput from 'vue3-tags-input';
 import Multiselect from 'vue-multiselect';
-import ImageCropper from '@/components/ImageCropper.vue';
+import ImageCropper from '@/components/cropper/ImageCropper.vue';
 import {
   createRelease,
-  requestFileId,
+  requestFileId, songConvert,
   startUpload,
   uploadCover
 } from "@/utils/query-system/query-actions/releaseActions.js";
@@ -275,26 +275,35 @@ export default {
 
 
     async uploadRelease() {
-      const releaseData = {
-        title: this.release.title,
-        releaseDate: this.release.releaseDate,
-        type: this.release.type,
-        description: this.release.description,
-        privacy: this.release.privacy,
-        buyLink: this.release.buyLink,
-        recordLabel: this.release.recordLabel,
-        tracks: this.tracks.map(track => ({
-          fileId: track.id,
-          name: track.name,
-          position: track.position,
-          genreIds: track.genres.map(genre => genre.id),
-          tags: track.tags.map(tag => tag)
-        }))
-      };
+      // const releaseData = {
+      //   title: this.release.title,
+      //   releaseDate: this.release.releaseDate,
+      //   type: this.release.type,
+      //   description: this.release.description,
+      //   privacy: this.release.privacy,
+      //   buyLink: this.release.buyLink,
+      //   recordLabel: this.release.recordLabel,
+      //   tracks: this.tracks.map(track => ({
+      //     fileId: track.id,
+      //     name: track.name,
+      //     position: track.position,
+      //     genreIds: track.genres.map(genre => genre.id),
+      //     tags: track.tags.map(tag => tag)
+      //   }))
+      // };
 
-      const collectionId = await createRelease(releaseData);
+      //const collectionId = await createRelease(releaseData);
 
-      await this.uploadCover(collectionId);
+      //await this.uploadCover(collectionId);
+
+      const songId = '1';
+      const fileId = 'c339853a-f269-4ab0-8814-d9ded5c89e7f';
+
+
+      const message = await songConvert(songId, fileId);
+      if(message) {
+        toastInfo(message);
+      }
     },
 
 

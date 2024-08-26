@@ -34,6 +34,15 @@ const routes = [
             requiresAuth: true,
         },
     },
+    {
+        path: '/player',
+        component: () => import('@/pages/PlayerPage.vue'),
+        name: "Player",
+        meta: {
+            title: title,
+            requiresAuth: true,
+        },
+    },
 ]
 
 export default routes;

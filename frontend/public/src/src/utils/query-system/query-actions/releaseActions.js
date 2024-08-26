@@ -63,6 +63,16 @@ export async function uploadCover(collectionId, data) {
   }
 }
 
+export async function songConvert(songId, fileId) {
+  try {
+    const responseData = await PerformQuery(QueryMethods.POST, QueryPaths.songConvert(songId, fileId), null, QueryContentTypes.applicationJson, authStore.getJWT);
+    return responseData.message;
+  }
+  catch (error) {
+    toastError(`Failed to send message for converting song. ${error.message}`);
+  }
+}
+
 export async function createRelease(data) {
   try {
     const responseData = await PerformQuery(QueryMethods.POST, QueryPaths.crudReleases(), data, QueryContentTypes.applicationJson, authStore.getJWT);
