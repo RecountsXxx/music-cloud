@@ -15,7 +15,10 @@
             type="text"
             v-model="username"
             :placeholder="$t('RegisterForm.placeholder.username')"
-            @input="clearError('username')"
+            @input="()=>{
+              clearError('username')
+              checkInput('username');
+            }"
         />
         <div id="userName" ref="usernameError" class="Errors__Message"></div>
       </div>
@@ -28,6 +31,10 @@
             id="email"
             type="text"
             :placeholder="$t('RegisterForm.placeholder.email')"
+            @input="()=>{
+              clearError('email');
+              checkInput('email');
+            }"
         />
         <div id="emailError" ref="emailError" class="Errors__Message"></div>
       </div>
@@ -99,6 +106,8 @@
 import {defineComponent} from 'vue'
 import {showHidePassword} from '@/utils/showHidePassword.js'
 import {register} from '@/utils/query-system/query-actions/authActions.js'
+import {validateEmail} from "@/services/validator/validator.js";
+
 
 export default defineComponent({
   data() {
@@ -113,6 +122,18 @@ export default defineComponent({
     }
   },
   methods: {
+    checkInput(input) {
+      if (input === 'email') {
+        let co = validateEmail(this.email,true);
+        console.log(co)
+        if (co === 'format') {
+          this.$refs.emailError.textContent = this.$t('RegisterForm.Errors.invalidMailFormat');
+          this.$refs.emailError.style.visibility = 'visible';
+        }
+      } else if (input === 'username') {
+
+      }
+    },
     clearError(input) {
       const errorRefs = {
         username: 'usernameError',
@@ -123,8 +144,12 @@ export default defineComponent({
 
       let errorElement = this.$refs[errorRefs[input]];
       if (errorElement) {
-        if (errorElement.style.visibility === 'visible') {
-          errorElement.style.visibility = 'hidden'
+        let errorElement = this.$refs[errorRefs[input]];
+        if (errorElement) {
+          if (errorElement.style.visibility === 'visible') {
+            errorElement.style.visibility = 'hidden'
+            errorElement.textContent = ''
+          }
         }
       }
     },
@@ -143,11 +168,10 @@ export default defineComponent({
             if (res === 'Email') {
               console.log('Email')
               // выводим сообщение о том что почта уже занята
-              this.$refs.emailError.textContent = $t('RegisterForm.emailExists')
+              this.$refs.emailError.textContent = this.$t('RegisterForm.Errors.emailExists');
               this.$refs.emailError.style.visibility = 'visible';
             } else if (res === 'Username') {
               // выводим сообщение о том что имя пользователя уже занято
-              console.log('Username')
             }
             // saveUserData(res, true) // Сохранение данных пользователя
           } else {

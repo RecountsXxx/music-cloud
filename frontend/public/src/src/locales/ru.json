@@ -37,7 +37,9 @@
     },
     "buttonSubmit": "Регистрация",
     "Errors": {
-      "emailExists": "Электронная почта существует"
+      "emailExists": "Электронная почта существует",
+      "emailIsEmpty": "Поле не может быть пустым",
+      "invalidMailFormat": "Неверный формат почты"
     }
   }
 }
