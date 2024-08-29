@@ -17,7 +17,7 @@ export async function startUpload(track, onProgress) {
   const upload = new Upload(track.file, {
     endpoint: `${QueryPaths.baseApi()}${QueryPaths.uploadChunkedFile()}`,
     retryDelays: [0, 3000, 5000, 10000, 20000],
-    chunkSize: 1000000,
+    chunkSize: import.meta.env.VITE_CHUNK_SIZE,
     metadata: {
       filename: track.name,
       filetype: track.file.type,

@@ -27,11 +27,14 @@ public class HlsPlaylistService {
     @Value("${audio.format}")
     private String audioFormat;
 
+    @Value("${segment.length}")
+    private String segmentLength;
+
     public void createHlsPlaylist(String audioId, byte[] audioBytes, AudioQuality quality, int bitrate) throws DataProcessingException {
         try {
             File tempDir = Files.createTempDirectory("hls").toFile();
 
-            Process process = getProcess(tempDir, audioFormat, bitrate);
+            Process process = getProcess(tempDir, audioFormat, bitrate, segmentLength);
 
             try (OutputStream os = process.getOutputStream()) {
                 os.write(audioBytes);
@@ -87,7 +90,7 @@ public class HlsPlaylistService {
     }
 
     @NotNull
-    private static Process getProcess(File tempDir, String audioFormat, int bitrate) throws IOException {
+    private static Process getProcess(File tempDir, String audioFormat, int bitrate, String segmentLength) throws IOException {
         ProcessBuilder pb = new ProcessBuilder(
                 "ffmpeg", // Invokes the ffmpeg command
                 "-i", "pipe:0", // Takes input from the standard input (stdin)
@@ -95,7 +98,7 @@ public class HlsPlaylistService {
                 "-b:a", bitrate + "k", // Re-encodes audio to the specified format
                 "-fflags", "+genpts", // Generate PTS (Presentation TimeStamp)
                 "-start_number", "0", // Starts segment numbering from 0
-                "-hls_time", "10", // Length of segments in seconds
+                "-hls_time", segmentLength, // Length of segments in seconds
                 "-hls_list_size", "0", // Maximum number of segments listed. When set to "0" playlist will include all available segments.
                 "-hls_flags", "independent_segments", // Ensure independent segments
                 "-hls_segment_type", "mpegts", // Uses MPEG-TS format for segments

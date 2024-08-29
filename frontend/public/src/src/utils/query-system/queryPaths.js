@@ -9,18 +9,18 @@ export const QueryPaths = {
   login: () => "/auth/login",
 
   // Возвращает URL-адрес для запроса идентификатора файла для загрузки файлов
-  requestFileId: () => "/java/protected/upload/request-file-id",
+  requestFileId: () => "/upload/protected/audio/request-file-id",
 
   // Возвращает URL-адрес для запросов по загрузке файлов в формате чанков
-  uploadChunkedFile: () => "/java/protected/upload/file",
+  uploadChunkedFile: () => "/upload/protected/audio/file",
 
   // Возвращает URL-адрес для запроса по загрузке обложки релиза или плейлиста
-  uploadCover: (id) => `/java/protected/collection/${id}/cover`,
+  uploadCover: (id) => `/upload/protected/collection/${id}/cover`,
 
-  songConvert: (songId, fileId) => `/java/protected/audio/${songId}/${fileId}/convert`,
+  songConvert: (songId, fileId) => `/upload/protected/test/audio/${songId}/${fileId}/convert`,
 
   // Возвращает URL-адрес для запроса для стриминга песни
-  streamAudio: (songId, quality) => `/java/protected/stream/playlist/${songId}/${quality}`,
+  streamAudio: (songId, quality) => `/stream/protected/playlist/${songId}/${quality}`,
 
   // Возвращает URL-адрес для запросов по менеджменту релизами
   crudReleases: (id = null) =>  {

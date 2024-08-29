@@ -40,17 +40,31 @@ services:
     networks:
       - vibe_cloud_net
 
-  java.api:
-    container_name: java.api
+  java.api.upload:
+    container_name: java.api.upload
     build:
       dockerfile: Dockerfile
-      context: ./backend/java/api
+      context: backend/java/api-upload
     depends_on:
       - db.mysql
       - storage.minio
       - rabbit.mq
     ports:
       - "8080:8080"
+    networks:
+      - vibe_cloud_net
+
+  java.api.stream:
+    container_name: java.api.stream
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/api-stream
+    depends_on:
+      - db.mysql
+      - storage.minio
+      - rabbit.mq
+    ports:
+      - "8081:8081"
     networks:
       - vibe_cloud_net
 
@@ -96,7 +110,8 @@ services:
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - laravel.api
-      - java.api
+      - java.api.upload
+      - java.api.stream
       - auth.api
       - frontend.public
     ports:
