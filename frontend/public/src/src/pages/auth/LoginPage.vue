@@ -99,6 +99,7 @@ export default {
         // Попытка аутентификации пользователя
         try {
           const res = await login(data)
+          console.log(res)
           if (res) {
             saveUserData(res, this.rememberMe)
           } else {

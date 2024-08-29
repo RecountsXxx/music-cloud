@@ -39,7 +39,11 @@
     "Errors": {
       "emailExists": "Электронная почта существует",
       "emailIsEmpty": "Поле не может быть пустым",
-      "invalidMailFormat": "Неверный формат почты"
+      "invalidMailFormat": "Неверный формат почты",
+      "invalidUsernameFormat": "Неверный формат имени пользователя",
+      "usernameExists": "Имя пользователя занято",
+      "usernameLength": "Имя пользователя от 2 до 24",
+      "InvalidPasswordFormat": "Неверный формат пароля"
     }
   }
 }

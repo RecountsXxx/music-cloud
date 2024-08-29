@@ -16,8 +16,8 @@
             v-model="username"
             :placeholder="$t('RegisterForm.placeholder.username')"
             @input="()=>{
-              clearError('username')
-              checkInput('username');
+              clearError('Username')
+              checkInput('Username');
             }"
         />
         <div id="userName" ref="usernameError" class="Errors__Message"></div>
@@ -32,8 +32,8 @@
             type="text"
             :placeholder="$t('RegisterForm.placeholder.email')"
             @input="()=>{
-              clearError('email');
-              checkInput('email');
+              clearError('Email');
+              checkInput('Email');
             }"
         />
         <div id="emailError" ref="emailError" class="Errors__Message"></div>
@@ -49,6 +49,10 @@
               type="password"
               ref="passwordInput"
               :placeholder="$t('loginForm.placeholder.password')"
+              @input="()=>{
+              clearError('Password');
+              checkInput('Password');
+            }"
           />
           <div class="image__wrapper">
             <img
@@ -106,7 +110,9 @@
 import {defineComponent} from 'vue'
 import {showHidePassword} from '@/utils/showHidePassword.js'
 import {register} from '@/utils/query-system/query-actions/authActions.js'
-import {validateEmail} from "@/services/validator/validator.js";
+import {validateEmail, validatePassword, validUsername} from "@/services/validator/validator.js";
+import {saveUserData} from "@/utils/saveUserData.js";
+import {errorMessages} from "@/services/validator/validationErrors/errorMessages.js";
 
 
 export default defineComponent({
@@ -123,33 +129,41 @@ export default defineComponent({
   },
   methods: {
     checkInput(input) {
-      if (input === 'email') {
-        let co = validateEmail(this.email,true);
-        console.log(co)
-        if (co === 'format') {
-          this.$refs.emailError.textContent = this.$t('RegisterForm.Errors.invalidMailFormat');
-          this.$refs.emailError.style.visibility = 'visible';
+      if (input === 'Email') {
+        const result = validateEmail(this.email, true);
+        if (result !== true) {
+          if (result === 'format') {
+            errorMessages(this.$refs.emailError, input, this, result)
+          }
         }
-      } else if (input === 'username') {
-
+      } else if (input === 'Username') {
+        let result = validUsername(this.username)
+        if (result !== true) {
+          if (result === 'format') {
+            errorMessages(this.$refs.usernameError, input, this, result)
+          } else if (result === 'length') {
+            errorMessages(this.$refs.usernameError, input, this, result)
+          }
+        }
+      } else if (input === 'Password') {
+        let result = validatePassword(this.password);
+        if (result !== true) {
+          errorMessages(this.$refs.passwordError, input, this, 'format')
+        }
       }
     },
     clearError(input) {
       const errorRefs = {
-        username: 'usernameError',
-        email: 'emailError',
-        password: 'passwordError',
-        confirmPassword: 'passwordConfirmError',
+        Username: 'usernameError',
+        Email: 'emailError',
+        Password: 'passwordError',
+        ConfirmPassword: 'passwordConfirmError',
       };
-
       let errorElement = this.$refs[errorRefs[input]];
       if (errorElement) {
-        let errorElement = this.$refs[errorRefs[input]];
-        if (errorElement) {
-          if (errorElement.style.visibility === 'visible') {
-            errorElement.style.visibility = 'hidden'
-            errorElement.textContent = ''
-          }
+        if (errorElement.style.visibility === 'visible') {
+          errorElement.style.visibility = 'hidden'
+          errorElement.textContent = ''
         }
       }
     },
@@ -161,21 +175,22 @@ export default defineComponent({
           password: this.password,
           username: this.username
         }
-
         try {
           const res = await register(data) // Регистрация пользователя
           if (res) {
             if (res === 'Email') {
-              console.log('Email')
               // выводим сообщение о том что почта уже занята
-              this.$refs.emailError.textContent = this.$t('RegisterForm.Errors.emailExists');
-              this.$refs.emailError.style.visibility = 'visible';
+              errorMessages(this.$refs.emailError, res, this, 'exist');
             } else if (res === 'Username') {
               // выводим сообщение о том что имя пользователя уже занято
+              errorMessages(this.$refs.usernameError, res, this, 'exist');
+            } else {
+              console.log('GOOD')
+              console.log(res)
+              saveUserData(res, true) // Сохранение данных пользователя
             }
-            // saveUserData(res, true) // Сохранение данных пользователя
           } else {
-            // this.showError() // Показ ошибки при неудачной регистрации
+            this.showError() // Показ ошибки при неудачной регистрации
           }
         } catch (error) {
 
