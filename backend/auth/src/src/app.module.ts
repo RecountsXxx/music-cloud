@@ -21,10 +21,10 @@ import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
         database: configService.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
-      })
+      }),
     }),
     AuthModule,
-    RabbitMQModule
+    RabbitMQModule,
   ],
 })
 export class AppModule {}
