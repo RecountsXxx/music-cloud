@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { grpcClientOptions } from './grpc/auth/auth-grpc-options';
+import { authGrpcClientOptions } from './grpc/auth/auth-grpc-options';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
@@ -16,7 +16,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  app.connectMicroservice(grpcClientOptions);
+  app.connectMicroservice(authGrpcClientOptions);
   await app.startAllMicroservices();
 
   await app.listen(3000);

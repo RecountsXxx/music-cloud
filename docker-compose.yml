@@ -26,6 +26,19 @@ services:
     networks:
       - vibe_cloud_net
 
+  websocket.server.1:
+    container_name: websocket.server.1
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/websocket
+    volumes:
+      - ./backend/websocket/src:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3001:3001'
+    networks:
+      - vibe_cloud_net
+
   laravel.api:
     container_name: laravel.api
     build:
