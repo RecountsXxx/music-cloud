@@ -2,6 +2,7 @@ package org.deus.src.listeners;
 
 import lombok.RequiredArgsConstructor;
 import org.deus.src.dtos.fromModels.UserDTO;
+import org.deus.src.dtos.helpers.AvatarsReadyDTO;
 import org.deus.src.enums.ImageSize;
 import org.deus.src.exceptions.data.DataIsNotPresentException;
 import org.deus.src.exceptions.data.DataProcessingException;
@@ -50,16 +51,25 @@ public class ConvertAvatarRabbitMQListener {
         UserDTO userDTO = optionalUserDTO.get();
 
         try {
-            this.convertAvatarService.convertAvatar(userDTO.getId(), ImageSize.SMALL, smallWidth, smallHeight);
-            this.convertAvatarService.convertAvatar(userDTO.getId(), ImageSize.MEDIUM, mediumWidth, mediumHeight);
-            this.convertAvatarService.convertAvatar(userDTO.getId(), ImageSize.LARGE, largeWidth, largeHeight);
+            String smallAvatarUrl = this.convertAvatarService.convertAvatar(userDTO.getId(), ImageSize.SMALL, smallWidth, smallHeight);
+            String mediumAvatarUrl = this.convertAvatarService.convertAvatar(userDTO.getId(), ImageSize.MEDIUM, mediumWidth, mediumHeight);
+            String largeAvatarUrl = this.convertAvatarService.convertAvatar(userDTO.getId(), ImageSize.LARGE, largeWidth, largeHeight);
 
-            // send message via rabbitmq to websoket microservice: avatars is ready.
+            AvatarsReadyDTO avatarsReadyDTO = new AvatarsReadyDTO(smallAvatarUrl, mediumAvatarUrl, largeAvatarUrl);
+
+            // send message via rabbitmq to websocket microservice: avatars is ready.
+            this.rabbitMQService.sendWebsocketMessageDTO(
+                    "websocket.messages",
+                    userDTO.getId(),
+                    "avatars.ready",
+                    "Your avatar was successfully uploaded and optimized!",
+                    avatarsReadyDTO
+            );
         }
         catch (DataIsNotPresentException | DataProcessingException e) {
             logger.error("Some problems have occurred while trying to convert avatar for user with id \"" + userDTO.getId() + "\"", e);
 
-            // send message via rabbitmq to websoket microservice: conversion of avatar have failed.
+            // send message via rabbitmq to websocket microservice: conversion of avatar have failed.
         }
     }
 }

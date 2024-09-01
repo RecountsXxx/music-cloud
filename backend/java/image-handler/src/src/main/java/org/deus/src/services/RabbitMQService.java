@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.deus.src.dtos.fromModels.UserDTO;
 import org.deus.src.dtos.helpers.AudioConvertingDTO;
 import org.deus.src.dtos.helpers.CoverConvertingDTO;
+import org.deus.src.dtos.websocket.PayloadDTO;
+import org.deus.src.dtos.websocket.WebsocketMessageDTO;
 import org.deus.src.exceptions.message.MessageSendingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +67,26 @@ public class RabbitMQService {
         catch (JsonProcessingException e) {
             logger.error("Error while trying to convert message back from json", e);
             return Optional.empty();
+        }
+    }
+
+    /**
+     * Sends a WebsocketMessageDTO object to a specified RabbitMQ queue.
+     *
+     * @param queueName      The name of the RabbitMQ queue.
+     * @param room            The room identifier for the websocket message.
+     * @param websocketEvent The websocket channel for the message.
+     * @param payloadMessage  The message content.
+     * @param payloadData     Optional additional payload data.
+     */
+    public void sendWebsocketMessageDTO(String queueName, String room, String websocketEvent, String payloadMessage, Object payloadData) {
+        PayloadDTO payloadDTO = new PayloadDTO(payloadMessage, payloadData);
+        WebsocketMessageDTO websocketMessageDTO = new WebsocketMessageDTO(room, websocketEvent, payloadDTO);
+
+        try {
+            this.serializeAndSendMessage(queueName, websocketMessageDTO, WebsocketMessageDTO.class);
+        } catch (MessageSendingException e) {
+            logger.error("Something went wrong while trying to send websocket message", e);
         }
     }
 

@@ -1,21 +1,36 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
+import amqp, { ChannelWrapper } from 'amqp-connection-manager';
+import { ConfirmChannel } from 'amqplib';
 import { SocketGateway } from '../gateways/socket.gateway';
 
 @Injectable()
-export class RabbitMQListener {
+export class RabbitMQListener implements OnModuleInit {
+  private channelWrapper: ChannelWrapper;
   private readonly logger = new Logger(RabbitMQListener.name);
+  constructor(private readonly socketGateway: SocketGateway) {
+    const connection = amqp.connect(['amqp://user:password@rabbit.mq:5672']);
+    this.channelWrapper = connection.createChannel();
+  }
 
-  constructor(private readonly socketGateway: SocketGateway) {}
+  public async onModuleInit() {
+    try {
+      await this.channelWrapper.addSetup(async (channel: ConfirmChannel) => {
+        await channel.assertQueue('websocket.messages', { durable: true });
+        await channel.consume('websocket.messages', async (message) => {
+          if (message) {
+            const content = JSON.parse(message.content.toString());
+            this.logger.log('Received message:', content);
 
-  @EventPattern('socket-message')
-  handleSocketMessage(@Payload() data: { channel: string; payload: any }) {
-    this.logger.log(`Received message for channel: ${data.channel}`);
+            const { room, event, payload } = content;
+            this.socketGateway.sendMessageToRoom(room, event, payload);
+            channel.ack(message);
+          }
+        });
+      });
 
-    const { channel, payload } = data;
-    const roomId = payload.roomId;
-
-    // Send a message to a specific room with an event (channel)
-    this.socketGateway.sendMessageToRoom(roomId, channel, payload);
+      this.logger.log('RabbitMQListener started and listening for messages.');
+    } catch (err) {
+      this.logger.error('Error starting the RabbitMQListener:', err);
+    }
   }
 }
