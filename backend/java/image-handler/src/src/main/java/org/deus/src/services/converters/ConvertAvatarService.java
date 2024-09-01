@@ -21,7 +21,7 @@ public class ConvertAvatarService {
     private final ConverterService converterService;
     private static final Logger logger = LoggerFactory.getLogger(ConvertAvatarService.class);
 
-    public void convertAvatar(String userId, ImageSize imageSize, int targetWidth, int targetHeight) throws DataIsNotPresentException, DataProcessingException {
+    public String convertAvatar(String userId, ImageSize imageSize, int targetWidth, int targetHeight) throws DataIsNotPresentException, DataProcessingException {
         Optional<byte[]> optionalOriginalBytes = storageAvatarService.getOriginalBytes(userId);
 
         if (optionalOriginalBytes.isEmpty()) {
@@ -44,5 +44,7 @@ public class ConvertAvatarService {
             logger.error(errorMessage, e);
             throw new DataProcessingException(errorMessage, e);
         }
+
+        return storageAvatarService.getPathToFile(userId, imageSize);
     }
 }

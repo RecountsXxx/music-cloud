@@ -12,7 +12,6 @@ import {
   ValidateTokenResponse,
 } from '../auth/auth.service';
 import { firstValueFrom } from 'rxjs';
-import { response } from 'express';
 
 @WebSocketGateway({
   cors: {
@@ -53,8 +52,8 @@ export class SocketGateway
   }
 
   // Method for sending a message to a room with an event
-  sendMessageToRoom(roomId: string, channel: string, message: any) {
-    this.server.to(roomId).emit(channel, message);
+  sendMessageToRoom(roomId: string, event: string, message: any) {
+    this.server.to(roomId).emit(event, message);
   }
 
   afterInit(server: any): any {}
