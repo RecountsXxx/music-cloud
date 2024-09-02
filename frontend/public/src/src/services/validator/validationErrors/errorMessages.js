@@ -11,6 +11,8 @@ export function errorMessages(elem, inputType, vueInstance, errorType) {
         },
         Password: {
             Format: vueInstance.$t('RegisterForm.Errors.InvalidPasswordFormat'),
+            Length: vueInstance.$t('RegisterForm.Errors.passwordLength'),
+            ConfirmPassword: vueInstance.$t('RegisterForm.Errors.confPassword'),
         }
     };
     if (errorType === 'exist') {
@@ -21,6 +23,9 @@ export function errorMessages(elem, inputType, vueInstance, errorType) {
         elem.style.visibility = 'visible';
     } else if (errorType === 'format') {
         elem.textContent = errorMessages[inputType].Format;
+        elem.style.visibility = 'visible';
+    } else if (errorType === 'confirmPassword') {
+        elem.textContent = errorMessages[inputType].ConfirmPassword;
         elem.style.visibility = 'visible';
     }
 

@@ -43,7 +43,9 @@
       "invalidUsernameFormat": "Неверный формат имени пользователя",
       "usernameExists": "Имя пользователя занято",
       "usernameLength": "Имя пользователя от 2 до 24",
-      "InvalidPasswordFormat": "Неверный формат пароля"
+      "passwordLength": "Пароль должен быть от 8 до 32 символов",
+      "InvalidPasswordFormat": "Неверный формат пароля",
+      "confPassword": "Пароли не совпадают"
     }
   }
 }
