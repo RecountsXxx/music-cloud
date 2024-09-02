@@ -11,11 +11,11 @@
       <!-- Поле ввода для имени пользователя -->
       <div class="input__container">
         <input
-            class="form__input"
-            type="text"
-            v-model="username"
-            :placeholder="$t('RegisterForm.placeholder.username')"
-            @input="()=>{
+          class="form__input"
+          type="text"
+          v-model="username"
+          :placeholder="$t('RegisterForm.placeholder.username')"
+          @input="()=>{
               clearError('Username')
               checkInput('Username');
             }"
@@ -26,12 +26,12 @@
       <div class="input__container">
         <!-- Поле ввода для email -->
         <input
-            class="form__input"
-            v-model="email"
-            id="email"
-            type="text"
-            :placeholder="$t('RegisterForm.placeholder.email')"
-            @input="()=>{
+          class="form__input"
+          v-model="email"
+          id="email"
+          type="text"
+          :placeholder="$t('RegisterForm.placeholder.email')"
+          @input="()=>{
               clearError('Email');
               checkInput('Email');
             }"
@@ -43,23 +43,23 @@
         <!-- Поле ввода для пароля -->
         <div class="password__field">
           <input
-              class="form__input password"
-              v-model="password"
-              id="password"
-              type="password"
-              ref="passwordInput"
-              :placeholder="$t('loginForm.placeholder.password')"
-              @input="()=>{
+            class="form__input password"
+            v-model="password"
+            id="password"
+            type="password"
+            ref="passwordInput"
+            :placeholder="$t('loginForm.placeholder.password')"
+            @input="()=>{
               clearError('Password');
               checkInput('Password');
             }"
           />
           <div class="image__wrapper">
             <img
-                class="showHidePassword"
-                src="../../assets/images/showPassword.svg"
-                alt=""
-                @click="changeVisiblePassword(this.$refs.passwordInput)"
+              class="showHidePassword"
+              src="../../assets/images/showPassword.svg"
+              alt=""
+              @click="changeVisiblePassword(this.$refs.passwordInput)"
             />
           </div>
         </div>
@@ -70,19 +70,23 @@
         <!-- Поле ввода для подтверждения пароля -->
         <div class="password__field">
           <input
-              class="form__input password"
-              v-model="confirmPassword"
-              id="confirmPassword"
-              type="password"
-              ref="confirmPasswordInput"
-              :placeholder="$t('RegisterForm.placeholder.confirmPassword')"
+            class="form__input password"
+            v-model="confirmPassword"
+            id="confirmPassword"
+            type="password"
+            ref="confirmPasswordInput"
+            :placeholder="$t('RegisterForm.placeholder.confirmPassword')"
+            @input="()=>{
+              clearError('ConfirmPassword');
+              checkInput('ConfirmPassword');
+            }"
           />
           <div class="image__wrapper">
             <img
-                class="showHidePassword"
-                src="../../assets/images/showPassword.svg"
-                alt=""
-                @click="changeVisiblePassword(this.$refs.confirmPasswordInput)"
+              class="showHidePassword"
+              src="../../assets/images/showPassword.svg"
+              alt=""
+              @click="changeVisiblePassword(this.$refs.confirmPasswordInput)"
             />
           </div>
         </div>
@@ -91,7 +95,7 @@
 
       <!-- Чекбокс для принятия условий -->
       <div class="acceptPrivacyPolicy">
-        <input id="acceptCheckBox" name="accept" type="checkbox" v-model="acceptLic"/>
+        <input id="acceptCheckBox" name="accept" type="checkbox" v-model="acceptLic" />
         <label for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
           <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
@@ -101,18 +105,23 @@
       </div>
 
       <!-- Кнопка отправки формы -->
-      <input type="submit" class="submit__button" :value="$t('RegisterForm.buttonSubmit')"/>
+      <input type="submit" class="submit__button" :value="$t('RegisterForm.buttonSubmit')" />
     </form>
   </main>
 </template>
 
 <script lang="js">
-import {defineComponent} from 'vue'
-import {showHidePassword} from '@/utils/showHidePassword.js'
-import {register} from '@/utils/query-system/query-actions/authActions.js'
-import {validateEmail, validatePassword, validUsername} from "@/services/validator/validator.js";
-import {saveUserData} from "@/utils/saveUserData.js";
-import {errorMessages} from "@/services/validator/validationErrors/errorMessages.js";
+import { defineComponent } from 'vue';
+import { showHidePassword } from '@/utils/showHidePassword.js';
+import { register } from '@/utils/query-system/query-actions/authActions.js';
+import {
+  validateConfPassword,
+  validateEmail,
+  validatePassword,
+  validUsername,
+} from '@/services/validator/validator.js';
+import { saveUserData } from '@/utils/saveUserData.js';
+import { errorMessages } from '@/services/validator/validationErrors/errorMessages.js';
 
 
 export default defineComponent({
@@ -124,8 +133,8 @@ export default defineComponent({
       password: '', // Пароль пользователя
       confirmPassword: '', // Подтверждение пароля
       acceptLic: false, // Принятие условий использования
-      isPasswordVisible: false // Флаг видимости пароля
-    }
+      isPasswordVisible: false, // Флаг видимости пароля
+    };
   },
   methods: {
     checkInput(input) {
@@ -133,22 +142,28 @@ export default defineComponent({
         const result = validateEmail(this.email, true);
         if (result !== true) {
           if (result === 'format') {
-            errorMessages(this.$refs.emailError, input, this, result)
+            errorMessages(this.$refs.emailError, input, this, result);
           }
         }
       } else if (input === 'Username') {
-        let result = validUsername(this.username)
+        let result = validUsername(this.username);
         if (result !== true) {
           if (result === 'format') {
-            errorMessages(this.$refs.usernameError, input, this, result)
+            errorMessages(this.$refs.usernameError, input, this, result);
           } else if (result === 'length') {
-            errorMessages(this.$refs.usernameError, input, this, result)
+            errorMessages(this.$refs.usernameError, input, this, result);
           }
         }
       } else if (input === 'Password') {
         let result = validatePassword(this.password);
-        if (result !== true) {
-          errorMessages(this.$refs.passwordError, input, this, 'format')
+        if (result === 'length') {
+          errorMessages(this.$refs.passwordError, input, this, 'length');
+        } else if (result === 'format') {
+          errorMessages(this.$refs.passwordError, input, this, 'format');
+        }
+      } else if (input === 'ConfirmPassword') {
+        if (validateConfPassword(this.$refs.passwordInput.value, this.$refs.confirmPasswordInput.value)) {
+          errorMessages(this.$refs.passwordConfirmError, 'Password', this, 'confirmPassword');
         }
       }
     },
@@ -162,8 +177,8 @@ export default defineComponent({
       let errorElement = this.$refs[errorRefs[input]];
       if (errorElement) {
         if (errorElement.style.visibility === 'visible') {
-          errorElement.style.visibility = 'hidden'
-          errorElement.textContent = ''
+          errorElement.style.visibility = 'hidden';
+          errorElement.textContent = '';
         }
       }
     },
@@ -173,10 +188,10 @@ export default defineComponent({
         const data = {
           email: this.email,
           password: this.password,
-          username: this.username
-        }
+          username: this.username,
+        };
         try {
-          const res = await register(data) // Регистрация пользователя
+          const res = await register(data); // Регистрация пользователя
           if (res) {
             if (res === 'Email') {
               // выводим сообщение о том что почта уже занята
@@ -185,12 +200,11 @@ export default defineComponent({
               // выводим сообщение о том что имя пользователя уже занято
               errorMessages(this.$refs.usernameError, res, this, 'exist');
             } else {
-              console.log('GOOD')
-              console.log(res)
-              saveUserData(res, true) // Сохранение данных пользователя
+              console.log(res);
+              saveUserData(res, true); // Сохранение данных пользователя
             }
           } else {
-            this.showError() // Показ ошибки при неудачной регистрации
+            this.showError(); // Показ ошибки при неудачной регистрации
           }
         } catch (error) {
 
@@ -199,10 +213,10 @@ export default defineComponent({
       }
     },
     changeVisiblePassword(elem) {
-      this.isPasswordVisible = showHidePassword(elem) // Переключение видимости пароля
-    }
-  }
-})
+      this.isPasswordVisible = showHidePassword(elem); // Переключение видимости пароля
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
