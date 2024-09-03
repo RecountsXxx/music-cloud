@@ -11,6 +11,7 @@ import router from '@/router/router.js'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "@/assets/scss/styles.scss"
 import "bootstrap"
+import { useSocketStore } from '@/stores/socketStore.js'
 
 const app = createApp(App)
 
@@ -36,6 +37,8 @@ async function initializeApp() {
 
     // Подписываемся на изменения авторизации
     useAuthStore().subscribeToAuthChanges();
+
+    useSocketStore().watchToken()
   } catch (error) {
     console.error('Error when initializing the application:', error);
   }

@@ -177,6 +177,10 @@ import {
   uploadCover
 } from "@/utils/query-system/query-actions/releaseActions.js";
 import {toastInfo} from "@/utils/toast/toastNotification.js";
+import { useSocketStore } from '@/stores/socketStore.js'
+import { subscribeToCoverUpload } from '@/utils/socket/eventHandlers.js'
+
+const socketStore = useSocketStore();
 
 export default {
   computed: {},
@@ -296,14 +300,18 @@ export default {
 
       //await this.uploadCover(collectionId);
 
-      const songId = '1';
-      const fileId = 'c339853a-f269-4ab0-8814-d9ded5c89e7f';
+      // const songId = '1';
+      // const fileId = 'c339853a-f269-4ab0-8814-d9ded5c89e7f';
+      //
+      //
+      // const message = await songConvert(songId, fileId);
+      // if(message) {
+      //   toastInfo(message);
+      // }
 
+      const collectionId = "1";
 
-      const message = await songConvert(songId, fileId);
-      if(message) {
-        toastInfo(message);
-      }
+      await this.uploadCover(collectionId);
     },
 
 
@@ -314,8 +322,10 @@ export default {
       formData.append('cover', croppedImage);
 
       const message = await uploadCover(collectionId, formData);
+
       if(message) {
         toastInfo(message);
+        subscribeToCoverUpload();
       }
     }
   }

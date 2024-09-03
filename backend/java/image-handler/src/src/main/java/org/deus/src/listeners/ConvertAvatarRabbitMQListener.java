@@ -61,7 +61,7 @@ public class ConvertAvatarRabbitMQListener {
             this.rabbitMQService.sendWebsocketMessageDTO(
                     "websocket.messages",
                     userDTO.getId(),
-                    "avatars.ready",
+                    "avatar.ready",
                     "Your avatar was successfully uploaded and optimized!",
                     avatarsReadyDTO
             );

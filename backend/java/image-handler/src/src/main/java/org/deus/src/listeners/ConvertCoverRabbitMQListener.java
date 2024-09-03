@@ -54,6 +54,14 @@ public class ConvertCoverRabbitMQListener {
             this.convertCoverService.convertCover(coverConvertingDTO.getCollectionId(), ImageSize.SMALL, smallWidth, smallHeight);
             this.convertCoverService.convertCover(coverConvertingDTO.getCollectionId(), ImageSize.MEDIUM, mediumWidth, mediumHeight);
             this.convertCoverService.convertCover(coverConvertingDTO.getCollectionId(), ImageSize.LARGE, largeWidth, largeHeight);
+
+            this.rabbitMQService.sendWebsocketMessageDTO(
+                    "websocket.messages",
+                    coverConvertingDTO.getUserId(),
+                    "cover.ready",
+                    "Your cover was successfully uploaded and optimized!",
+                    null
+            );
         }
         catch (DataIsNotPresentException | DataProcessingException e) {
             logger.error("Some problems have occurred while trying to convert cover for collection with id \"" + coverConvertingDTO.getCollectionId() + "\"", e);
