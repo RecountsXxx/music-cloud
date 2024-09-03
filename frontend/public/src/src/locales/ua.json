@@ -1,3 +1,51 @@
 {
-
+  "loginForm": {
+    "form__title": "Вхід",
+    "placeholder": {
+      "email": "Електронна пошта",
+      "password": "Пароль"
+    },
+    "buttonSubmit": "Увійти",
+    "remember-me": "Запам'ятати мене",
+    "forgot-password": "Забули пароль?",
+    "register": {
+      "noRegister": "Ще не зареєстровані?",
+      "createAccount": "Створити акаунт"
+    },
+    "Errors": {
+      "IncData": "Некоректні дані",
+      "IncPassOrEmail": "Невірна пошта або пароль"
+    }
+  },
+  "RegisterForm": {
+    "form__title": "Реєстрація",
+    "placeholder": {
+      "username": "Ім'я користувача",
+      "email": "Електронна пошта",
+      "password": "Пароль",
+      "confirmPassword": "Підтвердьте пароль"
+    },
+    "login": {
+      "haveAcc": "Вже маєте акаунт?",
+      "signIn": "Увійти"
+    },
+    "accept": {
+      "IAccept": "Я приймаю",
+      "terms": "Умови використання",
+      "and": "та",
+      "privacy_policy": "Політику конфіденційності"
+    },
+    "buttonSubmit": "Зареєструватися",
+    "Errors": {
+      "emailExists": "Електронна пошта вже існує",
+      "emailIsEmpty": "Поле не може бути порожнім",
+      "invalidMailFormat": "Невірний формат пошти",
+      "invalidUsernameFormat": "Невірний формат імені користувача",
+      "usernameExists": "Ім'я користувача зайнято",
+      "usernameLength": "Ім'я користувача має бути від 2 до 24 символів",
+      "passwordLength": "Пароль повинен містити від 8 до 32 символів",
+      "InvalidPasswordFormat": "Невірний формат пароля",
+      "confPassword": "Паролі не співпадають"
+    }
+  }
 }
