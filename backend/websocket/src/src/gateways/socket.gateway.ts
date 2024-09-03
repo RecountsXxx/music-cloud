@@ -42,13 +42,15 @@ export class SocketGateway
 
       const userId = response.userDTO.id;
       socket.join(userId);
+
+      console.log('SOCKET CONNECTION');
     } catch (error) {
       socket.disconnect();
     }
   }
 
   handleDisconnect(socket: Socket) {
-    // Disconnection handling
+    console.log('SOCKET DISCONNECTION');
   }
 
   // Method for sending a message to a room with an event
