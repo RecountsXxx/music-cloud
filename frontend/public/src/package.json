@@ -13,6 +13,8 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@videojs/http-streaming": "^3.14.0",
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "hls.js": "^1.0.3-0.canary.7275",

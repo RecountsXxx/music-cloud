@@ -5,20 +5,47 @@
       "email": "Email",
       "password": "Password"
     },
-    "bVisionPassword": {
-      "visible": "Show",
-      "hidden": "Hide"
-    },
-    "buttonSubmit": "Login",
+    "buttonSubmit": "Log In",
     "remember-me": "Remember me",
-    "forgot-password": "Forgot password?"
+    "forgot-password": "Forgot password?",
+    "register": {
+      "noRegister": "Not registered yet?",
+      "createAccount": "Create an account"
+    },
+    "Errors": {
+      "IncData": "Incorrect data",
+      "IncPassOrEmail": "Invalid email or password"
+    }
   },
-  "register": {
-    "noRegister": "Not registered yet?",
-    "createAccount": "Create an account"
-  },
-  "Errors": {
-    "IncData": "Incorrect data",
-    "IncPassOrEmail": "Invalid email or password"
+  "RegisterForm": {
+    "form__title": "Registration",
+    "placeholder": {
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "login": {
+      "haveAcc": "Already have an account?",
+      "signIn": "Sign In"
+    },
+    "accept": {
+      "IAccept": "I accept",
+      "terms": "Terms of Use",
+      "and": "and",
+      "privacy_policy": "Privacy Policy"
+    },
+    "buttonSubmit": "Register",
+    "Errors": {
+      "emailExists": "Email already exists",
+      "emailIsEmpty": "Field cannot be empty",
+      "invalidMailFormat": "Invalid email format",
+      "invalidUsernameFormat": "Invalid username format",
+      "usernameExists": "Username is taken",
+      "usernameLength": "Username must be between 2 and 24 characters",
+      "passwordLength": "Password must be between 8 and 32 characters",
+      "InvalidPasswordFormat": "Invalid password format",
+      "confPassword": "Passwords do not match"
+    }
   }
 }
