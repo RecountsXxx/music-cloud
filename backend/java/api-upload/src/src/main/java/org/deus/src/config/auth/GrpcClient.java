@@ -5,6 +5,7 @@ import auth.AuthServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.deus.src.dtos.fromModels.UserDTO;
+import org.deus.src.responses.grpc.TokenValidationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,23 +28,40 @@ public class GrpcClient {
         }
     }
 
-    public UserDTO validateToken(String token) {
+    public TokenValidationResponse validateToken(String token) {
         try {
             Auth.ValidateTokenRequest request = Auth.ValidateTokenRequest.newBuilder()
                     .setToken(token)
                     .build();
             Auth.ValidateTokenResponse response = stub.validateToken(request);
-            if (response.getValid()) {
-                Auth.UserDTO grpcUserDTO = response.getUserDTO();
-                if (grpcUserDTO != null) {
-                    return new UserDTO(grpcUserDTO.getId(), grpcUserDTO.getEmail(), grpcUserDTO.getUsername());
+
+            String tokenStatus = response.getTokenStatus();
+            Auth.UserDTO grpcUserDTO = response.getUserDTO();
+
+            switch (tokenStatus) {
+                case "VALID_TOKEN" -> {
+                    return new TokenValidationResponse(tokenStatus, new UserDTO(grpcUserDTO.getId(), grpcUserDTO.getEmail(), grpcUserDTO.getUsername()));
                 }
-                else {
-                    logger.info("grpcUserDTO is null");
+                case "EXPIRED_TOKEN" -> {
+                    UserDTO userDTO = null;
+
+                    if (grpcUserDTO != null) {
+                        userDTO = new UserDTO(grpcUserDTO.getId(), grpcUserDTO.getEmail(), grpcUserDTO.getUsername());
+                    }
+
+                    logger.info("Authorization token is expired");
+                    return new TokenValidationResponse(tokenStatus, userDTO);
                 }
-            } else {
-                logger.info("JWT token is not valid");
+                case "INVALID_TOKEN" -> {
+                    logger.info("Authorization token is invalid");
+                    return new TokenValidationResponse(tokenStatus, null);
+                }
+                case "ERROR_TOKEN" -> {
+                    logger.info("Authorization token could not be validated because of unexpected problems");
+                    return new TokenValidationResponse(tokenStatus, null);
+                }
             }
+
             return null;
         } catch (Exception e) {
             logger.error("Something went wrong while validating token", e);

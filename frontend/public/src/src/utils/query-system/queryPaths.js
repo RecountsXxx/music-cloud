@@ -8,6 +8,8 @@ export const QueryPaths = {
   // Возвращает URL-адрес для входа в систему
   login: () => "/auth/login",
 
+  refreshToken: () => "/auth/refresh-token",
+
   // Возвращает URL-адрес для запроса идентификатора файла для загрузки файлов
   requestFileId: () => "/upload/protected/audio/request-file-id",
 

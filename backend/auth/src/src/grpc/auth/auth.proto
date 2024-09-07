@@ -17,6 +17,6 @@ message UserDTO {
 }
 
 message ValidateTokenResponse {
-  bool valid = 1;
+  string tokenStatus = 1;
   UserDTO userDTO = 2;
 }

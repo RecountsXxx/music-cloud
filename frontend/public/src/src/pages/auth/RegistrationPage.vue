@@ -122,7 +122,9 @@ import {
 } from '@/services/validator/validator.js';
 import { saveUserData } from '@/utils/saveUserData.js';
 import { errorMessages } from '@/services/validator/validationErrors/errorMessages.js';
+import { useMainStore } from '@/stores/mainStore.js'
 
+const mainStore = useMainStore();
 
 export default defineComponent({
   data() {
@@ -135,6 +137,9 @@ export default defineComponent({
       acceptLic: false, // Принятие условий использования
       isPasswordVisible: false, // Флаг видимости пароля
     };
+  },
+  async beforeCreate() {
+    mainStore.clearStore();
   },
   methods: {
     checkInput(input) {

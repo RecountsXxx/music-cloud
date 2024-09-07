@@ -74,6 +74,9 @@ import {validator} from '@/services/validator/validator.js'
 import {showHidePassword} from '@/utils/showHidePassword.js'
 import {saveUserData} from '@/utils/saveUserData.js'
 import {login} from '@/utils/query-system/query-actions/authActions.js'
+import { useMainStore } from '@/stores/mainStore.js'
+
+const mainStore = useMainStore();
 
 export default {
   data() {
@@ -84,6 +87,9 @@ export default {
       rememberMe: false, // запомнить пользователя
       isPasswordVisible: false // видимость пароля
     }
+  },
+  async beforeCreate() {
+    mainStore.clearStore();
   },
   methods: {
     // Метод отправки формы для входа в систему

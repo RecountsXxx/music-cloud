@@ -8,9 +8,9 @@ export const useSocketStore = defineStore('socketStore', {
     isConnected: false,
   }),
   actions: {
-    connect(token) {
+    async connect(token) {
       if (token && !this.isConnected) {
-        socketService.connect(token);
+        await socketService.connect(token);
         this.isConnected = true;
       }
     },
