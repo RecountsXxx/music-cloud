@@ -52,20 +52,6 @@ export const useAuthStore = defineStore('useAuthStore', {
             this.jwtToken = null;
             removeJwtTokenFromLocalStorage();
         },
-        // async refreshToken() {
-        //     try {
-        //         // Логика для обновления токена (например, отправка запроса на сервер)
-        //         const newToken = await api.refreshToken(); // Пример вызова API
-        //         this.setJWT(newToken);
-        //         return newToken;
-        //     } catch (error) {
-        //         console.error("Error refreshing token:", error);
-        //         this.clearJWT(); // Очистка данных если рефреш не удался
-        //         router.push('/login'); // Перенаправляем на страницу логина
-        //         throw error; // Возвращаем ошибку, если нужно
-        //     }
-        // },
-
         // Подписка на изменения состояния аутентификации и перенаправление пользователя
         subscribeToAuthChanges() {
             watch(() => this.isAuthenticated, (isAuth) => {
