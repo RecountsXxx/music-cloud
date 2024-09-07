@@ -20,7 +20,7 @@ export interface UserDTO {
 }
 
 export interface ValidateTokenResponse {
-  valid: boolean;
+  tokenStatus: string;
   userDTO: UserDTO;
 }
 

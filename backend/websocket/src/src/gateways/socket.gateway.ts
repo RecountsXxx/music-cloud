@@ -27,24 +27,67 @@ export class SocketGateway
 
   async handleConnection(socket: Socket) {
     try {
+      const token = socket.handshake.auth.token;
+
+      if (!token) {
+        socket.emit('error', 'No token provided');
+        socket.disconnect();
+        return;
+      }
+
       const validateTokenRequest: ValidateTokenRequest = {
-        token: socket.handshake.auth.token,
+        token: token,
       };
 
       const response: ValidateTokenResponse = await firstValueFrom(
         this.authGrpcService.validateToken(validateTokenRequest),
       );
 
-      if (!response.valid) {
-        socket.disconnect();
-        return;
+      const tokenStatus = response.tokenStatus;
+
+      switch (tokenStatus) {
+        case 'VALID_TOKEN':
+          {
+            const userId: string = response.userDTO.id;
+            socket.join(userId);
+            console.log(`Socket connected: ${socket.id}, User ID: ${userId}`);
+          }
+          break;
+        case 'EXPIRED_TOKEN':
+          {
+            socket.emit('token.validation', {
+              message: 'Your session has expired. Please refresh your token.',
+              status: tokenStatus,
+            });
+            socket.disconnect();
+          }
+          break;
+        case 'INVALID_TOKEN':
+          {
+            socket.emit('token.validation', {
+              message: 'Invalid token provided.',
+              status: tokenStatus,
+            });
+            socket.disconnect();
+          }
+          break;
+        case 'ERROR_TOKEN':
+          {
+            socket.emit('token.validation', {
+              message: 'An error occurred while validating token.',
+              status: tokenStatus,
+            });
+            socket.disconnect();
+          }
+          break;
+        default: {
+          socket.emit('error', { message: 'Unknown token status.' });
+          socket.disconnect();
+        }
       }
-
-      const userId = response.userDTO.id;
-      socket.join(userId);
-
-      console.log('SOCKET CONNECTION');
     } catch (error) {
+      console.error('Error during token validation:', error);
+      socket.emit('error', 'An error occurred during authentication.');
       socket.disconnect();
     }
   }
