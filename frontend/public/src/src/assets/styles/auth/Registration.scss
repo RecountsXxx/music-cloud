@@ -110,14 +110,13 @@ $form__input__bc: #d9d9d9;
 
         .showHidePassword {
           user-select: none;
-          width: calc(6 * 0.25vw);
+          width: calc(6 * .25vw);
           border-radius: 30px;
-
+          transition: 100ms all linear;
           &:hover {
             cursor: pointer;
-            padding: 2px;
+            transform: scale(0.85);
             background-color: #c7c7c7;
-            transition: 300ms all linear;
           }
         }
       }
