@@ -66,7 +66,6 @@ $error_message_size: calc(4 * .25vw);
       color: black;
       margin-bottom: 25px;
       font-size: $font_size;
-      background-color: $form__input__bc;
       height: 60px;
       width: 100%;
       max-width: 480px;
@@ -91,6 +90,10 @@ $error_message_size: calc(4 * .25vw);
         font-size: $font_size;
         color: $placeholder__bc;
       }
+    }
+
+    .form__input {
+      background-color: $form__input__bc;
     }
 
     .password__field {
