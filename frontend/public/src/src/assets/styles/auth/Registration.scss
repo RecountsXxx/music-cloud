@@ -41,6 +41,7 @@ $form__input__bc: #d9d9d9;
     max-width: 600px;
 
     .input__container {
+      margin-bottom: 25px;
       width: 480px;
       display: flex;
       flex-direction: column;
@@ -79,10 +80,32 @@ $form__input__bc: #d9d9d9;
     }
 
     .Errors__Message {
-      visibility: hidden;
-      margin: 10px 0 10px 10px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: red;
       align-self: start;
+      margin-top: 10px;
+      animation-name: errorShow;
+      animation-duration: 0.5s;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: forwards;
+    }
+
+    .errorHidden {
+      color: yellow;
+    }
+
+    @keyframes errorShow {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 100%;
+      }
     }
 
     .password__field {
@@ -113,6 +136,7 @@ $form__input__bc: #d9d9d9;
           width: calc(6 * .25vw);
           border-radius: 30px;
           transition: 100ms all linear;
+
           &:hover {
             cursor: pointer;
             transform: scale(0.85);
@@ -156,8 +180,10 @@ $form__input__bc: #d9d9d9;
         margin-bottom: 2px;
         transform: scale(1.2);
       }
+
       label {
         margin-left: 5px;
+
         a:link {
           color: #000000;
         }
