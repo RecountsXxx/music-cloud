@@ -1,5 +1,6 @@
 .env
 .idea
+.vscode
 *.drawio.bkp
 *frontend/*/dist
 /volumes/
