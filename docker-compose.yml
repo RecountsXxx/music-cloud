@@ -1,4 +1,21 @@
 services:
+  nginx.gateway:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/nginx
+    volumes:
+      - ./frontend/dist:/var/www/html
+      - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api.upload
+      - api.stream
+      - api.auth
+      - frontend.public
+    ports:
+      - '80:80'
+    networks:
+      - vibe_stream_net
+
   frontend.public:
     container_name: frontend.public
     build:
@@ -11,10 +28,10 @@ services:
       - '5173:5173'
     restart: always
     networks:
-      - vibe_cloud_net
+      - vibe_stream_net
 
-  auth.api:
-    container_name: auth.api
+  api.auth:
+    container_name: api.auth
     build:
       dockerfile: Dockerfile
       context: ./backend/auth
@@ -24,7 +41,80 @@ services:
     ports:
       - '3000:3000'
     networks:
-      - vibe_cloud_net
+      - vibe_stream_net
+
+  api.main:
+    container_name: api.main
+    build:
+      dockerfile: Dockerfile
+      context: backend/java/api-main
+    depends_on:
+      - db.postgresql.main
+      - storage.minio
+      - rabbit.mq
+    ports:
+      - "8080:8080"
+    networks:
+      - vibe_stream_net
+
+  api.upload:
+    container_name: api.upload
+    build:
+      dockerfile: Dockerfile
+      context: backend/java/api-upload
+    depends_on:
+      - db.postgresql.main
+      - storage.minio
+      - rabbit.mq
+    ports:
+      - "8081:8081"
+    networks:
+      - vibe_stream_net
+
+  api.stream:
+    container_name: api.stream
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/api-stream
+    depends_on:
+      - storage.minio
+    ports:
+      - "8082:8082"
+    networks:
+      - vibe_stream_net
+
+  image.handler:
+    container_name: image.handler
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/image-handler
+    depends_on:
+      - storage.minio
+      - rabbit.mq
+    networks:
+      - vibe_stream_net
+
+  external.api.handler:
+    container_name: external.api.handler
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/external-api-handler
+    depends_on:
+      - storage.minio
+      - rabbit.mq
+    networks:
+      - vibe_stream_net
+
+  audio.handler:
+    container_name: audio.handler
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/java/audio-handler
+    depends_on:
+      - storage.minio
+      - rabbit.mq
+    networks:
+      - vibe_stream_net
 
   websocket.server.1:
     container_name: websocket.server.1
@@ -37,101 +127,7 @@ services:
     ports:
       - '3001:3001'
     networks:
-      - vibe_cloud_net
-
-  laravel.api:
-    container_name: laravel.api
-    build:
-      dockerfile: Dockerfile_api
-      context: backend/php/
-    volumes:
-      - ./backend/php/src:/app
-    depends_on:
-      - db.mysql
-    ports:
-      - '8000:8000'
-    networks:
-      - vibe_cloud_net
-
-  java.api.upload:
-    container_name: java.api.upload
-    build:
-      dockerfile: Dockerfile
-      context: backend/java/api-upload
-    depends_on:
-      - db.mysql
-      - storage.minio
-      - rabbit.mq
-    ports:
-      - "8080:8080"
-    networks:
-      - vibe_cloud_net
-
-  java.api.stream:
-    container_name: java.api.stream
-    build:
-      dockerfile: Dockerfile
-      context: ./backend/java/api-stream
-    depends_on:
-      - db.mysql
-      - storage.minio
-      - rabbit.mq
-    ports:
-      - "8081:8081"
-    networks:
-      - vibe_cloud_net
-
-  java.image.handler:
-    container_name: java.image.handler
-    build:
-      dockerfile: Dockerfile
-      context: ./backend/java/image-handler
-    depends_on:
-      - storage.minio
-      - rabbit.mq
-    networks:
-      - vibe_cloud_net
-
-  java.external.api.handler:
-    container_name: java.external.api.handler
-    build:
-      dockerfile: Dockerfile
-      context: ./backend/java/external-api-handler
-    depends_on:
-      - storage.minio
-      - rabbit.mq
-    networks:
-      - vibe_cloud_net
-
-  java.audio.handler:
-    container_name: java.audio.handler
-    build:
-      dockerfile: Dockerfile
-      context: ./backend/java/audio-handler
-    depends_on:
-      - storage.minio
-      - rabbit.mq
-    networks:
-      - vibe_cloud_net
-
-  nginx.router:
-    build:
-      dockerfile: Dockerfile
-      context: ./services/nginx
-    volumes:
-      - ./frontend/dist:/var/www/html
-      - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - laravel.api
-      - java.api.upload
-      - java.api.stream
-      - auth.api
-      - frontend.public
-    ports:
-      - '80:80'
-    networks:
-      - vibe_cloud_net
-
+      - vibe_stream_net
 
   db.redis:
     container_name: db.redis
@@ -139,25 +135,40 @@ services:
       dockerfile: Dockerfile
       context: ./services/redis
     volumes:
-      - ./volumes/db/redis/jobs:/data
+      - ./volumes/db/redis:/data
     ports:
       - "6379:6379"
     networks:
-      - vibe_cloud_net
+      - vibe_stream_net
 
-  db.mysql:
-    container_name: db.mysql
+  db.mysql.users:
+    container_name: db.mysql.users
     build:
       dockerfile: Dockerfile
       context: ./services/mysql
     volumes:
-      - ./volumes/db/mysql/main:/var/lib/mysql
+      - ./volumes/db/mysql/users:/var/lib/mysql
     env_file:
       - .env
     ports:
       - '3306:3306'
     networks:
-      - vibe_cloud_net
+      - vibe_stream_net
+
+  db.postgresql.main:
+    container_name: db.postgresql.main
+    build:
+      dockerfile: Dockerfile
+      context: ./services/postgresql
+    volumes:
+      - ./volumes/db/postgresql/main:/var/lib/postgresql
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    restart: always
+    networks:
+      - vibe_stream_net
 
   storage.minio:
     container_name: storage.minio
@@ -165,14 +176,14 @@ services:
       dockerfile: Dockerfile
       context: ./services/minio
     volumes:
-      - ./volumes/storage/minio/vibecloud:/var/lib/minio
+      - ./volumes/storage/minio/vibestream:/var/lib/minio
     env_file:
       - .env
     ports:
       - "9000:9000"
       - "9001:9001"
     networks:
-      - vibe_cloud_net
+      - vibe_stream_net
 
   rabbit.mq:
     container_name: rabbit.mq
@@ -185,18 +196,18 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - vibe_cloud_net
+      - vibe_stream_net
 
   phpmyadmin:
     image: phpmyadmin
     environment:
-      - PMA_HOST=db.mysql
+      - PMA_HOST=db.mysql.users
       - PMA_PORT=3306
     ports:
       - 9090:80
     networks:
-      - vibe_cloud_net
+      - vibe_stream_net
 
 networks:
-  vibe_cloud_net:
+  vibe_stream_net:
     driver: bridge
