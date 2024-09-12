@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.5 Chrome/126.0.6478.183 Electron/31.3.0 Safari/537.36" version="24.7.5">
   <diagram name="Page-1" id="FU6_ZFj3PDVp-BaARSxE">
-    <mxGraphModel dx="5162" dy="3131" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="5074" dy="3084" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -22,10 +22,10 @@
         <mxCell id="6JZ951tkPi9Nr6TmQ6ol-6" value="+ email : VARCHAR (255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="6JZ951tkPi9Nr6TmQ6ol-3" vertex="1">
           <mxGeometry y="78" width="205" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="6JZ951tkPi9Nr6TmQ6ol-7" value="+ password : PASSWORD&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;(SQL)&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="6JZ951tkPi9Nr6TmQ6ol-3" vertex="1">
+        <mxCell id="6JZ951tkPi9Nr6TmQ6ol-7" value="+ password : VARCHAR (255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="6JZ951tkPi9Nr6TmQ6ol-3" vertex="1">
           <mxGeometry y="104" width="205" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="Lza-kezcfvf8J4adov2q-2" value="+ refreshToken : VARCHAR (255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="6JZ951tkPi9Nr6TmQ6ol-3">
+        <mxCell id="Lza-kezcfvf8J4adov2q-2" value="+ refreshToken : VARCHAR (255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="6JZ951tkPi9Nr6TmQ6ol-3" vertex="1">
           <mxGeometry y="130" width="205" height="26" as="geometry" />
         </mxCell>
         <mxCell id="6JZ951tkPi9Nr6TmQ6ol-8" value="+ createdAt : DATETIME" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="6JZ951tkPi9Nr6TmQ6ol-3" vertex="1">
@@ -1442,7 +1442,7 @@
         <mxCell id="IgH56LYgwVDKT2t8ZM1N-32" value="ALMOST FOR EVERY RELATION &quot;&lt;i&gt;MANY-TO-MANY&quot;&lt;/i&gt;&amp;nbsp;INTERMEDIATE TABLE SHOULD HAVE ADDITIONAL FIELD/S" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-2295" y="-1810" width="225" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="Lza-kezcfvf8J4adov2q-1" value="&lt;span style=&quot;font-size: 20px;&quot;&gt;Database Entities&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="Lza-kezcfvf8J4adov2q-1" value="&lt;span style=&quot;font-size: 20px;&quot;&gt;Database Entities&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-940" y="-1860" width="180" height="40" as="geometry" />
         </mxCell>
       </root>
