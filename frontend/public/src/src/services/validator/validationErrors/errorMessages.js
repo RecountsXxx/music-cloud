@@ -1,45 +1,46 @@
-export function errorMessages(elem, inputType, vueInstance, errorType) {
-    const errorMessages = {
-        Email: {
-            Exists: vueInstance.$t('RegisterForm.Errors.emailExists'),
-            Format: vueInstance.$t('RegisterForm.Errors.invalidMailFormat')
-        },
-        Username: {
-            Exists: vueInstance.$t('RegisterForm.Errors.usernameExists'),
-            Format: vueInstance.$t('RegisterForm.Errors.invalidUsernameFormat'),
-            Length: vueInstance.$t('RegisterForm.Errors.usernameLength')
-        },
-        Password: {
-            Format: vueInstance.$t('RegisterForm.Errors.InvalidPasswordFormat'),
-            Length: vueInstance.$t('RegisterForm.Errors.passwordLength'),
-            ConfirmPassword: vueInstance.$t('RegisterForm.Errors.confPassword'),
-        }
-    };
-    if (errorType === 'exist') {
-        elem.textContent = errorMessages[inputType].Exists;
-        elem.style.visibility = 'visible';
-    } else if (errorType === 'length') {
-        elem.textContent = errorMessages[inputType].Length;
-        elem.style.visibility = 'visible';
-    } else if (errorType === 'format') {
-        elem.textContent = errorMessages[inputType].Format;
-        elem.style.visibility = 'visible';
-    } else if (errorType === 'confirmPassword') {
-        elem.textContent = errorMessages[inputType].ConfirmPassword;
-        elem.style.visibility = 'visible';
-    }
+import { useI18n } from 'vue-i18n'
 
-    // if(inputType)
-    //
-    // if (inputType && format === false) {
-    //     elem.textContent = errorMessages[inputType].noFormat;
-    //     elem.style.visibility = 'visible';
-    // }
-    // if (inputType && format === true) {
-    //     elem.textContent = errorMessages[inputType].Format;
-    //     elem.style.visibility = 'visible';
-    // } else if (inputType && length === false) {
-    //     elem.textContent = errorMessages[inputType].Length;
-    //     elem.style.visibility = 'visible';
-    // }
+
+export function usernameErrors(validation) {
+  const errors = []
+  const { t } = useI18n()
+
+  if (validation.username.required.$invalid) {
+    errors.push(t('RegisterForm.Errors.username.Required'))
+  }
+  if (validation.username.minLength.$invalid) {
+    errors.push(t('RegisterForm.Errors.username.MinLength'))
+  }
+  if (validation.username.maxLength.$invalid) {
+    errors.push(t('RegisterForm.Errors.username.MaxLength'))
+  }
+  if (validation.username.regex.$invalid) {
+    errors.push(t('RegisterForm.Errors.username.Regex'))
+  }
+  if (validation.username.isUnique.$invalid) {
+    errors.push(t('RegisterForm.Errors.username.uniqueUsername'))
+  }
+  return errors
+}
+
+export function emailErrors(validation) {
+  const errors = []
+  const { t } = useI18n()
+
+  if (validation.email.required.$invalid) {
+    errors.push(t('RegisterForm.Errors.email.Required'))
+  }
+  if (validation.email.minLength.$invalid) {
+    errors.push(t('RegisterForm.Errors.email.MinLength'))
+  }
+  if (validation.email.maxLength.$invalid) {
+    errors.push(t('RegisterForm.Errors.email.MaxLength'))
+  }
+  if (validation.email.regex.$invalid) {
+    errors.push(t('RegisterForm.Errors.email.Regex'))
+  }
+  if (validation.email.isUnique.$invalid) {
+    errors.push(t('RegisterForm.Errors.email.uniqueUsername'))
+  }
+  return errors
 }
