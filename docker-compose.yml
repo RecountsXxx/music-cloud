@@ -20,7 +20,7 @@ services:
     container_name: frontend.public
     build:
       dockerfile: Dockerfile
-      context: frontend/public
+      context: ./frontend/public
     volumes:
       - ./frontend/public/src:/frontend/public/app
       - /frontend/public/app/node_modules
