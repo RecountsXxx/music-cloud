@@ -1,46 +1,64 @@
 import { useI18n } from 'vue-i18n'
 
-
-export function usernameErrors(validation) {
+function generateErrors(validation, fieldName, rules) {
   const errors = []
   const { t } = useI18n()
 
-  if (validation.username.required.$invalid) {
-    errors.push(t('RegisterForm.Errors.username.Required'))
+  // Проверка на required
+  const requiredRule = rules.find(rule => rule.validator === 'required')
+  if (requiredRule && validation[fieldName]?.required?.$invalid) {
+    errors.push(t(requiredRule.message))
+    return errors // Возвращаем только ошибку required и ничего больше
   }
-  if (validation.username.minLength.$invalid) {
-    errors.push(t('RegisterForm.Errors.username.MinLength'))
-  }
-  if (validation.username.maxLength.$invalid) {
-    errors.push(t('RegisterForm.Errors.username.MaxLength'))
-  }
-  if (validation.username.regex.$invalid) {
-    errors.push(t('RegisterForm.Errors.username.Regex'))
-  }
-  if (validation.username.isUnique.$invalid) {
-    errors.push(t('RegisterForm.Errors.username.uniqueUsername'))
-  }
+
+  // Проверка остальных правил, если поле заполнено
+  rules.forEach(rule => {
+    const { validator, message, condition } = rule
+    if (validator !== 'required' && validation[fieldName]?.[validator]?.$invalid) {
+      if (!condition || condition(validation[fieldName])) {
+        errors.push(t(message))
+      }
+    }
+  })
+
   return errors
 }
 
-export function emailErrors(validation) {
-  const errors = []
-  const { t } = useI18n()
+export function usernameErrors(validation) {
+  return generateErrors(validation, 'username', [
+    { validator: 'required', message: 'RegisterForm.Errors.username.Required' },
+    { validator: 'minLength', message: 'RegisterForm.Errors.username.MinLength' },
+    { validator: 'maxLength', message: 'RegisterForm.Errors.username.MaxLength' },
+    { validator: 'regex', message: 'RegisterForm.Errors.username.Regex' },
+    { validator: 'isUnique', message: 'RegisterForm.Errors.username.uniqueUsername' }
+  ])
+}
 
-  if (validation.email.required.$invalid) {
-    errors.push(t('RegisterForm.Errors.email.Required'))
-  }
-  if (validation.email.minLength.$invalid) {
-    errors.push(t('RegisterForm.Errors.email.MinLength'))
-  }
-  if (validation.email.maxLength.$invalid) {
-    errors.push(t('RegisterForm.Errors.email.MaxLength'))
-  }
-  if (validation.email.regex.$invalid) {
-    errors.push(t('RegisterForm.Errors.email.Regex'))
-  }
-  if (validation.email.isUnique.$invalid) {
-    errors.push(t('RegisterForm.Errors.email.uniqueUsername'))
-  }
-  return errors
+export function emailErrors(validation) {
+  return generateErrors(validation, 'email', [
+    { validator: 'required', message: 'RegisterForm.Errors.email.Required' },
+    { validator: 'minLength', message: 'RegisterForm.Errors.email.MinLength' },
+    { validator: 'maxLength', message: 'RegisterForm.Errors.email.MaxLength' },
+    { validator: 'regex', message: 'RegisterForm.Errors.email.Regex' },
+    { validator: 'isUnique', message: 'RegisterForm.Errors.email.uniqueUsername' }
+  ])
+}
+
+export function passwordErrors(validation) {
+  return generateErrors(validation, 'password', [
+    { validator: 'required', message: 'RegisterForm.Errors.password.Required' },
+    { validator: 'minLength', message: 'RegisterForm.Errors.password.MinLength', condition: (field) => field.$model.length > 0 },
+    { validator: 'hasUpperCase', message: 'RegisterForm.Errors.password.Uppercase', condition: (field) => field.$model.length > 0 },
+    { validator: 'hasLowerCase', message: 'RegisterForm.Errors.password.Lowercase', condition: (field) => field.$model.length > 0 },
+    { validator: 'hasDigit', message: 'RegisterForm.Errors.password.Digit', condition: (field) => field.$model.length > 0 },
+    { validator: 'hasSpecialChar', message: 'RegisterForm.Errors.password.SpecialChar', condition: (field) => field.$model.length > 0 },
+    { validator: 'isValidPassword', message: 'RegisterForm.Errors.password.IncorrectSymbol', condition: (field) => field.$model.length > 0 }
+  ])
+}
+
+export function passwordConfirmErrors(validation) {
+  return generateErrors(validation, 'confirmPassword', [
+    { validator: 'required', message: 'RegisterForm.Errors.password.Required' },
+    { validator: 'sameAsPassword', message: 'RegisterForm.Errors.password.Mismatch' }
+  ])
 }
