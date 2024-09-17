@@ -85,7 +85,6 @@ export default {
       email: '', // введенный email
       password: '', // введенный пароль
       rememberMe: false, // запомнить пользователя
-      isPasswordVisible: false // видимость пароля
     }
   },
   async beforeCreate() {
@@ -121,7 +120,7 @@ export default {
 
     // Метод для изменения видимости пароля
     changeVisiblePassword() {
-      this.isPasswordVisible = showHidePassword(this.$refs.passwordInput)
+      showHidePassword(this.$refs.passwordInput)
     },
 
     // Метод для очистки состояния ошибки
