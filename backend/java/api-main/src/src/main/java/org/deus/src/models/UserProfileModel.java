@@ -3,9 +3,13 @@ package org.deus.src.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.deus.src.enums.Gender;
-import org.deus.src.enums.PreferredQuality;
+import org.deus.src.enums.AudioQuality;
+import org.deus.src.models.base.BaseIdUpdate;
+import org.deus.src.models.intermediateTables.UserBlockModel;
+import org.deus.src.models.intermediateTables.UserFollowingModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,17 +17,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "user_profiles")
-public class UserProfileModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "UUID", updatable = false, nullable = false)
-    private UUID id;
-
+public class UserProfileModel extends BaseIdUpdate {
     @Column(name = "user_id", columnDefinition = "UUID", nullable = false)
     private UUID userId;
 
@@ -45,7 +45,7 @@ public class UserProfileModel {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "preferred_quality", length = 6)
-    private PreferredQuality preferredQuality;
+    private AudioQuality preferredQuality;
 
     @Column(name = "biography", length = 400)
     private String biography;
@@ -74,12 +74,4 @@ public class UserProfileModel {
 
     @Column(name = "number_of_blocked_users")
     private Integer numberOfBlockedUsers;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }
