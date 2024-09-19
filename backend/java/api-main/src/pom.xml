@@ -122,11 +122,11 @@
             <artifactId>protobuf-java</artifactId>
             <version>4.28.0-RC1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <version>24.1.0</version>
         </dependency>
     </dependencies>
 

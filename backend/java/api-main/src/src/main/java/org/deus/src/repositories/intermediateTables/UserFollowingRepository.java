@@ -1,6 +1,6 @@
-package org.deus.src.repositories;
+package org.deus.src.repositories.intermediateTables;
 
-import org.deus.src.models.UserFollowingModel;
+import org.deus.src.models.intermediateTables.UserFollowingModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
