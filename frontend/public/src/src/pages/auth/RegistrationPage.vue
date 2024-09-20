@@ -11,12 +11,12 @@
       <!-- Поле ввода для имени пользователя -->
       <div class="input__container">
         <input
-          class="form__input"
-          type="text"
-          v-model="username"
-          :placeholder="$t('RegisterForm.placeholder.username')"
-          @input="validation.username.$touch(), uniqueUsername = false"
-          @blur="validation.username.$touch()"
+            class="form__input"
+            type="text"
+            v-model="username"
+            :placeholder="$t('RegisterForm.placeholder.username')"
+            @input="validation.username.$touch(), uniqueUsername = false"
+            @blur="validation.username.$touch()"
         />
         <span v-if="validation.username.$error">
             <div class="Errors__Message"
@@ -28,13 +28,13 @@
       <div class="input__container">
         <!-- Поле ввода для email -->
         <input
-          class="form__input"
-          v-model="email"
-          id="email"
-          type="text"
-          :placeholder="$t('RegisterForm.placeholder.email')"
-          @input="validation.email.$touch(), uniqueEmail = false"
-          @blur="validation.email.$touch()"
+            class="form__input"
+            v-model="email"
+            id="email"
+            type="text"
+            :placeholder="$t('RegisterForm.placeholder.email')"
+            @input="validation.email.$touch(), uniqueEmail = false"
+            @blur="validation.email.$touch()"
         />
         <span v-if="validation.email.$error">
           <div class="Errors__Message"
@@ -47,21 +47,21 @@
         <!-- Поле ввода для пароля -->
         <div class="password__field">
           <input
-            class="form__input password"
-            v-model="password"
-            id="password"
-            type="password"
-            ref="passwordInput"
-            :placeholder="$t('loginForm.placeholder.password')"
-            @input="validation.password.$touch()"
-            @blur="validation.password.$touch()"
+              class="form__input password"
+              v-model="password"
+              id="password"
+              type="password"
+              ref="passwordInput"
+              :placeholder="$t('loginForm.placeholder.password')"
+              @input="validation.password.$touch()"
+              @blur="validation.password.$touch()"
           />
           <div class="image__wrapper">
             <img
-              class="showHidePassword"
-              src="../../assets/images/showPassword.svg"
-              alt=""
-              @click="showHidePassword(this.$refs.passwordInput)"
+                class="showHidePassword"
+                src="../../assets/images/showPassword.svg"
+                alt=""
+                @click="showHidePassword(this.$refs.passwordInput)"
             />
           </div>
         </div>
@@ -75,21 +75,21 @@
         <!-- Поле ввода для подтверждения пароля -->
         <div class="password__field">
           <input
-            class="form__input password"
-            v-model="confirmPassword"
-            id="confirmPassword"
-            type="password"
-            ref="confirmPasswordInput"
-            :placeholder="$t('RegisterForm.placeholder.confirmPassword')"
-            @input="validation.confirmPassword.$touch()"
-            @blur="validation.confirmPassword.$touch()"
+              class="form__input password"
+              v-model="confirmPassword"
+              id="confirmPassword"
+              type="password"
+              ref="confirmPasswordInput"
+              :placeholder="$t('RegisterForm.placeholder.confirmPassword')"
+              @input="validation.confirmPassword.$touch()"
+              @blur="validation.confirmPassword.$touch()"
           />
           <div class="image__wrapper">
             <img
-              class="showHidePassword"
-              src="../../assets/images/showPassword.svg"
-              alt=""
-              @click="showHidePassword(this.$refs.confirmPasswordInput)"
+                class="showHidePassword"
+                src="../../assets/images/showPassword.svg"
+                alt=""
+                @click="showHidePassword(this.$refs.confirmPasswordInput)"
             />
           </div>
         </div>
@@ -102,7 +102,11 @@
 
       <!-- Чекбокс для принятия условий -->
       <div class="acceptPrivacyPolicy">
-        <input id="acceptCheckBox" name="accept" type="checkbox" v-model="acceptLic" />
+        <input id="acceptCheckBox"
+               :class="{ 'highlight': accept }"
+               name="accept" type="checkbox"
+               v-model="acceptLic"
+        />
         <label for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
           <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
@@ -112,14 +116,14 @@
       </div>
 
       <!-- Кнопка отправки формы -->
-      <input type="submit" class="submit__button" :value="$t('RegisterForm.buttonSubmit')" />
+      <input type="submit" class="submit__button" :value="$t('RegisterForm.buttonSubmit')"/>
     </form>
   </main>
 </template>
 
 <script lang="js">
-import { ref } from 'vue'
-import { helpers, maxLength, minLength, required, sameAs } from '@vuelidate/validators'
+import {ref} from 'vue'
+import {helpers, maxLength, minLength, required} from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
 import {
   emailErrors,
@@ -127,16 +131,16 @@ import {
   passwordErrors,
   usernameErrors
 } from '@/services/validator/validationErrors/errorMessages.js'
-import { showHidePassword } from '@/utils/showHidePassword.js'
-import { login, register } from '@/utils/query-system/query-actions/authActions.js'
-import { saveUserData } from '@/utils/saveUserData.js'
+import {showHidePassword} from '@/utils/showHidePassword.js'
+import {register} from "@/utils/query-system/query-actions/authActions.js";
+import {saveUserData} from "@/utils/saveUserData.js";
 
 export default {
-  methods: { passwordConfirmErrors, passwordErrors, showHidePassword, emailErrors, usernameErrors },
+  methods: {passwordConfirmErrors, passwordErrors, showHidePassword, emailErrors, usernameErrors},
   setup() {
-
     let uniqueUsername = ref(false)
     let uniqueEmail = ref(false)
+    let accept = ref(false)
 
     const username = ref('')
     const email = ref('')
@@ -174,42 +178,43 @@ export default {
       }
     }
 
-    const validation = useVuelidate(rules, { username, email, password, confirmPassword })
+    const validation = useVuelidate(rules, {username, email, password, confirmPassword})
 
     async function registerSubmit() {
       // uniqueUsername.value = true
       // uniqueEmail.value = true
-      validation.value.$touch()
-      if (acceptLic.value === true && !validation.value.$invalid) {
-        // если username или email ужа заняты вернет ошибку
-        const data = {
-          username: username.value,
-          email: email.value,
-          password: password.value,
-          confirmPassword: confirmPassword.value
-        }
-
-        try {
-          const res = await register(data)
-          console.log(res)
-          if (res) {
-            console.log('work')
-            // saveUserData(res, this.rememberMe)
-            console.log(res)
-          } else {
-            console.log(res)
+      if (acceptLic.value === true) {
+        validation.value.$touch()
+        if (!validation.value.$invalid) {
+          // если username или email ужа заняты вернет ошибку
+          const data = {
+            username: username.value,
+            email: email.value,
+            password: password.value,
+            confirmPassword: confirmPassword.value
           }
-        } catch (error) {
-          console.log(error)
+
+          try {
+            const res = await register(data)
+            if (res) {
+              if (res === 'Email') {
+                uniqueEmail.value = true
+              } else if (res === 'Username') {
+                uniqueUsername.value = true
+              } else {
+                saveUserData(res, this.rememberMe)
+              }
+            }
+          } catch (error) {
+            console.log(error)
+          }
         }
+      } else {
+        accept.value = true
+        setTimeout(() => {
+          accept.value = false
+        }, 350)
       }
-      // validation.username.$touch()
-      // СДЕЛАТЬ ВЫЗОВ ВАЛАДИАЦИИ ЧТО БЫ ВЫВЕСТИ ОШИБКУ
-
-      // if (!validation.value.$invalid) {
-      //   alert('Form submitted!');
-      // }
-
     }
 
     return {
@@ -219,6 +224,7 @@ export default {
       email,
       password,
       acceptLic,
+      accept,
       registerSubmit,
       validation,
       uniqueUsername,
