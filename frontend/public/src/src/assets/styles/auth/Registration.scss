@@ -98,16 +98,6 @@ $form__input__bc: #d9d9d9;
       color: yellow;
     }
 
-    @keyframes errorShow {
-      0% {
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 100%;
-      }
-    }
-
     .password__field {
       height: 60px;
       width: 100%;
@@ -207,6 +197,34 @@ $form__input__bc: #d9d9d9;
   }
 }
 
-.borderError {
-  border: 1px solid red;
+.highlight {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes errorShow {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 100%;
+  }
 }
