@@ -70,11 +70,10 @@
 </template>
 
 <script>
-import {validator} from '@/services/validator/validator.js'
 import {showHidePassword} from '@/utils/showHidePassword.js'
 import {saveUserData} from '@/utils/saveUserData.js'
 import {login} from '@/utils/query-system/query-actions/authActions.js'
-import { useMainStore } from '@/stores/mainStore.js'
+import {useMainStore} from '@/stores/mainStore.js'
 
 const mainStore = useMainStore();
 
@@ -93,18 +92,15 @@ export default {
   methods: {
     // Метод отправки формы для входа в систему
     async loginSubmit() {
-      const data = {
-        email: this.email,
-        password: this.password
-      }
-
-      // Валидация данных
-      if (validator(data, 1)) {
+      if (this.email.length > 3 && this.password.length > 3) {
+        const data = {
+          email: this.email,
+          password: this.password
+        }
         this.clearError() // Скрываем ошибки, если они были
         // Попытка аутентификации пользователя
         try {
           const res = await login(data)
-          console.log(res)
           if (res) {
             saveUserData(res, this.rememberMe)
           } else {

@@ -181,8 +181,6 @@ export default {
     const validation = useVuelidate(rules, {username, email, password, confirmPassword})
 
     async function registerSubmit() {
-      // uniqueUsername.value = true
-      // uniqueEmail.value = true
       if (acceptLic.value === true) {
         validation.value.$touch()
         if (!validation.value.$invalid) {
