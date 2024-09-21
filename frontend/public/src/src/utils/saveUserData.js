@@ -2,7 +2,7 @@ import {saveJwtTokenToLocalStorage, useAuthStore} from "@/stores/authStore.js";
 import {saveUserToLocalStore, useUserStore} from "@/stores/userStore.js";
 import {saveAvatarsInLocalStorage, useAvatarsStore} from "@/stores/avatarsStore.js";
 
-export function saveUserData(res,remember) {
+export function saveUserData(res, remember) {
     useUserStore().setUser(res.user);
     useAvatarsStore().setAvatars(res.avatars);
     useAuthStore().setJWT(res.accessToken);
