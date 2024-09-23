@@ -1,13 +1,15 @@
 <template>
-  <header class="header">
+  <header :class="{ 'justify-content-end': true }" class="header">
+    <language-dropdown></language-dropdown>
   </header>
 </template>
 
 <script>
+import LanguageDropdown from '@/components/languageDropdown/LanguageDropdown.vue'
 
 export default {
   name: 'Header',
-  components: {  }
+  components: { LanguageDropdown }
 }
 </script>
 
@@ -16,7 +18,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
   width: 100%;
   background-color: #f2f2f2;
   height: 50px;

@@ -2,6 +2,11 @@ import { createI18n } from 'vue-i18n';
 
 const supportedLanguages = ['en', 'ru', 'ua']; // Поддерживаемые языки
 const loadedLanguages = []; // Список уже загруженных языков
+export const languages = {
+    'ua': 'Українська',
+    'en': 'English',
+    'ru': 'Русский',
+};
 
 /**
  * Устанавливает язык в i18n и атрибут 'lang' в html
