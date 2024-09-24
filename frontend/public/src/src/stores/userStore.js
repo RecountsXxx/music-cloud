@@ -12,22 +12,10 @@ export function saveUserToLocalStore(user) {
   localStorage.setItem('userStore', JSON.stringify(user))
 }
 
-// Функция дла сохранения языка пользователя в локальном хранилище
-export function saveLanguageToLocalStorage(language) {
-  localStorage.setItem('language', language)
-}
-
-// Функция для загрузки языка пользователя из локального хранилища
-export function loadLanguageFromLocalStorage(language) {
-  const lang = localStorage.getItem('language')
-  return lang ? lang : null
-}
-
 // Определение хранилища пользователя с помощью Pinia
 export const useUserStore = defineStore('useUserStore', {
   state: () => ({
     user: null, // Начальное состояние - пользователь не задан
-    language: null
   }),
   getters: {
     getUser: (state) => state.user,
@@ -48,12 +36,6 @@ export const useUserStore = defineStore('useUserStore', {
     },
     // Метод для инициализации состояния из локального хранилища
     initialize() {
-      // loading language
-      const language = loadLanguageFromLocalStorage()
-      if (!language) {
-        this.language = getPreferredLanguage()
-        saveLanguageToLocalStorage(this.language)
-      }
       const user = loadUserFromLocalStore()
       if (user) {
         this.user = user

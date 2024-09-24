@@ -11,18 +11,20 @@
 
 <script>
 import { changeLanguage, getPreferredLanguage } from '../../../i18n.js'
-import { useUserStore } from '@/stores/userStore.js'
+import { ref, watch } from 'vue'
 
 export default {
   name: 'LanguageDropdown',
   setup() {
-    const userStore = useUserStore()
-    const selectedLanguage = userStore.language ? userStore.language : getPreferredLanguage()
+    const selectedLanguage = ref(getPreferredLanguage())
 
-    function changeLang() {
-      const language = this.selectedLanguage
-      console.log(language)
-      changeLanguage(language)
+    // Синхронизируем изменение языка в userStore
+    watch(selectedLanguage, (newLang) => {
+      changeLanguage(newLang)
+    })
+
+    const changeLang = () => {
+      changeLanguage(selectedLanguage.value)
     }
 
     return {
@@ -33,48 +35,29 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+/* Добавление стилей для выпадающего меню */
 .language-dropdown {
-  max-width: 120px;
   position: relative;
   display: inline-block;
 }
 
 select {
-  //max-width: 100%;
-  //color: black;
-  //background-color: transparent;
-  //width: 150px;
-  //border: none;
-  //border-radius: 5px;
-  //padding: 10px;
-  //font-size: 16px;
-  //appearance: none; /* Убираем стандартные стрелки браузера */
-  //-webkit-appearance: none;
-  //-moz-appearance: none;
-  //cursor: pointer;
-  //transition: all 0.3s ease;
-
   background-color: #1f1f1f;
-  color: black;
+  color: #fff;
   border: 1px solid #444;
   border-radius: 5px;
   padding: 10px;
   font-size: 16px;
-  appearance: none; /* Убираем стандартные стрелки браузера */
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
-  transition: all 0.3s ease;
-  padding-right: 40px; /* Дополнительное пространство для стрелки */
-
-  option {
-    background-color: #f2f2f2;
-  }
+  padding-right: 40px;
 }
 
 select:hover {
-  background-color: #c8c8c8;
+  background-color: #333;
 }
 
 select:focus {
@@ -82,17 +65,17 @@ select:focus {
   border-color: #777;
 }
 
-.language-dropdown:hover::after {
-  content: '▼';
+.custom-arrow {
+  content: '';
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #fff;
   pointer-events: none;
-  color: black;
-}
-
-.language-dropdown select {
-  padding-right: 30px;
 }
 </style>
