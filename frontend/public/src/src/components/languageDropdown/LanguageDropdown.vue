@@ -1,9 +1,9 @@
 <template>
-  <div class="language-dropdown">
-    <select v-model="selectedLanguage" @change="changeLang">
-      <option value="en">English</option>
-      <option value="ua">Українська</option>
+  <div class="dropdown-container">
+    <select v-model="selectedLanguage" @change="changeLang" class="dropdown">
       <option value="ru">Русский</option>
+      <option value="ua">Українська</option>
+      <option value="en">English</option>
     </select>
   </div>
 </template>
@@ -34,45 +34,38 @@ export default {
 }
 </script>
 
-<style scoped>
-/* Добавление стилей для выпадающего меню */
-.language-dropdown {
-  margin-right: 10px;
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-select {
-  text-align: center;
-  max-width: fit-content;
-  background-color: transparent;
-  color: #1f1f1f;
-  border: none;
+<style scoped lang="scss">
+/* Контейнер для DropDown */
+.dropdown-container {
+  margin-right: 15px;
+  display: inline-block;
+  background-color: transparent; /* Темный фон */
   border-radius: 5px;
-  font-size: 17px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 600;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: pointer;
-  padding: 5px;
-
-  option {
-    font-weight: 600;
-    border: none;
-  }
 }
 
-select:hover {
-  background-color: #d8d8d8;
-}
-
-select:focus {
+/* Стили для select */
+.dropdown {
+  background-color: transparent; /* Фон DropDown */
+  color: #fff; /* Белый текст */
+  border: none; /* Темная рамка */
+  padding: 8px;
+  border-radius: 4px;
   outline: none;
+  appearance: none; /* Убираем стандартную стрелку браузера */
+  width: 100%;
+  font-size: 1rem;
+  transition: 0.3s ease;
+  text-align: center;
+}
+
+/* Стили для option */
+.dropdown option {
+  background-color: #333; /* Фон опций */
+  color: #fff; /* Цвет текста опций */
+}
+
+/* Hover и Focus стили */
+.dropdown:hover {
+  background-color: #4d4d4d; /* Более светлая рамка при наведении */
 }
 </style>
