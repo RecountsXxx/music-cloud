@@ -1,6 +1,7 @@
 <template>
-  <header :class="{ 'justify-content-end': true }" class="header">
-    <language-dropdown></language-dropdown>
+    <header :class="{ 'justify-content-end': true }" class="header">
+<!--  <header class="header">-->
+    <language-dropdown/>
   </header>
 </template>
 
@@ -14,13 +15,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$background-color: #313131;
+$border-color: #797979;
+
 .header {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: #f2f2f2;
+  background-color: $background-color;
   height: 50px;
+  border-bottom: $border-color 1px solid;
 }
 </style>

@@ -1,11 +1,10 @@
 <template>
-  <div class="language-dropdown">
-    <select v-model="selectedLanguage" @change="changeLang">
-      <option value="en">English</option>
-      <option value="ua">Українська</option>
+  <div class="dropdown-container">
+    <select v-model="selectedLanguage" @change="changeLang" class="dropdown">
       <option value="ru">Русский</option>
+      <option value="ua">Українська</option>
+      <option value="en">English</option>
     </select>
-    <span class="custom-arrow"></span>
   </div>
 </template>
 
@@ -35,47 +34,38 @@ export default {
 }
 </script>
 
-<style scoped>
-/* Добавление стилей для выпадающего меню */
-.language-dropdown {
-  position: relative;
+<style scoped lang="scss">
+/* Контейнер для DropDown */
+.dropdown-container {
+  margin-right: 15px;
   display: inline-block;
-}
-
-select {
-  background-color: #1f1f1f;
-  color: #fff;
-  border: 1px solid #444;
+  background-color: transparent; /* Темный фон */
   border-radius: 5px;
-  padding: 10px;
-  font-size: 16px;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: pointer;
-  padding-right: 40px;
 }
 
-select:hover {
-  background-color: #333;
-}
-
-select:focus {
+/* Стили для select */
+.dropdown {
+  background-color: transparent; /* Фон DropDown */
+  color: #fff; /* Белый текст */
+  border: none; /* Темная рамка */
+  padding: 8px;
+  border-radius: 4px;
   outline: none;
-  border-color: #777;
+  appearance: none; /* Убираем стандартную стрелку браузера */
+  width: 100%;
+  font-size: 1rem;
+  transition: 0.3s ease;
+  text-align: center;
 }
 
-.custom-arrow {
-  content: '';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid #fff;
-  pointer-events: none;
+/* Стили для option */
+.dropdown option {
+  background-color: #333; /* Фон опций */
+  color: #fff; /* Цвет текста опций */
+}
+
+/* Hover и Focus стили */
+.dropdown:hover {
+  background-color: #4d4d4d; /* Более светлая рамка при наведении */
 }
 </style>

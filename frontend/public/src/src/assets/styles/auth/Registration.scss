@@ -1,17 +1,21 @@
 $f_size__form_title: calc(8 * 0.3vw);
 $font_size: calc(5 * 0.25vw);
-$placeholder__bc: #525252;
+$placeholder__bc: #bbbbbb;
 $submit__button__bc: #8f8a8a;
-$form__input__bc: #d9d9d9;
+$form__input__bc: #252525;
+$link__color: #b0b0b0;
+$form__input__text: #ffffff;
 
 #main__container {
   font-family: Inertia, 'Helvetica Neue', Helvetica, Arial, serif;
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: auto;
   align-items: center;
 
   .form__title {
+    color: #b9b9b9;
     font-weight: 600;
     text-align: center;
     width: 100%;
@@ -22,10 +26,11 @@ $form__input__bc: #d9d9d9;
   .link__login__account {
     font-size: 16px;
     margin-bottom: 50px;
+    color: #c9c9c9;
 
     a {
       text-decoration: none;
-      color: black;
+      color: $link__color;
       font-weight: 600;
     }
   }
@@ -49,7 +54,7 @@ $form__input__bc: #d9d9d9;
       justify-content: center;
 
       .form__input {
-        color: black;
+        color: $form__input__text;
         font-size: $font_size;
         background-color: $form__input__bc;
         height: 60px;
@@ -69,7 +74,7 @@ $form__input__bc: #d9d9d9;
         &:-webkit-autofill:focus,
         &:-webkit-autofill:active {
           -webkit-box-shadow: 0 0 0 30px $form__input__bc inset !important;
-          -webkit-text-fill-color: black !important;
+          -webkit-text-fill-color: $form__input__text !important;
         }
 
         &::placeholder {
@@ -92,10 +97,6 @@ $form__input__bc: #d9d9d9;
       animation-duration: 0.5s;
       animation-timing-function: ease-in-out;
       animation-fill-mode: forwards;
-    }
-
-    .errorHidden {
-      color: yellow;
     }
 
     .password__field {
@@ -123,7 +124,7 @@ $form__input__bc: #d9d9d9;
 
         .showHidePassword {
           user-select: none;
-          width: calc(6 * .25vw);
+          width: calc(6 * 0.25vw);
           border-radius: 30px;
           transition: 100ms all linear;
 
@@ -138,7 +139,7 @@ $form__input__bc: #d9d9d9;
 
     .submit__button {
       font-size: 23px;
-      color: white;
+      color: #000000;
       border-radius: 30px;
       margin-top: 25px;
       padding: 15px 30px;
@@ -153,8 +154,8 @@ $form__input__bc: #d9d9d9;
 
       &:hover {
         transform: scale(0.95);
-        background-color: white;
-        color: $submit__button__bc;
+        background-color: #a9a9a9;
+        color: #171717;
         border: 1px solid $submit__button__bc;
       }
     }
@@ -173,24 +174,25 @@ $form__input__bc: #d9d9d9;
 
       label {
         margin-left: 5px;
+        color: #c9c9c9;
 
         a:link {
-          color: #000000;
+          color: $link__color;
         }
 
         /* visited link */
         a:visited {
-          color: #000000;
+          color: $link__color;
         }
 
         /* mouse over link */
         a:hover {
-          color: #000000;
+          color: $link__color;
         }
 
         /* selected link */
         a:active {
-          color: #000000;
+          color: $link__color;
         }
       }
     }
