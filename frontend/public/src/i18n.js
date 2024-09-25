@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
-const supportedLanguages = ['en', 'ru', 'ua'] // Поддерживаемые языки
+export const supportedLanguages = ['en', 'ru', 'ua'] // Поддерживаемые языки
 const loadedLanguages = [] // Список уже загруженных языков
 
 /**
