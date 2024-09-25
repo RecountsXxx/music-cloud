@@ -6,6 +6,7 @@
   justify-content: center;
 
   .dropdown {
+    font-family: "Roboto Thin", sans-serif;
     margin-right: 15px;
     cursor: pointer;
     padding: 8px 16px;
@@ -13,7 +14,7 @@
     border: none;  // Убираем границу
     border-radius: 4px;
     color: #fff;  // Белый текст на кнопке
-    font-size: 16px;
+    font-size: 18px;
     user-select: none;
     transition: background-color 0.2s;
 
@@ -37,6 +38,7 @@
     z-index: 10;
 
     li {
+      font-size: 18px;
       padding: 8px 12px;
       cursor: pointer;
       color: #ddd;  // Светлый текст для элементов списка
