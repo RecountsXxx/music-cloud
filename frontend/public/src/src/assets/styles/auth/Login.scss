@@ -1,15 +1,15 @@
 $f_size__login_title: calc(8 * 0.3vw);
-$font_size: calc(5 * 0.25vw);
+$font_size: 16px;
 $error_message_size: calc(4 * 0.25vw);
 // colors
 $placeholder__bc: #efefef;
 $submit__button__bc: #7c7c7c;
-$form__input__bc: #252525;
+$form__input__bc: #545454;
 $link__color: #b0b0b0;
 $form__input__text: #ffffff;
 
 #main__container {
-  font-family: Inertia, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: Inter, sefir, serif;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -23,6 +23,7 @@ $form__input__text: #ffffff;
   }
 
   .link__create_account {
+    margin-top: 15px;
     color: #ffffff;
 
     a {
@@ -51,7 +52,7 @@ $form__input__text: #ffffff;
   }
 
   .login__title {
-    color: #b9b9b9;
+    color: #f7f7f7;
     user-select: none;
     font-weight: 600;
     text-align: center;
@@ -75,11 +76,11 @@ $form__input__text: #ffffff;
       font-size: $font_size;
       height: 60px;
       width: 100%;
-      max-width: 480px;
+      max-width: 450px;
       padding: 17px 25px;
       border: none;
       outline: none;
-      border-radius: 30px;
+      border-radius: 7px;
 
       &:placeholder-shown {
         background-color: $form__input__bc;
@@ -106,7 +107,7 @@ $form__input__text: #ffffff;
     .password__field {
       height: 60px;
       width: 100%;
-      max-width: 480px;
+      max-width: 450px;
       display: flex;
       flex-direction: row;
       margin-bottom: 20px;
@@ -123,14 +124,14 @@ $form__input__text: #ffffff;
         justify-content: center;
         height: 60px;
         background-color: $form__input__bc;
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 30px;
+        border-top-right-radius: 7px;
+        border-bottom-right-radius: 7px;
         padding-right: 15px;
 
         .showHidePassword {
           user-select: none;
           width: calc(6 * 0.25vw);
-          border-radius: 30px;
+          border-radius: 7px;
           transition: 100ms all linear;
 
           &:hover {
@@ -143,7 +144,7 @@ $form__input__text: #ffffff;
 
     .remember-forgot-container {
       width: 100%;
-      max-width: 440px;
+      max-width: 445px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -153,13 +154,45 @@ $form__input__text: #ffffff;
 
         #remember-me {
           transform: scale(1.2);
+          accent-color: transparent;
         }
 
-        label {
-          font-size: calc(4 * 0.25vw);
-          margin-left: 10px;
-          color: $link__color;
+        .custom-checkbox {
+          position: relative;
+          display: inline-block;
+
+          .remember-text {
+            margin-left: 13px;
+            font-size: calc(4 * 0.25vw);
+            color: #f7f7f7;
+            font-weight: 400;
+          }
         }
+
+        .custom-checkbox input[type='checkbox'] {
+          appearance: none;
+          -webkit-appearance: none;
+          background-color: #2e2e2e;
+          border: 1px solid #8f8a8a;
+          width: 15px;
+          height: 15px;
+          border-radius: 3px;
+          outline: none;
+          transition: background 0.3s ease;
+        }
+
+        .custom-checkbox input[type='checkbox']:checked::before {
+          content: '✓';
+          color: white;
+          font-size: 17px;
+          display: block;
+          text-align: center;
+          line-height: 17px;
+        }
+
+        //.custom-checkbox input[type="checkbox"]:hover {
+        //  background-color: #7e7b7b; /* Цвет при наведении */
+        //}
       }
 
       .forgot-password {
@@ -187,13 +220,17 @@ $form__input__text: #ffffff;
     }
 
     .submit__button {
-      font-size: 23px;
-      color: #000000;
-      border-radius: 30px;
+      font-family: Inter, sefir, serif;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 21.78px;
+      color: white;
+      border-radius: 5px;
       margin-top: 25px;
       padding: 15px 30px;
       width: 100%;
       max-width: 450px;
+      height: 50px;
       border: none;
       outline: none;
       background-color: $submit__button__bc;

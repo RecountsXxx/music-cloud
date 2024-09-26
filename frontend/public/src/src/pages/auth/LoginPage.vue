@@ -5,17 +5,20 @@
 
     <!-- Форма для входа в систему -->
     <form id="login__form" @submit.prevent="loginSubmit">
+      <label class="align-self-start" style="margin-left: 75px;margin-bottom: 7px;color: white" for="email">{{ $t('loginForm.placeholder.email') }}</label>
       <!-- Поле ввода для email -->
       <input
+        autocomplete="off"
         class="form__input"
         v-model="email"
         id="email"
         type="text"
-        :placeholder="$t('loginForm.placeholder.email')"
+        placeholder="Example@gmail.com"
         @input="clearError"
       />
 
       <!-- Поле ввода для пароля с возможностью показа/скрытия пароля -->
+      <label class="align-self-start" style="margin-left: 75px;margin-bottom: 7px;color: white" for="password">{{ $t('loginForm.placeholder.password') }}</label>
       <div class="password__field">
         <input
           class="form__input"
@@ -23,7 +26,6 @@
           id="password"
           type="password"
           ref="passwordInput"
-          :placeholder="$t('loginForm.placeholder.password')"
           @input="clearError"
         />
 
@@ -42,8 +44,10 @@
       <div class="remember-forgot-container">
         <!-- Чекбокс "Запомнить меня" -->
         <div class="remember-me">
-          <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe" />
-          <label for="remember-me">{{ $t('loginForm.remember-me') }}</label>
+          <label class="custom-checkbox">
+            <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe" />
+            <span class="remember-text">{{ $t('loginForm.remember-me') }}</span>
+          </label>
         </div>
 
         <!-- Ссылка на страницу восстановления пароля -->

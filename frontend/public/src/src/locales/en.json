@@ -2,7 +2,8 @@
   "loginForm": {
     "form__title": "Login",
     "placeholder": {
-      "email": "Email",
+      "email": "Example@gmail.com",
+      "email_label": "Email",
       "password": "Password"
     },
     "buttonSubmit": "Login",
@@ -10,15 +11,15 @@
     "forgot-password": "Forgot password?",
     "register": {
       "noRegister": "Not registered yet?",
-      "createAccount": "Create an account"
+      "createAccount": "Create account"
     },
     "Errors": {
       "IncData": "Incorrect data",
-      "IncPassOrEmail": "Incorrect email or password"
+      "IncPassOrEmail": "Invalid email or password"
     }
   },
   "RegisterForm": {
-    "form__title": "Register",
+    "form__title": "Sign Up",
     "placeholder": {
       "username": "Username",
       "email": "Email",
@@ -30,32 +31,32 @@
       "signIn": "Sign in"
     },
     "accept": {
-      "IAccept": "I accept the",
-      "terms": "Terms of Use",
+      "IAccept": "I accept",
+      "terms": "Terms of service",
       "and": "and",
-      "privacy_policy": "Privacy Policy"
+      "privacy_policy": "Privacy policy"
     },
-    "buttonSubmit": "Register",
+    "buttonSubmit": "Sign Up",
     "Errors": {
       "username": {
-        "Required": "This field is required",
-        "MinLength": "Username must be at least 3 characters",
-        "MaxLength": "Username must not exceed 15 characters",
-        "Regex": "Username should only contain letters and numbers (a-z, A-Z, 0-9)",
+        "Required": "Field is required",
+        "MinLength": "Username must be at least 3 characters long",
+        "MaxLength": "Username must be no more than 15 characters long",
+        "Regex": "Username must contain only Latin letters and numbers (a-z, A-Z, 0-9)",
         "uniqueUsername": "This username is already taken"
       },
       "email": {
-        "Required": "This field is required",
-        "MinLength": "Email must be at least 3 characters",
+        "Required": "Field is required",
+        "MinLength": "Email must be at least 3 characters long",
         "Regex": "Invalid email format",
         "uniqueUsername": "This email is already in use"
       },
       "password": {
-        "Required": "This field is required",
-        "MinLength": "Password must be at least 8 characters",
+        "Required": "Field is required",
+        "MinLength": "Password must be at least 8 characters long",
         "Uppercase": "Password must contain at least one uppercase letter",
         "Lowercase": "Password must contain at least one lowercase letter",
-        "Digit": "Password must contain at least one digit",
+        "Digit": "Password must contain at least one number",
         "SpecialChar": "Password must contain at least one special character",
         "IncorrectSymbol": "Invalid symbol",
         "Mismatch": "Passwords do not match"

@@ -1,13 +1,13 @@
-$f_size__form_title: calc(8 * 0.3vw);
+$f_size__form_title: 40px;
 $font_size: calc(5 * 0.25vw);
 $placeholder__bc: #bbbbbb;
-$submit__button__bc: #8f8a8a;
-$form__input__bc: #252525;
+$submit__button__bc: #545454;
+$form__input__bc: #545454;
 $link__color: #b0b0b0;
 $form__input__text: #ffffff;
 
 #main__container {
-  font-family: Inertia, 'Helvetica Neue', Helvetica, Arial, serif;
+  font-family: Inter, sefir, serif;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -15,7 +15,7 @@ $form__input__text: #ffffff;
   align-items: center;
 
   .form__title {
-    color: #b9b9b9;
+    color: #f7f7f7;
     font-weight: 600;
     text-align: center;
     width: 100%;
@@ -25,8 +25,8 @@ $form__input__text: #ffffff;
 
   .link__login__account {
     font-size: 16px;
-    margin-bottom: 50px;
-    color: #c9c9c9;
+    margin-bottom: 35px;
+    color: #f7f7f7;
 
     a {
       text-decoration: none;
@@ -45,9 +45,18 @@ $form__input__text: #ffffff;
     width: 100%;
     max-width: 600px;
 
+    label {
+      font-size: 16px;
+      font-weight: 400;
+      align-self: start;
+      margin-left: 80px;
+      margin-bottom: 7px;
+      color: white;
+    }
+
     .input__container {
-      margin-bottom: 25px;
-      width: 480px;
+      margin-bottom: 15px;
+      width: 450px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -57,13 +66,13 @@ $form__input__text: #ffffff;
         color: $form__input__text;
         font-size: $font_size;
         background-color: $form__input__bc;
-        height: 60px;
+        height: 54px;
         width: 100%;
-        max-width: 480px;
+        max-width: 450px;
         padding: 17px 25px;
         border: none;
         outline: none;
-        border-radius: 30px;
+        border-radius: 7px;
 
         &:placeholder-shown {
           background-color: $form__input__bc;
@@ -85,12 +94,13 @@ $form__input__text: #ffffff;
     }
 
     .Errors__Message {
+      font-weight: 400;
       width: 100%;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: red;
+      color: #ec5c5c;
       align-self: start;
       margin-top: 10px;
       animation-name: errorShow;
@@ -102,7 +112,7 @@ $form__input__text: #ffffff;
     .password__field {
       height: 60px;
       width: 100%;
-      max-width: 480px;
+      max-width: 450px;
       display: flex;
       flex-direction: row;
 
@@ -116,37 +126,41 @@ $form__input__text: #ffffff;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 60px;
+        height: 54px;
         background-color: $form__input__bc;
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 30px;
+        border-top-right-radius: 7px;
+        border-bottom-right-radius: 7px;
         padding-right: 15px;
 
         .showHidePassword {
           user-select: none;
           width: calc(6 * 0.25vw);
-          border-radius: 30px;
+          border-radius: 7px;
           transition: 100ms all linear;
 
           &:hover {
             cursor: pointer;
             transform: scale(0.85);
-            background-color: #c7c7c7;
           }
         }
       }
     }
 
     .submit__button {
-      font-size: 23px;
-      color: #000000;
-      border-radius: 30px;
+      font-family: Inter, sefir, serif;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 21.78px;
+      color: white;
+      border-radius: 5px;
       margin-top: 25px;
       padding: 15px 30px;
       width: 100%;
       max-width: 450px;
+      height: 50px;
       border: none;
       outline: none;
+
       background-color: $submit__button__bc;
 
       inset: 0;
@@ -168,8 +182,41 @@ $form__input__text: #ffffff;
       user-select: none;
 
       #acceptCheckBox {
-        margin-bottom: 2px;
         transform: scale(1.2);
+        accent-color: transparent;
+      }
+
+      .custom-checkbox {
+        position: relative;
+        display: inline-block;
+
+        .remember-text {
+          margin-left: 13px;
+          font-size: calc(4 * 0.25vw);
+          color: #f7f7f7;
+          font-weight: 400;
+        }
+      }
+
+      .custom-checkbox input[type='checkbox'] {
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: #2e2e2e;
+        border: 1px solid #8f8a8a;
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        outline: none;
+        transition: background 0.3s ease;
+      }
+
+      .custom-checkbox input[type='checkbox']:checked::before {
+        content: '✓';
+        color: white;
+        font-size: 17px;
+        display: block;
+        text-align: center;
+        line-height: 17px;
       }
 
       label {
