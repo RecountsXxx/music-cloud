@@ -1,4 +1,4 @@
-$background-color: #2E2E2E;
+$background-color: #2e2e2e;
 
 body {
   width: 100%;
@@ -7,10 +7,14 @@ body {
   //flex-direction: column;
 }
 
-#app {
+.main-container {
   display: flex;
-  flex-direction: row-reverse;
   background-color: $background-color;
+  width: 100%;
+  height: 100%;
+}
+
+#app {
   width: 100%;
   height: 100%;
 }
