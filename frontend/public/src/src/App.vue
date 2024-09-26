@@ -1,16 +1,24 @@
 <template>
-  <Header></Header>
+  <Header />
+  <sidebar v-if="isAuth"></sidebar>
   <RouterView />
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import Header from '@/components/header/Header.vue'
+import Sidebar from '@/components/sidebar/Sidebar.vue'
+import { useAuthStore } from '@/stores/authStore.js'
 
 export default defineComponent({
-  components: { Header },
+  components: { Sidebar, Header },
   setup() {
-    return {}
+    const authStore = useAuthStore()
+    const isAuth = computed(() => authStore.getIsAuthenticated)
+
+    return {
+      isAuth
+    }
   }
 })
 </script>
