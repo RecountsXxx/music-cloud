@@ -8,105 +8,119 @@
     </div>
 
     <form id="register__form" @submit.prevent="registerSubmit">
-      <!-- Поле ввода для имени пользователя -->
+      <!-- Поле ввода для Отображаемое имя -->
+      <label for="display_name">{{ $t('RegisterForm.placeholder.display_name') }}</label>
       <div class="input__container">
         <input
-            class="form__input"
-            type="text"
-            v-model="username"
-            :placeholder="$t('RegisterForm.placeholder.username')"
-            @input="validation.username.$touch(), uniqueUsername = false"
-            @blur="validation.username.$touch()"
+          id="display_name"
+          class="form__input"
+          type="text"
+          v-model="display_name"
+          @input="validation.display_name.$touch()"
         />
-        <span v-if="validation.username.$error">
-            <div class="Errors__Message"
-                 v-for="(error) in usernameErrors(validation)"
-            >{{ error }}</div>
-          </span>
-      </div>
-
-      <div class="input__container">
-        <!-- Поле ввода для email -->
-        <input
-            class="form__input"
-            v-model="email"
-            id="email"
-            type="text"
-            :placeholder="$t('RegisterForm.placeholder.email')"
-            @input="validation.email.$touch(), uniqueEmail = false"
-            @blur="validation.email.$touch()"
-        />
-        <span v-if="validation.email.$error">
-          <div class="Errors__Message"
-               v-for="(error) in emailErrors(validation)"
-          >{{ error }}</div>
+        <span v-if="validation.display_name.$error">
+          <div class="Errors__Message" v-for="error in display_nameErrors(validation)">
+            {{ error }}
+          </div>
         </span>
       </div>
 
+      <label for="username">{{ $t('RegisterForm.placeholder.username') }}</label>
+      <!-- Поле ввода для имени пользователя -->
+      <div class="input__container">
+        <input
+          autocomplete="off"
+          id="username"
+          class="form__input"
+          type="text"
+          v-model="username"
+          @input="validation.username.$touch(), (uniqueUsername = false)"
+        />
+        <span v-if="validation.username.$error">
+          <div class="Errors__Message" v-for="error in usernameErrors(validation)">{{ error }}</div>
+        </span>
+      </div>
+
+      <label for="email">{{ $t('RegisterForm.placeholder.email') }}</label>
+      <div class="input__container">
+        <!-- Поле ввода для email -->
+        <input
+          class="form__input"
+          v-model="email"
+          id="email"
+          type="text"
+          placeholder="Example@gmail.com"
+          @input="validation.email.$touch(), (uniqueEmail = false)"
+        />
+        <span v-if="validation.email.$error">
+          <div class="Errors__Message" v-for="error in emailErrors(validation)">{{ error }}</div>
+        </span>
+      </div>
+
+      <label for="password">{{ $t('loginForm.placeholder.password') }}</label>
       <div class="input__container">
         <!-- Поле ввода для пароля -->
         <div class="password__field">
           <input
-              class="form__input password"
-              v-model="password"
-              id="password"
-              type="password"
-              ref="passwordInput"
-              :placeholder="$t('loginForm.placeholder.password')"
-              @input="validation.password.$touch()"
-              @blur="validation.password.$touch()"
+            class="form__input password"
+            v-model="password"
+            id="password"
+            type="password"
+            ref="passwordInput"
+            @input="validation.password.$touch()"
           />
           <div class="image__wrapper">
             <img
-                class="showHidePassword"
-                src="../../assets/images/showPassword.svg"
-                alt=""
-                @click="showHidePassword(this.$refs.passwordInput)"
+              class="showHidePassword"
+              src="../../assets/images/showPassword.svg"
+              alt=""
+              @click="showHidePassword(this.$refs.passwordInput)"
             />
           </div>
         </div>
         <span v-if="validation.password.$error">
-            <div class="Errors__Message"
-                 v-for="(error) in passwordErrors(validation)"
-            >{{ error }}</div>
-          </span>
+          <div class="Errors__Message" v-for="error in passwordErrors(validation)">{{ error }}</div>
+        </span>
       </div>
+
+      <label for="confirmPassword">{{ $t('RegisterForm.placeholder.confirmPassword') }}</label>
       <div class="input__container">
         <!-- Поле ввода для подтверждения пароля -->
         <div class="password__field">
           <input
-              class="form__input password"
-              v-model="confirmPassword"
-              id="confirmPassword"
-              type="password"
-              ref="confirmPasswordInput"
-              :placeholder="$t('RegisterForm.placeholder.confirmPassword')"
-              @input="validation.confirmPassword.$touch()"
-              @blur="validation.confirmPassword.$touch()"
+            class="form__input password"
+            v-model="confirmPassword"
+            id="confirmPassword"
+            type="password"
+            ref="confirmPasswordInput"
+            @input="validation.confirmPassword.$touch()"
           />
           <div class="image__wrapper">
             <img
-                class="showHidePassword"
-                src="../../assets/images/showPassword.svg"
-                alt=""
-                @click="showHidePassword(this.$refs.confirmPasswordInput)"
+              class="showHidePassword"
+              src="../../assets/images/showPassword.svg"
+              alt=""
+              @click="showHidePassword(this.$refs.confirmPasswordInput)"
             />
           </div>
         </div>
         <span v-if="validation.confirmPassword.$error">
-          <div class="Errors__Message"
-               v-for="(error) in passwordConfirmErrors(validation)"
-          >{{ error }}</div>
+          <div class="Errors__Message" v-for="error in passwordConfirmErrors(validation)">
+            {{ error }}
+          </div>
         </span>
       </div>
 
-      <!-- Чекбокс для принятия условий -->
       <div class="acceptPrivacyPolicy">
-        <input id="acceptCheckBox"
-               :class="{ 'highlight': accept }"
-               name="accept" type="checkbox"
-               v-model="acceptLic"
-        />
+        <label class="custom-checkbox">
+          <input
+            id="acceptCheckBox"
+            :class="{ highlight: accept }"
+            name="accept"
+            type="checkbox"
+            v-model="acceptLic"
+          />
+        </label>
         <label for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
           <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
@@ -114,34 +128,42 @@
           <router-link to="#">{{ $t('RegisterForm.accept.privacy_policy') }}</router-link>
         </label>
       </div>
-
       <!-- Кнопка отправки формы -->
-      <input type="submit" class="submit__button" :value="$t('RegisterForm.buttonSubmit')"/>
+      <input type="submit" class="submit__button" :value="$t('RegisterForm.buttonSubmit')" />
     </form>
   </main>
 </template>
 
 <script lang="js">
-import {ref} from 'vue'
-import {helpers, maxLength, minLength, required} from '@vuelidate/validators'
+import { ref } from 'vue'
+import { helpers, maxLength, minLength, required } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
 import {
+  display_nameErrors,
   emailErrors,
   passwordConfirmErrors,
   passwordErrors,
   usernameErrors
 } from '@/services/validator/validationErrors/errorMessages.js'
-import {showHidePassword} from '@/utils/showHidePassword.js'
-import {register} from "@/utils/query-system/query-actions/authActions.js";
-import {saveUserData} from "@/utils/saveUserData.js";
+import { showHidePassword } from '@/utils/showHidePassword.js'
+import { register } from '@/utils/query-system/query-actions/authActions.js'
+import { saveUserData } from '@/utils/saveUserData.js'
 
 export default {
-  methods: {passwordConfirmErrors, passwordErrors, showHidePassword, emailErrors, usernameErrors},
+  methods: {
+    display_nameErrors,
+    passwordConfirmErrors,
+    passwordErrors,
+    showHidePassword,
+    emailErrors,
+    usernameErrors
+  },
   setup() {
     let uniqueUsername = ref(false)
     let uniqueEmail = ref(false)
     let accept = ref(false)
 
+    const display_name = ref('')
     const username = ref('')
     const email = ref('')
     const password = ref('')
@@ -150,35 +172,47 @@ export default {
 
     const acceptLic = ref(false)
     const rules = {
+      display_name: {
+        required,
+        minLength: minLength(3)
+      },
       username: {
         required,
         minLength: minLength(3),
         maxLength: maxLength(15),
         regex: helpers.regex(/^[a-zA-Z][a-zA-Z0-9_-]*$/),
-        isUnique: value => !uniqueUsername.value
+        isUnique: (value) => !uniqueUsername.value
       },
       email: {
         required,
         // minLength: minLength(3),
-        regex: helpers.regex(/(?:[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/),
-        isUnique: value => !uniqueEmail.value
+        regex: helpers.regex(
+          /(?:[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/
+        ),
+        isUnique: (value) => !uniqueEmail.value
       },
       password: {
         required,
         minLength: minLength(8),
-        hasUpperCase: value => /[A-Z]/.test(value), // Проверка на заглавную букву
-        hasLowerCase: value => /[a-z]/.test(value), // Проверка на строчную букву
-        hasDigit: value => /\d/.test(value),       // Проверка на наличие цифры
-        hasSpecialChar: value => /[@$!%*?&#]/.test(value), // Проверка на наличие специального символа
-        isValidPassword: value => /^[A-Za-z0-9@$!%*?&#]+$/.test(value)
+        hasUpperCase: (value) => /[A-Z]/.test(value), // Проверка на заглавную букву
+        hasLowerCase: (value) => /[a-z]/.test(value), // Проверка на строчную букву
+        hasDigit: (value) => /\d/.test(value), // Проверка на наличие цифры
+        hasSpecialChar: (value) => /[@$!%*?&#]/.test(value), // Проверка на наличие специального символа
+        isValidPassword: (value) => /^[A-Za-z0-9@$!%*?&#]+$/.test(value)
       },
       confirmPassword: {
         required,
-        sameAsPassword: value => value === password.value
+        sameAsPassword: (value) => value === password.value
       }
     }
 
-    const validation = useVuelidate(rules, {username, email, password, confirmPassword})
+    const validation = useVuelidate(rules, {
+      username,
+      email,
+      password,
+      display_name,
+      confirmPassword
+    })
 
     async function registerSubmit() {
       if (acceptLic.value === true) {
@@ -216,6 +250,7 @@ export default {
     }
 
     return {
+      display_name,
       confirmPassword,
       isValidPassword,
       username,

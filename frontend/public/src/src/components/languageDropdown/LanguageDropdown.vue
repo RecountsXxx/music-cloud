@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import {onBeforeUnmount, onMounted, ref} from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { changeLanguage, getPreferredLanguage } from '../../../i18n.js'
 
 export default {

@@ -5,35 +5,37 @@
 
     <!-- Форма для входа в систему -->
     <form id="login__form" @submit.prevent="loginSubmit">
+      <label class="align-self-start" style="margin-left: 75px;margin-bottom: 7px;color: white" for="email">{{ $t('loginForm.placeholder.email') }}</label>
       <!-- Поле ввода для email -->
       <input
-          class="form__input"
-          v-model="email"
-          id="email"
-          type="text"
-          :placeholder="$t('loginForm.placeholder.email')"
-          @input="clearError"
+        autocomplete="off"
+        class="form__input"
+        v-model="email"
+        id="email"
+        type="text"
+        placeholder="Example@gmail.com"
+        @input="clearError"
       />
 
       <!-- Поле ввода для пароля с возможностью показа/скрытия пароля -->
+      <label class="align-self-start" style="margin-left: 75px;margin-bottom: 7px;color: white" for="password">{{ $t('loginForm.placeholder.password') }}</label>
       <div class="password__field">
         <input
-            class="form__input"
-            v-model="password"
-            id="password"
-            type="password"
-            ref="passwordInput"
-            :placeholder="$t('loginForm.placeholder.password')"
-            @input="clearError"
+          class="form__input"
+          v-model="password"
+          id="password"
+          type="password"
+          ref="passwordInput"
+          @input="clearError"
         />
 
         <!-- Кнопка для показа/скрытия пароля -->
         <div class="image__wrapper">
           <img
-              class="showHidePassword"
-              src="../../assets/images/showPassword.svg"
-              alt=""
-              @click="changeVisiblePassword"
+            class="showHidePassword"
+            src="../../assets/images/showPassword.svg"
+            alt=""
+            @click="changeVisiblePassword"
           />
         </div>
       </div>
@@ -42,8 +44,10 @@
       <div class="remember-forgot-container">
         <!-- Чекбокс "Запомнить меня" -->
         <div class="remember-me">
-          <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe"/>
-          <label for="remember-me">{{ $t('loginForm.remember-me') }}</label>
+          <label class="custom-checkbox">
+            <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe" />
+            <span class="remember-text">{{ $t('loginForm.remember-me') }}</span>
+          </label>
         </div>
 
         <!-- Ссылка на страницу восстановления пароля -->
@@ -53,7 +57,7 @@
       </div>
 
       <!-- Кнопка отправки формы -->
-      <input type="submit" class="submit__button" :value="$t('loginForm.buttonSubmit')"/>
+      <input type="submit" class="submit__button" :value="$t('loginForm.buttonSubmit')" />
     </form>
 
     <!-- Сообщение об ошибке -->
@@ -70,12 +74,12 @@
 </template>
 
 <script>
-import {showHidePassword} from '@/utils/showHidePassword.js'
-import {saveUserData} from '@/utils/saveUserData.js'
-import {login} from '@/utils/query-system/query-actions/authActions.js'
-import {useMainStore} from '@/stores/mainStore.js'
+import { showHidePassword } from '@/utils/showHidePassword.js'
+import { saveUserData } from '@/utils/saveUserData.js'
+import { login } from '@/utils/query-system/query-actions/authActions.js'
+import { useMainStore } from '@/stores/mainStore.js'
 
-const mainStore = useMainStore();
+const mainStore = useMainStore()
 
 export default {
   data() {
@@ -83,11 +87,11 @@ export default {
       isError: false, // состояние ошибки
       email: '', // введенный email
       password: '', // введенный пароль
-      rememberMe: false, // запомнить пользователя
+      rememberMe: false // запомнить пользователя
     }
   },
   async beforeCreate() {
-    mainStore.clearStore();
+    mainStore.clearStore()
   },
   methods: {
     // Метод отправки формы для входа в систему
