@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'flex-row-reverse': isAuth, 'flex-column': !isAuth }" class="main-container">
+  <div :class="{ 'flex-row-reverse': isAuth, 'flex-column': !isAuth }">
     <Header />
     <sidebar v-if="isAuth"></sidebar>
     <RouterView />
