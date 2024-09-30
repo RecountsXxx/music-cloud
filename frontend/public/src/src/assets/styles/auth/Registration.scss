@@ -1,14 +1,18 @@
-$f_size__form_title: 40px;
+$f-size-form-title: 40px;
 $font_size: 16px;
-$placeholder__bc: #bbbbbb;
-$submit__button__bc: #545454;
-$form__input__bc: #545454;
-$link__color: #b0b0b0;
-$form__input__text: #ffffff;
-$text-error-color: #EC5C5C;
+$placeholder-bc: #bbbbbb;
+$submit-button-bc: #545454;
+$form-input-bc: #545454;
+$link-color: #b0b0b0;
+$form-input-text: #ffffff;
+$text-error-color: #ec5c5c;
+// font
+$font-family: 'Inter', sans-serif;
+// registration form width
+$form-width: 450px;
 
 #main__container {
-  font-family: Inter, sefir, serif;
+  font-family: $font-family;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -21,7 +25,7 @@ $text-error-color: #EC5C5C;
     text-align: center;
     width: 100%;
     margin: 30px 0 10px 0;
-    font-size: $f_size__form_title;
+    font-size: $f-size-form-title;
   }
 
   .link__login__account {
@@ -31,7 +35,7 @@ $text-error-color: #EC5C5C;
 
     a {
       text-decoration: none;
-      color: $link__color;
+      color: $link-color;
       font-weight: 600;
     }
   }
@@ -45,29 +49,28 @@ $text-error-color: #EC5C5C;
     //max-height: 300px;
 
     width: 100%;
-    max-width: 600px;
+    max-width: $form-width;
 
     .label-form {
       font-size: 16px;
       font-weight: 400;
       align-self: start;
-      margin-left: 80px;
       margin-bottom: 7px;
       color: white;
     }
 
     .input__container {
       margin-bottom: 15px;
-      width: 450px;
+      width: $form-width;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .form__input {
-        color: $form__input__text;
+        color: $form-input-text;
         font-size: $font_size;
-        background-color: $form__input__bc;
+        background-color: $form-input-bc;
         height: 54px;
         width: 100%;
         max-width: 450px;
@@ -77,20 +80,20 @@ $text-error-color: #EC5C5C;
         border-radius: 7px;
 
         &:placeholder-shown {
-          background-color: $form__input__bc;
+          background-color: $form-input-bc;
         }
 
         &:-webkit-autofill,
         &:-webkit-autofill:hover,
         &:-webkit-autofill:focus,
         &:-webkit-autofill:active {
-          -webkit-box-shadow: 0 0 0 30px $form__input__bc inset !important;
-          -webkit-text-fill-color: $form__input__text !important;
+          -webkit-box-shadow: 0 0 0 30px $form-input-bc inset !important;
+          -webkit-text-fill-color: $form-input-text !important;
         }
 
         &::placeholder {
           font-size: $font_size;
-          color: $placeholder__bc;
+          color: $placeholder-bc;
         }
       }
     }
@@ -129,7 +132,7 @@ $text-error-color: #EC5C5C;
         align-items: center;
         justify-content: center;
         height: 54px;
-        background-color: $form__input__bc;
+        background-color: $form-input-bc;
         border-top-right-radius: 7px;
         border-bottom-right-radius: 7px;
         padding-right: 15px;
@@ -149,7 +152,7 @@ $text-error-color: #EC5C5C;
     }
 
     .submit__button {
-      font-family: Inter, sefir, serif;
+      font-family: $font-family;
       font-weight: 500;
       font-size: 20px;
       line-height: 21.78px;
@@ -163,7 +166,7 @@ $text-error-color: #EC5C5C;
       border: none;
       outline: none;
 
-      background-color: $submit__button__bc;
+      background-color: $submit-button-bc;
 
       inset: 0;
       transition: 100ms ease-in-out;
@@ -172,7 +175,7 @@ $text-error-color: #EC5C5C;
         transform: scale(0.95);
         background-color: #a9a9a9;
         color: #171717;
-        border: 1px solid $submit__button__bc;
+        border: 1px solid $submit-button-bc;
       }
     }
 
@@ -191,6 +194,8 @@ $text-error-color: #EC5C5C;
       .acceptCheckBox {
         position: relative;
         display: inline-block;
+
+
 
         .remember-text {
           margin-left: 13px;
@@ -226,22 +231,22 @@ $text-error-color: #EC5C5C;
         color: #c9c9c9;
 
         a:link {
-          color: $link__color;
+          color: $link-color;
         }
 
         /* visited link */
         a:visited {
-          color: $link__color;
+          color: $link-color;
         }
 
         /* mouse over link */
         a:hover {
-          color: $link__color;
+          color: $link-color;
         }
 
         /* selected link */
         a:active {
-          color: $link__color;
+          color: $link-color;
         }
       }
     }
@@ -281,6 +286,7 @@ $text-error-color: #EC5C5C;
 }
 
 .password-errors-wrapper {
+  user-select: none;
   width: 100%;
   //background-color: #41261d;
 
@@ -296,7 +302,7 @@ $text-error-color: #EC5C5C;
     height: fit-content;
     width: 100%;
     margin-top: 10px;
-    font-family: Inter, sefir, serif;
+    font-family: $font-family;
 
     display: flex;
     flex-direction: row;
@@ -362,73 +368,3 @@ $text-error-color: #EC5C5C;
   line-height: 16.94px;
   font-weight: 400;
 }
-
-//.error-text {
-//  margin-bottom: 9px;
-//  margin-top: 14px;
-//  color: #ec5c5c;
-//  font-size: 14px;
-//}
-//
-//.checkbox-group-wrapper {
-//  width: 100%;
-//
-//  .checkbox-group {
-//    height: 30px;
-//    display: flex;
-//    flex-direction: column;
-//    width: 100%;
-//    font-family: Inter, sefir, serif;
-//  }
-//
-//  .checkbox-container {
-//    width: 100%;
-//    display: flex;
-//    align-items: start;
-//    justify-content: start;
-//    position: relative;
-//    font-size: 16px;
-//    color: #ec5c5c; /* Red color for invalid checkboxes */
-//  }
-//
-//  .checkbox-container input {
-//    position: absolute;
-//    opacity: 0;
-//  }
-//
-//  .custom-checkbox {
-//    position: absolute;
-//    top: 10px;
-//    left: -80px;
-//    height: 18px;
-//    width: 18px;
-//    background-color: transparent;
-//    border: 2px solid #ec5c5c;
-//    border-radius: 4px;
-//  }
-//
-//  .checkbox-container.checked .custom-checkbox {
-//    border-color: #00b23d;
-//    background-color: #00b23d;
-//  }
-//
-//  .checkbox-container.checked .custom-checkbox:after {
-//    content: '';
-//    position: absolute;
-//    display: block;
-//    left: 4px;
-//    top: -1px;
-//    width: 6px;
-//    height: 13px;
-//    border: solid white;
-//    background-color: transparent;
-//    border-width: 0 2px 2px 0;
-//    transform: rotate(45deg);
-//  }
-//
-//  .error-message {
-//    font-size: 16px;
-//    color: #ec5c5c; /* Error text in red */
-//    margin-top: 8px;
-//  }
-//}

@@ -218,7 +218,7 @@
             v-model="acceptLic"
           />
         </label>
-        <label for="acceptCheckBox">
+        <label style="padding-left: 10px" for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
           <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
           {{ $t('RegisterForm.accept.and') }}
@@ -295,9 +295,6 @@ export default {
         hasSpecialChar: (value) => /[@$!%*?&#]/.test(value), // Проверка на наличие специального символа
         isValidPassword: (value) => /^[A-Za-z0-9@$!%*?&#]+$/.test(value),
         hasNumber: helpers.withMessage('Требуется хотя бы одна цифра', (value) => /\d/.test(value))
-        // hasLetter: helpers.withMessage('Требуется хотя бы одна буква', (value) =>
-        //   /[a-zA-Z]/.test(value)
-        // )
       },
       confirmPassword: {
         required,
