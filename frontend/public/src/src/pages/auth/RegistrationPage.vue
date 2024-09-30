@@ -218,7 +218,7 @@
             v-model="acceptLic"
           />
         </label>
-        <label style="padding-left: 10px" for="acceptCheckBox">
+        <label style="padding-left: 10px;color: white" for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
           <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
           {{ $t('RegisterForm.accept.and') }}
