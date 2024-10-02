@@ -1,19 +1,13 @@
 <template>
-  <div class="main-content"></div>
+  <div></div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   components: {}
 })
 </script>
 
-<style scoped lang="scss">
-  .main-content{
-    background-color: red;
-    width: 100%;
-    height: 100%;
-  }
-</style>
+<style scoped lang="scss"></style>

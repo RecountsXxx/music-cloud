@@ -1,4 +1,10 @@
 {
+  "header": {
+    "title": "Главная",
+    "buttonRegistration": "Регистрация",
+    "buttonLogin": "Вход",
+    "search": "Поиск"
+  },
   "loginForm": {
     "form__title": "Вход",
     "placeholder": {
