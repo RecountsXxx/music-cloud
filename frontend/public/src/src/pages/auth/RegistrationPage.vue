@@ -218,7 +218,7 @@
             v-model="acceptLic"
           />
         </label>
-        <label style="padding-left: 10px;color: white" for="acceptCheckBox">
+        <label style="padding-left: 10px; color: white" for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
           <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
           {{ $t('RegisterForm.accept.and') }}
@@ -316,6 +316,7 @@ export default {
         if (!validation.value.$invalid) {
           // если username или email ужа заняты вернет ошибку
           const data = {
+            display_name: display_name.value,
             username: username.value,
             email: email.value,
             password: password.value,

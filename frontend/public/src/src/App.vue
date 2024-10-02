@@ -1,9 +1,9 @@
 <template>
-  <div :class="{ 'flex-row-reverse': isAuth, 'flex-column': !isAuth }">
+  <div class="w-100" :class="{ 'flex-row-reverse': isAuth, 'flex-column': !isAuth }">
     <Header />
     <sidebar v-if="isAuth"></sidebar>
-    <RouterView />
   </div>
+  <RouterView />
 </template>
 
 <script lang="js">

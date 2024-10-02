@@ -61,5 +61,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/header/langDropDown.scss';
+@import '@/assets/styles/header/LangDropDown';
 </style>
