@@ -33,10 +33,10 @@ public class PlaylistModel extends CollectionModel {
     private Set<PlaylistSongModel> playlistSongs = new HashSet<>();
 
     @OneToMany(mappedBy = "playlist")
-    private Set<UserProfileRepostedPlaylistModel> listenersReposted = new HashSet<>();
+    private Set<UserProfileRepostedPlaylistModel> userProfilesReposted = new HashSet<>();
 
     @OneToMany(mappedBy = "playlist")
-    private Set<UserProfileLikedPlaylistModel> listenersLiked = new HashSet<>();
+    private Set<UserProfileLikedPlaylistModel> userProfilesLiked = new HashSet<>();
 
 
 

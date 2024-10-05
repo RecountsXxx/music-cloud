@@ -28,6 +28,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.deus.src.models.intermediateTables.UserProfileListenedHistoryModel;
+import org.deus.src.models.intermediateTables.likes.UserProfileLikedPlaylistModel;
+import org.deus.src.models.intermediateTables.likes.UserProfileLikedReleaseModel;
+import org.deus.src.models.intermediateTables.likes.UserProfileLikedSongModel;
+import org.deus.src.models.intermediateTables.reposts.UserProfileRepostedPlaylistModel;
+import org.deus.src.models.intermediateTables.reposts.UserProfileRepostedReleaseModel;
+import org.deus.src.models.intermediateTables.reposts.UserProfileRepostedSongModel;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -111,13 +117,31 @@ public class UserProfileModel extends BaseIdUpdate {
     private Set<ReleaseModel> releases = new HashSet<>();
 
     @OneToMany(mappedBy = "creatorUserProfile")
-    private Set<PlaylistModel> createdPlaylists = new HashSet<>();
+    private Set<PlaylistModel> playlists = new HashSet<>();
 
     @OneToMany(mappedBy = "creatorUserProfile")
     private Set<CommentModel> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileListenedHistoryModel> songsListenedHistory = new HashSet<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private Set<UserProfileLikedReleaseModel> releasesLiked = new HashSet<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private Set<UserProfileRepostedReleaseModel> releasesReposted = new HashSet<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private Set<UserProfileLikedPlaylistModel> playlistsLiked = new HashSet<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private Set<UserProfileRepostedPlaylistModel> playlistsReposted = new HashSet<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private Set<UserProfileLikedSongModel> songsLiked = new HashSet<>();
+
+    @OneToMany(mappedBy = "userProfile")
+    private Set<UserProfileRepostedSongModel> songsReposted = new HashSet<>();
 
 
 

@@ -93,13 +93,13 @@ public class SongModel extends BaseIdCreateUpdate {
     private Set<CommentModel> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "song")
-    private Set<UserProfileListenedHistoryModel> listenersListenedHistory = new HashSet<>();
+    private Set<UserProfileListenedHistoryModel> userProfilesListenedHistory = new HashSet<>();
 
     @OneToMany(mappedBy = "song")
-    private Set<UserProfileLikedSongModel> listenersLiked = new HashSet<>();
+    private Set<UserProfileLikedSongModel> userProfilesLiked = new HashSet<>();
 
     @OneToMany(mappedBy = "song")
-    private Set<UserProfileRepostedSongModel> listenersReposted = new HashSet<>();
+    private Set<UserProfileRepostedSongModel> userProfilesReposted = new HashSet<>();
 
     @OneToMany(mappedBy = "song")
     private Set<PlaylistSongModel> songInPlaylists = new HashSet<>();
