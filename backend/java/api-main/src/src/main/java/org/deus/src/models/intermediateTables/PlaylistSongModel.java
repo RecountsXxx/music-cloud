@@ -1,10 +1,8 @@
 package org.deus.src.models.intermediateTables;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.deus.src.models.PlaylistModel;
 import org.deus.src.models.SongModel;
 import org.deus.src.models.base.BaseIdCreate;

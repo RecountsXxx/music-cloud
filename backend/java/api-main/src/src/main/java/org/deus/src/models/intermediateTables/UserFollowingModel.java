@@ -1,15 +1,16 @@
 package org.deus.src.models.intermediateTables;
 
-import jakarta.persistence.*;
+import org.deus.src.models.UserProfileModel;
+import org.deus.src.models.base.BaseIdCreate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.deus.src.models.UserProfileModel;
-import org.deus.src.models.base.BaseIdCreate;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
