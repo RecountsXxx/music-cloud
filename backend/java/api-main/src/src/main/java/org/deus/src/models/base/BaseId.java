@@ -3,7 +3,6 @@ package org.deus.src.models.base;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @MappedSuperclass

@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.deus.src.models.base.BaseIdCreate;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
+import org.deus.src.dtos.fromModels.comment.CommentDTO;
+import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.models.base.BaseIdCreateUpdate;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "comments")
-public class CommentModel extends BaseIdCreate {
+public class CommentModel extends BaseIdCreateUpdate {
     @Column(name = "content", length = 300, nullable = false)
     private String content;
 
@@ -25,6 +24,18 @@ public class CommentModel extends BaseIdCreate {
     private SongModel song;
 
     @ManyToOne
-    @JoinColumn(name = "creator_id", nullable = false)
-    private ListenerModel creator;
+    @JoinColumn(name = "user_profile_id", nullable = false)
+    private UserProfileModel creatorUserProfile;
+
+
+
+    public static CommentDTO toDTO(CommentModel model, ShortUserProfileDTO creatorUserProfileDTO) {
+        return new CommentDTO(
+                model.getId().toString(),
+                creatorUserProfileDTO,
+                model.getContent(),
+                model.getCreatedAt(),
+                model.getUpdatedAt()
+        );
+    }
 }
