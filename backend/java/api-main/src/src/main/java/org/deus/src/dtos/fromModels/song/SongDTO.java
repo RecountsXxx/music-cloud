@@ -17,4 +17,8 @@ public class SongDTO {
     private Float duration;
     private AudioStatus status;
     private Integer numberOfPlays;
+    private Integer numberOfLikes;
+    private Integer numberOfReposts;
+    private Integer numberOfComments;
+    private Integer numberOfPlaylistsWhichContainsSong;
 }
