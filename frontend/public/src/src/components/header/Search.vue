@@ -1,14 +1,15 @@
 <template>
   <div class="search-container">
-    <img src="@/assets/images/header/search.svg" class="search-icon" />
-    <input class="search" type="text" />
+    <img src="@/assets/images/header/search.svg" class="search-icon"/>
+    <input class="search" :placeholder="$t('header.search')" type="text"/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Search',
-  setup() {}
+  setup() {
+  }
 }
 </script>
 
@@ -36,6 +37,13 @@ export default {
     background-color: transparent;
     outline: none;
     border: none;
+
+    font-size: 16px;
+    font-weight: 400;
+
+    &::placeholder {
+      color: #685A74;
+    }
   }
 }
 </style>

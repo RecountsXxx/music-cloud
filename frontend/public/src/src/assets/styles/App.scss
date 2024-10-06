@@ -11,15 +11,6 @@ body {
   height: 100vh;
 }
 
-.main-container {
-  height: 100%;
-  width: 100%;
-  background-image: url('@/assets/images/home.png');
-  background-size: cover; /* Изображение масштабируется, чтобы покрыть весь элемент */
-  background-position: center; /* Центрируем изображение */
-  background-repeat: no-repeat; /* Избегаем повторений */
-}
-
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -33,6 +24,7 @@ body {
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
+  border-radius: 10px;
 }
 
 /* Handle on hover */

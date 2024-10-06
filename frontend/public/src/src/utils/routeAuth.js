@@ -12,7 +12,7 @@ export function handleAuthNavigation(to, from, next) {
     // Если маршрут требует аутентификации
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!authStore.getIsAuthenticated) {
-            next({path: '/'}); // Перенаправляем на страницу входа
+            next({path: '/login'}); // Перенаправляем на страницу входа
         } else {
             next(); // Разрешаем переход
         }

@@ -1,21 +1,14 @@
 <template>
-  <div class="main-container">
-    <div class="d-flex" :class="{ 'flex-row-reverse': isAuth, 'flex-column': !isAuth }">
-      <Header></Header>
-      <sidebar v-if="isAuth"></sidebar>
-    </div>
-    <RouterView />
-  </div>
+  <RouterView/>
 </template>
 
 <script lang="js">
-import { computed, defineComponent } from 'vue'
+import {computed, defineComponent} from 'vue'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
-import { useAuthStore } from '@/stores/authStore.js'
-import Header from '@/components/header/Header.vue'
+import {useAuthStore} from '@/stores/authStore.js'
 
 export default defineComponent({
-  components: { Header, Sidebar },
+  components: {Sidebar},
   setup() {
     const authStore = useAuthStore()
     const isAuth = computed(() => authStore.getIsAuthenticated)
