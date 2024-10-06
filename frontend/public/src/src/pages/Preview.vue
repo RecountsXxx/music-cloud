@@ -30,7 +30,9 @@
           </div>
         </div>
       </div>
-      <div class="content playlists"></div>
+      <div class="content playlists">
+
+      </div>
     </div>
   </div>
 </template>
