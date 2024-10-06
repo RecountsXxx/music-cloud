@@ -1,48 +1,55 @@
-const title = 'Vibe Cloud';
+const title = 'Vibe Cloud'
 const routes = [
     {
         path: '/',
-        component: () => import('../pages/home/HomePage.vue'),
-        name: "Home",
+        component: () => import('../pages/Preview.vue'),
+        name: 'Preview',
         meta: {
-            title: title,
-            requiresAuth: true,
-        },
+            title: title
+        }
+    },
+    {
+        path: '/home',
+        component: () => import('../pages/home/HomePage.vue'),
+        name: 'Home',
+        meta: {
+            title: title
+        }
     },
     {
         path: '/login',
         component: () => import('../pages/auth/LoginPage.vue'),
         name: 'Login',
         meta: {
-            title: title,
-        },
+            title: title
+        }
     },
     {
         path: '/register',
         component: () => import('../pages/auth/RegistrationPage.vue'),
         name: 'Register',
         meta: {
-            title: title,
+            title: title
         }
     },
     {
         path: '/upload',
         component: () => import('../pages/upload/UploadPage.vue'),
-        name: "Upload",
+        name: 'Upload',
         meta: {
             title: title,
-            requiresAuth: true,
-        },
+            requiresAuth: true
+        }
     },
     {
         path: '/player',
         component: () => import('@/pages/PlayerPage.vue'),
-        name: "Player",
+        name: 'Player',
         meta: {
             title: title,
-            requiresAuth: true,
-        },
-    },
+            requiresAuth: true
+        }
+    }
 ]
 
-export default routes;
+export default routes

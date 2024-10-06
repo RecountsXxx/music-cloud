@@ -1,13 +1,8 @@
-$background-color: #313131;
-$border-color: #797979;
-
 .header {
+  height: 100px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   width: 100%;
-  background-color: $background-color;
-  height: 70px;
-  border-bottom: $border-color 1px solid;
 }

@@ -1,11 +1,12 @@
-<template></template>
+<template>
+  <div></div>
+</template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import Sidebar from '@/components/sidebar/Sidebar.vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  components: { Sidebar }
+  components: {}
 })
 </script>
 

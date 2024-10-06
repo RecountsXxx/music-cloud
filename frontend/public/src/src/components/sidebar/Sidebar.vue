@@ -30,22 +30,40 @@
         </router-link>
       </h3>
       <div class="playlists">
-        <router-link to="#" class="playlist-item">
-          
+        <router-link to="/playlist/item1231233" class="like-item playlist-item">
+          <div class="img-wrapper">
+            <img src="@/assets/images/sidebar/playlist/Like.svg" alt="Like" />
+          </div>h
+          <div class="playlist-item-info">Любимые треки</div>
+        </router-link>
+
+        <router-link to="/playlist/item1231233" class="playlist-item">
+          <div class="img-wrapper">
+            <img src="@/assets/images/TEMP/266291769056b15b6cf60ffbbf1b079f.jpg" />
+          </div>
+          <div class="playlist-item-info">
+            <div class="playlist-name">Dance hits</div>
+            <router-link to="#" class="playlist-author">Алёна Алёна</router-link>
+          </div>
+        </router-link>
+
+        <router-link to="/playlist/item1231233" class="playlist-item">
+          <div class="img-wrapper">
+            <img src="@/assets/images/TEMP/853f34d66e987340a9c701313fd0e4fe.jpg" />
+          </div>
+          <div class="playlist-item-info">
+            <div class="playlist-name">Test</div>
+            <router-link to="#" class="playlist-author">Renzo</router-link>
+          </div>
         </router-link>
       </div>
-      <ul>
-        <li><a href="#">Любимые треки</a></li>
-        <li><a href="#">Плейлист 1</a></li>
-        <li><a href="#">Плейлист 2</a></li>
-      </ul>
     </div>
   </aside>
 </template>
 
 <script>
 export default {
-  name: 'Sidebar'
+  name: 'SideBar'
 }
 </script>
 

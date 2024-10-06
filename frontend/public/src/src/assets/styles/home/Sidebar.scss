@@ -1,12 +1,19 @@
+$font-family: 'Inter', sans-serif;
+$font-size-name: 16px;
+$font-size-author: 14px;
+
 .sidebar {
   background: #313131;
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 350px;
   min-width: 350px;
+  height: 1038px;
+  margin-bottom: 500px;
 
   .title_wrapper {
-    margin-top: 20px;
+    margin-top: 27px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,7 +22,7 @@
     text-align: center;
     min-width: 236px;
     height: 51px;
-    border: 1px solid #8f8f8f;
+    border: 1px solid #8f8a8a;
     border-radius: 5px;
     user-select: none;
 
@@ -67,6 +74,79 @@
 
     margin-top: 40px;
     min-width: 236px;
+
+    .playlists {
+      margin-top: 45px;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      width: 100%;
+      height: 400px;
+
+      a {
+        color: #f7f7f7;
+        text-decoration: none;
+        font-family: $font-family;
+        font-size: $font-size-name;
+
+        &:hover {
+          color: #bdbdbd;
+        }
+      }
+
+      .playlist-item.like-item {
+        .img-wrapper {
+          background-color: #8f8f8f;
+
+          img {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+
+      .playlist-item {
+        max-height: 50px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .img-wrapper {
+          width: 50px;
+          height: 50px;
+          border-radius: 5px;
+          margin-right: 15px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            border-radius: 5px;
+            width: 50px;
+            height: 50px;
+          }
+        }
+
+        .playlist-item-info {
+          display: flex;
+          flex-direction: column;
+
+          .playlist-author {
+            color: #b4b4b4;
+            font-size: $font-size-author;
+
+            &:hover {
+              &:hover {
+                color: #7c7c7c;
+              }
+            }
+          }
+        }
+      }
+    }
 
     .playlist-title {
       width: 100%;

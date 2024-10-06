@@ -12,6 +12,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { changeLanguage, getPreferredLanguage } from '../../../i18n.js'
 
 export default {
+  name: 'LanguageDropdown',
   setup() {
     const languages = {
       en: 'Eng',
@@ -61,5 +62,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/header/langDropDown.scss';
+@import '@/assets/styles/header/langDropDown/langDropDown';
 </style>
