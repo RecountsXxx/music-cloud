@@ -34,10 +34,10 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String errorMessage = "";
 
-        if (path.startsWith("/api/upload/public/")) {
+        if (path.startsWith("/api/public/")) {
             // allowing public requests from outside
             filterChain.doFilter(request, response);
-        } else if (path.startsWith("/api/upload/protected/")) {
+        } else if (path.startsWith("/api/protected/")) {
             String header = request.getHeader("Authorization");
             String tokenFromParam = request.getParameter("token"); // Check for token in path parameter
 
