@@ -114,7 +114,11 @@ public class SongModel extends BaseIdCreateUpdate {
                 model.getPlaceNumber(),
                 model.getDuration(),
                 model.getStatus(),
-                model.getNumberOfPlays()
+                model.getNumberOfPlays(),
+                model.getNumberOfLikes(),
+                model.getNumberOfReposts(),
+                model.getNumberOfComments(),
+                model.getNumberOfPlaylistsWhichContainsSong()
         );
     }
 
