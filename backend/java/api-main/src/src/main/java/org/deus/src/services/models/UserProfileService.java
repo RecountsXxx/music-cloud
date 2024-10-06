@@ -91,6 +91,11 @@ public class UserProfileService {
         return getUserProfileDTO(userProfile, imageService);
     }
 
+    @Cacheable(value = "user_profile_by_id_dto", key = "#model.id")
+    public UserProfileDTO getDTOById(UserProfileModel model) {
+        return getUserProfileDTO(model, imageService);
+    }
+
     @Transactional
     @Caching(
             evict = {
@@ -105,6 +110,7 @@ public class UserProfileService {
         UserProfileModel userProfile = new UserProfileModel();
 
         userProfile.setUserId(UUID.fromString(request.getUserId()));
+        userProfile.setUsername(request.getUsername());
         userProfile.setDisplayName(request.getDisplayName());
         userProfile.setPreferredQuality(AudioQuality.MEDIUM);
 
