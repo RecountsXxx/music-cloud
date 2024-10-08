@@ -30,9 +30,28 @@
           </div>
         </div>
       </div>
-      <div class="content playlists">
-        div
+      <div class="content">
+        <div class="playlist-wrapper">
+          <div class="info">
+            <div class="title">{{ $t('PreviewPage.Playlists.title') }}</div>
+            <div class="text">{{ $t('PreviewPage.Playlists.text') }}</div>
+            <router-link :to="{ name: 'Register' }">{{ $t('PreviewPage.Playlists.buttonCreate') }}</router-link>
+          </div>
+
+          <div class="playlists">
+            <div class="playlist">
+              <img src="@/assets/images/preview/playlists/hit1.jpg" alt="Piano Meditation">
+            </div>
+            <div class="playlist">
+              <img src="@/assets/images/preview/playlists/hit2.jpg" alt="Hot Summer Hits">
+            </div>
+            <div class="playlist">
+              <img src="@/assets/images/preview/playlists/hit3.jpg" alt="Dance Hits">
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="content"></div>
     </div>
   </div>
 </template>
@@ -42,5 +61,5 @@ import Header from "@/components/header/Header.vue";
 </script>
 
 <style lang="scss">
-@import '@/assets/styles/preview/Main.scss';
+@import '@/assets/styles/preview/Preview';
 </style>
