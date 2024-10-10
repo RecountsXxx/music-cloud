@@ -20,12 +20,24 @@ $font-color-button: #f2f2f2;
     background-repeat: no-repeat; /* отключает повторение */
 
     .content {
+      &:nth-child(1) {
+        min-height: 1000px;
+      }
+
+      &:nth-child(2) {
+        min-height: 900px;
+      }
+
+      &:nth-child(3) {
+      }
+
+      &:nth-child(4) {
+      }
+
       display: flex;
       flex-direction: column;
       width: 100%;
       height: 1200px;
-      border: 2px solid red;
-      min-height: 100vh; /* 100% высоты видимого экрана */
 
       background-image: url('@/assets/images/preview/IMG_8254.png'); /* путь к твоей картинке */
       background-size: cover; /* покрывает весь элемент */
@@ -38,7 +50,7 @@ $font-color-button: #f2f2f2;
         flex-direction: column;
         align-items: center;
 
-        color: #FFFFFF;
+        color: #ffffff;
 
         .title {
           margin-top: 150px;
@@ -90,34 +102,142 @@ $font-color-button: #f2f2f2;
 
       .playlist-wrapper {
         display: flex;
-        text-align: center;
-        padding: 50px;
+        flex-direction: row;
         width: 100%;
+        height: 100%;
 
-        .title {
-          font-size: 36px;
-          margin-bottom: 10px;
+        .info {
+          margin-top: 128px;
+          margin-left: 150px;
+          width: 100%;
+          color: #ffffff;
+          height: auto;
+
+          font-family: $font-family;
+
+          .title {
+            margin-bottom: 30px;
+            font-size: 56px;
+            font-weight: 600;
+            line-height: 65.74px;
+            text-align: left;
+          }
 
           .text {
-            font-size: 18px;
-            margin-bottom: 30px;
+            padding-right: 100px;
+            width: 100%;
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 37.57px;
+            text-align: left;
+            height: fit-content;
+            max-width: 785px;
+            margin-bottom: 70px;
+          }
+
+          .button {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 24.2px;
+            text-align: left;
+
+            font-family: $font-family;
+            text-decoration: none;
+            width: 266px;
+            height: 57px;
+            padding: 16px 42px 17px 42px;
+            gap: 10px;
+            border-radius: 5px;
+
+            background: linear-gradient(180deg, #dc7aef -41.23%, #9282ff 100%);
           }
         }
 
         .playlists {
+          position: relative;
           width: 100%;
-          gap: 20px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
 
           .playlist {
-            width: 200px;
-            border-radius: 10px;
+            position: absolute;
+            right: 150px;
 
-            overflow: hidden;
+            &:nth-child(1) {
+              z-index: 0;
+              top: 74px;
+              right: 230px;
+            }
+
+            &:nth-child(2) {
+              z-index: 1;
+              top: 208px;
+              right: 460px;
+            }
+
+            &:nth-child(3) {
+              z-index: 2;
+              top: 330px;
+              right: 130px;
+            }
 
             img {
-              width: 100%;
-              height: auto;
+              -webkit-box-shadow: 0 0 12px -1px rgba(0, 0, 0, 0.75);
+              -moz-box-shadow: 0 0 12px -1px rgba(0, 0, 0, 0.75);
+              box-shadow: 0 0 12px -1px rgba(0, 0, 0, 0.75);
+              width: 350px;
+              //height: 350px;
+              border-radius: 10px;
             }
+          }
+        }
+      }
+
+      .category {
+        color: #ffffff;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .title {
+          font-family: $font-family;
+          font-size: 56px;
+          font-weight: 600;
+          line-height: 65.74px;
+          text-align: left;
+        }
+
+        .text {
+          margin-top: 30px;
+          font-family: $font-family;
+          font-size: 32px;
+          font-weight: 300;
+          line-height: 37.57px;
+          text-align: center;
+          max-width: 1020px;
+        }
+
+        .item-container {
+          margin-top: 60px;
+          width: 100%;
+          min-width: 380px;
+          height: fit-content;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: start;
+          justify-content: center;
+
+          .item {
+            margin: 40px 30px;
+            background-color: red;
+            min-width: 372.5px;
+            height: 220px;
+            border-radius: 10px;
           }
         }
       }
@@ -133,15 +253,19 @@ $font-color-button: #f2f2f2;
     .m-content {
       width: 100%;
       min-height: 960px;
-      background: linear-gradient(360deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%), url('@/assets/images/preview/mainContentBackground.png');
+      background: linear-gradient(360deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%),
+        url('@/assets/images/preview/mainContentBackground.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
 
-      .preview-title, .preview-info, .preview-text, .link-preview {
+      .preview-title,
+      .preview-info,
+      .preview-text,
+      .link-preview {
         margin-left: 50px;
         font-family: $font-family;
-        color: #FFFFFF;
+        color: #ffffff;
       }
 
       .preview-title {
@@ -177,7 +301,7 @@ $font-color-button: #f2f2f2;
         font-weight: 500;
         line-height: 24.2px;
         text-align: left;
-        color: #FFFFFF;
+        color: #ffffff;
 
         text-decoration: none;
         width: 389px;
@@ -185,12 +309,10 @@ $font-color-button: #f2f2f2;
         padding: 16px 42px;
         border-radius: 5px;
 
-        background: linear-gradient(180deg, #DC7AEF -41.23%, #9282FF 100%);
-
+        background: linear-gradient(180deg, #dc7aef -41.23%, #9282ff 100%);
       }
     }
   }
-
 }
 
 .login-button {
