@@ -37,7 +37,7 @@
           <div class="info">
             <div class="title">{{ $t('PreviewPage.Playlists.title') }}</div>
             <div class="text">{{ $t('PreviewPage.Playlists.text') }}</div>
-            <router-link :to="{ name: 'Register' }"
+            <router-link class="button" :to="{ name: 'Register' }"
               >{{ $t('PreviewPage.Playlists.buttonCreate') }}
             </router-link>
           </div>
@@ -55,7 +55,23 @@
           </div>
         </div>
       </div>
-      <div class="content"></div>
+
+      <div class="content">
+        <div class="category">
+          <div class="title">{{ $t('PreviewPage.Category.title') }}</div>
+          <div class="text">{{ $t('PreviewPage.Category.text') }}</div>
+          <div class="item-container">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
