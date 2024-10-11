@@ -1,5 +1,5 @@
 <template>
-  <div class="search-container">
+  <div id="search" class="search-container">
     <img src="@/assets/images/header/search.svg" class="search-icon"/>
     <input class="search" :placeholder="$t('header.search')" type="text"/>
   </div>
