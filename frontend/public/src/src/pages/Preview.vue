@@ -136,10 +136,41 @@
         </div>
       </div>
       <div class="content">
-        <div class="contact">
-          <div class="title"></div>
-          <div class="text"></div>
+        <div class="account">
+          <div class="title">{{ $t('PreviewPage.Account.title') }}</div>
+          <div class="text">{{ $t('PreviewPage.Account.text') }}</div>
+
+          <div class="avatars">
+            <div class="avatar">
+              <img src="@/assets/images/preview/account/1.png"
+                   alt="Avatar 1" />
+            </div>
+            <div class="avatar">
+              <img src="@/assets/images/preview/account/2.png"
+                   alt="Avatar 2" />
+            </div>
+            <div class="avatar">
+              <img src="@/assets/images/preview/account/3.png"
+                   alt="Avatar 3" />
+            </div>
+            <div class="avatar">
+              <img src="@/assets/images/preview/account/4.png"
+                   alt="Avatar 4" />
+            </div>
+            <div class="avatar">
+              <img src="@/assets/images/preview/account/5.png"
+                   alt="Avatar 5" />
+            </div>
+            <div class="avatar">
+              <img src="@/assets/images/preview/account/6.png"
+                   alt="Avatar 6" />
+            </div>
+          </div>
+          <router-link class="buttonRegister" :to="{ name: 'Register' }">
+            {{ $t('PreviewPage.Account.buttonRegistration') }}
+          </router-link>
         </div>
+        <Footer></Footer>
       </div>
     </div>
   </div>
@@ -147,6 +178,7 @@
 
 <script setup lang="js">
 import Header from '@/components/header/Header.vue'
+import Footer from '@/pages/Footer.vue'
 </script>
 
 <style lang="scss">

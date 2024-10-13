@@ -6,9 +6,10 @@
 import {computed, defineComponent} from 'vue'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import {useAuthStore} from '@/stores/authStore.js'
+import Footer from '@/pages/Footer.vue'
 
 export default defineComponent({
-  components: {Sidebar},
+  components: { Footer, Sidebar},
   setup() {
     const authStore = useAuthStore()
     const isAuth = computed(() => authStore.getIsAuthenticated)
