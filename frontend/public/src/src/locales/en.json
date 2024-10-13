@@ -1,4 +1,59 @@
 {
+  "footer": {
+    "About": "About Us",
+    "Conditions": "Terms of Use",
+    "Blog": "Blog",
+    "Feedback": "Contact Us",
+    "bottomText": {
+      "text1": "VibeCloud 2010-2024. All rights reserved",
+      "text2": "Privacy Policy"
+    }
+  },
+  "header": {
+    "title": "Home",
+    "buttonRegistration": "Register",
+    "buttonLogin": "Login",
+    "search": "Search"
+  },
+  "PreviewPage": {
+    "title": "Title",
+    "text": "Text Text Text",
+    "info": "A free music listening platform where you can listen, save, and discover your favorite artists and songs",
+    "linkRegister": "Register for free",
+    "Recommended": {
+      "title": "Recommendations",
+      "text": "Recommendations specially selected for you. Choose your favorite artists and get cool suggestions"
+    },
+    "Playlists": {
+      "title": "Playlists",
+      "text": "Create your own playlist and save your favorite tracks\nand listen to your favorite music.",
+      "buttonCreate": "Create playlists"
+    },
+    "Category": {
+      "title": "Genres and Categories",
+      "text": "Discover everything VibeCloud has to offer. Millions of tracks, support across all platforms.",
+      "items": {
+        "HipHop": "Hip-Hop",
+        "Country": "Country",
+        "Disco": "Disco",
+        "Rock": "Rock",
+        "Reggaeton": "Reggaeton",
+        "Indie": "Indie",
+        "Classical": "Classical",
+        "Techno": "Techno"
+      }
+    },
+    "Search": {
+      "title": "Search",
+      "text": "Find what you’re looking for using search. Search is available across various categories: artists, albums, songs",
+      "goToSearch": "Go to Search"
+    },
+    "Account": {
+      "title": "Account",
+      "text": "Create an account anytime and save tracks, follow artists, create public playlists",
+      "buttonRegistration": "Register for free"
+    }
+  },
   "loginForm": {
     "form__title": "Login",
     "placeholder": {
@@ -18,7 +73,7 @@
     }
   },
   "RegisterForm": {
-    "form__title": "Register",
+    "form__title": "Registration",
     "placeholder": {
       "display_name": "Display name",
       "username": "Username",
@@ -40,20 +95,20 @@
     "Errors": {
       "display_name": {
         "Required": "This field is required",
-        "MinLength": "Display name must contain at least 3 characters"
+        "MinLength": "Display name must be at least 3 characters long"
       },
       "username": {
         "Required": "This field is required",
-        "MinLength": "Username must contain at least 3 characters",
+        "MinLength": "Username must be at least 3 characters long",
         "MaxLength": "Username must not exceed 15 characters",
-        "Regex": "Username must contain only letters and numbers (a-z, A-Z, 0-9)",
+        "Regex": "Username must only contain Latin letters and numbers (a-z, A-Z, 0-9)",
         "uniqueUsername": "This username is already taken"
       },
       "email": {
         "Required": "This field is required",
-        "MinLength": "Email must contain at least 3 characters",
+        "MinLength": "Email must be at least 3 characters long",
         "Regex": "Invalid email format",
-        "uniqueUsername": "This email is already in use"
+        "uniqueUsername": "This Email is already in use"
       },
       "password": {
         "requirements": "Password must contain at least:",
