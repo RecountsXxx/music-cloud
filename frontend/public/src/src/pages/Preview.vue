@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="main-content">
       <div class="m-content">
-        <Header />
+        <Header/>
         <div class="preview-title">{{ $t('PreviewPage.title') }}</div>
         <div class="preview-text">{{ $t('PreviewPage.text') }}</div>
         <div class="preview-info">{{ $t('PreviewPage.info') }}</div>
@@ -19,19 +19,19 @@
           <div class="avatars">
             <div class="avatar">
               <img src="@/assets/images/preview/recommended/img1.jpg"
-                   alt="Avatar 1" />
+                   alt="Avatar 1"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/recommended/img2.jpg"
-                   alt="Avatar 2" />
+                   alt="Avatar 2"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/recommended/img3.jpg"
-                   alt="Avatar 3" />
+                   alt="Avatar 3"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/recommended/img4.jpg"
-                   alt="Avatar 4" />
+                   alt="Avatar 4"/>
             </div>
           </div>
         </div>
@@ -49,15 +49,15 @@
           <div class="playlists">
             <div class="playlist">
               <img src="@/assets/images/preview/playlists/hit1.jpg"
-                   alt="Piano Meditation" />
+                   alt="Piano Meditation"/>
             </div>
             <div class="playlist">
               <img src="@/assets/images/preview/playlists/hit2.jpg"
-                   alt="Hot Summer Hits" />
+                   alt="Hot Summer Hits"/>
             </div>
             <div class="playlist">
               <img src="@/assets/images/preview/playlists/hit3.jpg"
-                   alt="Dance Hits" />
+                   alt="Dance Hits"/>
             </div>
           </div>
         </div>
@@ -90,7 +90,8 @@
             </div>
             <div class="item">
               <img src="@/assets/images/preview/categories/Reggaeton.jpg">
-              <div class="name">{{ $t('PreviewPage.Category.items.Reggaeton')
+              <div class="name">{{
+                  $t('PreviewPage.Category.items.Reggaeton')
                 }}
               </div>
             </div>
@@ -101,7 +102,8 @@
             </div>
             <div class="item">
               <img src="@/assets/images/preview/categories/Classical.jpg">
-              <div class="name">{{ $t('PreviewPage.Category.items.Classical')
+              <div class="name">{{
+                  $t('PreviewPage.Category.items.Classical')
                 }}
               </div>
             </div>
@@ -143,27 +145,27 @@
           <div class="avatars">
             <div class="avatar">
               <img src="@/assets/images/preview/account/1.png"
-                   alt="Avatar 1" />
+                   alt="Avatar 1"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/account/2.png"
-                   alt="Avatar 2" />
+                   alt="Avatar 2"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/account/3.png"
-                   alt="Avatar 3" />
+                   alt="Avatar 3"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/account/4.png"
-                   alt="Avatar 4" />
+                   alt="Avatar 4"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/account/5.png"
-                   alt="Avatar 5" />
+                   alt="Avatar 5"/>
             </div>
             <div class="avatar">
               <img src="@/assets/images/preview/account/6.png"
-                   alt="Avatar 6" />
+                   alt="Avatar 6"/>
             </div>
           </div>
           <router-link class="buttonRegister" :to="{ name: 'Register' }">
