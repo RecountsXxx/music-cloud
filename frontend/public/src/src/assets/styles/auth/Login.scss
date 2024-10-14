@@ -9,238 +9,245 @@ $link__color: #b0b0b0;
 $form__input__text: #ffffff;
 
 #main__container {
-  font-family: Inter, sefir, serif;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: auto;
-  align-items: center;
-
-  #error__message {
-
-    visibility: hidden;
-    font-size: $error_message_size;
-    color: red;
-  }
-
-  .link__create_account {
-    margin-top: 15px;
-    color: #ffffff;
-
-    a {
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    a:link {
-      color: $link__color;
-    }
-
-    /* visited link */
-    a:visited {
-      color: $link__color;
-    }
-
-    /* mouse over link */
-    a:hover {
-      color: $link__color;
-    }
-
-    /* selected link */
-    a:active {
-      color: $link__color;
-    }
-  }
-
-  .login__title {
-    color: #f7f7f7;
-    user-select: none;
-    font-weight: 600;
-    text-align: center;
-    width: 100%;
-    margin: 80px 0;
-    font-size: $f_size__login_title;
-  }
-
-  #login__form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: auto;
-    //max-height: 300px;
-    width: 100%;
-    max-width: 600px;
-
-    .form__input {
-      color: $form__input__text;
-      margin-bottom: 25px;
-      font-size: $font_size;
-      height: 60px;
-      width: 100%;
-      max-width: 450px;
-      padding: 17px 25px;
-      border: none;
-      outline: none;
-      border-radius: 7px;
-
-      &:placeholder-shown {
-        background-color: $form__input__bc;
-      }
-
-      &:-webkit-autofill,
-      &:-webkit-autofill:hover,
-      &:-webkit-autofill:focus,
-      &:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 30px $form__input__bc inset !important;
-        -webkit-text-fill-color: $form__input__text !important;
-      }
-
-      &::placeholder {
-        font-size: $font_size;
-        color: $placeholder__bc;
-      }
-    }
-
-    .form__input {
-      background-color: $form__input__bc;
-    }
-
-    .password__field {
-      height: 60px;
-      width: 100%;
-      max-width: 450px;
-      display: flex;
-      flex-direction: row;
-      margin-bottom: 20px;
-
-      #password {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-
-      .image__wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 60px;
-        background-color: $form__input__bc;
-        border-top-right-radius: 7px;
-        border-bottom-right-radius: 7px;
-        padding-right: 15px;
-
-        .showHidePassword {
-          user-select: none;
-          width: calc(6 * 0.25vw);
-          border-radius: 7px;
-          transition: 100ms all linear;
-
-          &:hover {
-            cursor: pointer;
-            transform: scale(0.85);
-          }
-        }
-      }
-    }
-
-    .remember-forgot-container {
-      width: 100%;
-      max-width: 445px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      .remember-me {
-        user-select: none;
-
-        #remember-me {
-          transform: scale(1.2);
-          accent-color: transparent;
-        }
-
-        .custom-checkbox {
-          position: relative;
-          display: inline-block;
-
-          .remember-text {
-            margin-left: 13px;
-            font-size: calc(4 * 0.25vw);
-            color: #f7f7f7;
-            font-weight: 400;
-          }
-        }
-
-        .custom-checkbox input[type='checkbox'] {
-          appearance: none;
-          -webkit-appearance: none;
-          background-color: #2e2e2e;
-          border: 1px solid #8f8a8a;
-          width: 15px;
-          height: 15px;
-          border-radius: 3px;
-          outline: none;
-          transition: background 0.3s ease;
-        }
-
-        .custom-checkbox input[type='checkbox']:checked::before {
-          content: '✓';
-          color: white;
-          font-size: 17px;
-          display: block;
-          text-align: center;
-          line-height: 17px;
-        }
-      }
-
-      .forgot-password {
-        font-size: calc(4 * 0.25vw);
-
-        a:link {
-          color: $link__color;
-        }
-
-        /* visited link */
-        a:visited {
-          color: $link__color;
-        }
-
-        /* mouse over link */
-        a:hover {
-          color: $link__color;
-        }
-
-        /* selected link */
-        a:active {
-          color: $link__color;
-        }
-      }
-    }
-
-    .submit__button {
-      font-family: Inter, sefir, serif;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 21.78px;
-      color: white;
-      border-radius: 5px;
-      margin-top: 25px;
-      padding: 15px 30px;
-      width: 100%;
-      max-width: 450px;
-      height: 50px;
-      border: none;
-      outline: none;
-      background-color: $submit__button__bc;
-
-      inset: 0;
-      transition: 100ms ease-in-out;
-
-      &:hover {
-        transform: scale(0.95);
-        background-color: #a9a9a9;
-        color: #171717;
-        border: 1px solid $submit__button__bc;
-      }
-    }
-  }
+	background-color: #2B2A2A;
+	font-family: Inter, sefir, serif;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	
+	.header {
+		.search-container {
+			background-color: #444343;
+		}
+	}
+	
+	#error__message {
+		
+		visibility: hidden;
+		font-size: $error_message_size;
+		color: red;
+	}
+	
+	.link__create_account {
+		margin-top: 15px;
+		color: #ffffff;
+		
+		a {
+			font-weight: 600;
+			text-decoration: none;
+		}
+		
+		a:link {
+			color: $link__color;
+		}
+		
+		/* visited link */
+		a:visited {
+			color: $link__color;
+		}
+		
+		/* mouse over link */
+		a:hover {
+			color: $link__color;
+		}
+		
+		/* selected link */
+		a:active {
+			color: $link__color;
+		}
+	}
+	
+	.login__title {
+		color: #f7f7f7;
+		user-select: none;
+		font-weight: 600;
+		text-align: center;
+		width: 100%;
+		margin: 80px 0;
+		font-size: $f_size__login_title;
+	}
+	
+	#login__form {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		height: auto;
+		//max-height: 300px;
+		width: 100%;
+		max-width: 600px;
+		
+		.form__input {
+			color: $form__input__text;
+			margin-bottom: 25px;
+			font-size: $font_size;
+			height: 60px;
+			width: 100%;
+			max-width: 450px;
+			padding: 17px 25px;
+			border: none;
+			outline: none;
+			border-radius: 7px;
+			
+			&:placeholder-shown {
+				background-color: $form__input__bc;
+			}
+			
+			&:-webkit-autofill,
+			&:-webkit-autofill:hover,
+			&:-webkit-autofill:focus,
+			&:-webkit-autofill:active {
+				-webkit-box-shadow: 0 0 0 30px $form__input__bc inset !important;
+				-webkit-text-fill-color: $form__input__text !important;
+			}
+			
+			&::placeholder {
+				font-size: $font_size;
+				color: $placeholder__bc;
+			}
+		}
+		
+		.form__input {
+			background-color: $form__input__bc;
+		}
+		
+		.password__field {
+			height: 60px;
+			width: 100%;
+			max-width: 450px;
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 20px;
+			
+			#password {
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+			
+			.image__wrapper {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 60px;
+				background-color: $form__input__bc;
+				border-top-right-radius: 7px;
+				border-bottom-right-radius: 7px;
+				padding-right: 15px;
+				
+				.showHidePassword {
+					user-select: none;
+					width: calc(6 * 0.25vw);
+					border-radius: 7px;
+					transition: 100ms all linear;
+					
+					&:hover {
+						cursor: pointer;
+						transform: scale(0.85);
+					}
+				}
+			}
+		}
+		
+		.remember-forgot-container {
+			width: 100%;
+			max-width: 445px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			
+			.remember-me {
+				user-select: none;
+				
+				#remember-me {
+					transform: scale(1.2);
+					accent-color: transparent;
+				}
+				
+				.custom-checkbox {
+					position: relative;
+					display: inline-block;
+					
+					.remember-text {
+						margin-left: 13px;
+						font-size: calc(4 * 0.25vw);
+						color: #f7f7f7;
+						font-weight: 400;
+					}
+				}
+				
+				.custom-checkbox input[type='checkbox'] {
+					appearance: none;
+					-webkit-appearance: none;
+					background-color: #2e2e2e;
+					border: 1px solid #8f8a8a;
+					width: 15px;
+					height: 15px;
+					border-radius: 3px;
+					outline: none;
+					transition: background 0.3s ease;
+				}
+				
+				.custom-checkbox input[type='checkbox']:checked::before {
+					content: '✓';
+					color: white;
+					font-size: 17px;
+					display: block;
+					text-align: center;
+					line-height: 17px;
+				}
+			}
+			
+			.forgot-password {
+				font-size: calc(4 * 0.25vw);
+				
+				a:link {
+					color: $link__color;
+				}
+				
+				/* visited link */
+				a:visited {
+					color: $link__color;
+				}
+				
+				/* mouse over link */
+				a:hover {
+					color: $link__color;
+				}
+				
+				/* selected link */
+				a:active {
+					color: $link__color;
+				}
+			}
+		}
+		
+		.submit__button {
+			font-family: Inter, sefir, serif;
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 21.78px;
+			color: white;
+			border-radius: 5px;
+			margin-top: 25px;
+			padding: 15px 30px;
+			width: 100%;
+			max-width: 450px;
+			height: 50px;
+			border: none;
+			outline: none;
+			background-color: $submit__button__bc;
+			
+			inset: 0;
+			transition: 100ms ease-in-out;
+			
+			&:hover {
+				transform: scale(0.95);
+				background-color: #a9a9a9;
+				color: #171717;
+				border: 1px solid $submit__button__bc;
+			}
+		}
+	}
 }

@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/',
     component: () => import('../pages/main/Main.vue'),
-    name: '/',
+    name: 'Main',
     meta: {
       title: title
     }

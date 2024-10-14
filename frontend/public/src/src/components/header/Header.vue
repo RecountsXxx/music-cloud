@@ -1,8 +1,11 @@
 <template>
   <header class="header">
     <search/>
+    <router-link :to="{ name: 'Preview' }" v-if="route.name==='Register'">
+      Главная
+    </router-link>
     <language-dropdown/>
-    <div v-if="route.name==='Preview'">
+    <div v-if="route.name==='Preview' || route.name === 'Main'">
       <router-link :to="{ name: 'Register' }" class="register-button"
       >{{ $t('header.buttonRegistration') }}
       </router-link>
@@ -14,17 +17,18 @@
 </template>
 
 <script lang="js">
-import LanguageDropdown from '@/components/languageDropdown/LanguageDropdown.vue'
+import LanguageDropdown
+  from '@/components/languageDropdown/LanguageDropdown.vue'
 import Search from '@/components/header/Search.vue'
-import {useRoute} from "vue-router";
-import {useAuthStore} from "@/stores/authStore.js";
+import {useRoute} from 'vue-router'
+import {useAuthStore} from '@/stores/authStore.js'
 
 export default {
   name: 'Header',
   methods: {useAuthStore},
   components: {Search, LanguageDropdown},
   setup() {
-    const route = useRoute();
+    const route = useRoute()
 
     return {
       route

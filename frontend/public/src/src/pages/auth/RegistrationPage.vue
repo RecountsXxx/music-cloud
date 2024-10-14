@@ -1,5 +1,6 @@
 <template>
   <main id="main__container">
+    <Header/>
     <div class="form__title">{{ $t('RegisterForm.form__title') }}</div>
     <!-- Ссылка на страницу входа -->
     <div class="link__login__account">
@@ -244,8 +245,10 @@ import {
 import { showHidePassword } from '@/utils/showHidePassword.js'
 import { register } from '@/utils/query-system/query-actions/authActions.js'
 import { saveUserData } from '@/utils/saveUserData.js'
+import Header from '@/components/header/Header.vue'
 
 export default {
+  components: {Header},
   methods: {
     display_nameErrors,
     passwordConfirmErrors,
@@ -325,6 +328,7 @@ export default {
 
           try {
             const res = await register(data)
+            console.log(res)
             if (res) {
               if (res === 'Email') {
                 uniqueEmail.value = true
@@ -364,6 +368,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import '../../assets/styles/auth/Registration';
+<style lang="scss">
+@import '../../assets/styles/auth/Registration.scss';
 </style>
