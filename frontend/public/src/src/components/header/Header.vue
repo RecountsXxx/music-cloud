@@ -1,11 +1,11 @@
 <template>
   <header class="header">
-    <search/>
+    <Search/>
     <router-link :to="{ name: 'Preview' }" v-if="route.name==='Register'">
       Главная
     </router-link>
     <language-dropdown/>
-    <div v-if="route.name==='Preview' || route.name === 'Main'">
+    <div v-if="(route.name==='Preview' || route.name === 'Main') && !useAuthStore().getIsAuthenticated">
       <router-link :to="{ name: 'Register' }" class="register-button"
       >{{ $t('header.buttonRegistration') }}
       </router-link>
