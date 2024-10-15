@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div class="title_wrapper">
-      <div class="title">Vibe Cloud</div>
+      <div class="title">Vibe Stream</div>
     </div>
     <nav class="aside-nav-panel">
       <router-link :to="{ name: 'Main' }"

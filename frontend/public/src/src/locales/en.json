@@ -5,7 +5,7 @@
     "Blog": "Blog",
     "Feedback": "Contact Us",
     "bottomText": {
-      "text1": "VibeCloud 2010-2024. All rights reserved",
+      "text1": "VibeStream 2010-2024. All rights reserved",
       "text2": "Privacy Policy"
     }
   },
@@ -31,7 +31,7 @@
     },
     "Category": {
       "title": "Genres and Categories",
-      "text": "Discover everything VibeCloud has to offer. Millions of tracks, support across all platforms.",
+      "text": "Discover everything VibeStream has to offer. Millions of tracks, support across all platforms.",
       "items": {
         "HipHop": "Hip-Hop",
         "Country": "Country",
