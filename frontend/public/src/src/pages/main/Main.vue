@@ -5,11 +5,13 @@
       <Header/>
     </div>
   </div>
+  <Footer/>
 </template>
 
 <script setup>
 import SideBar from '@/components/sidebar/Sidebar.vue'
 import Header from '@/components/header/Header.vue'
+import Footer from '@/pages/Footer.vue'
 </script>
 
 <style lang="scss">
@@ -25,7 +27,7 @@ import Header from '@/components/header/Header.vue'
 
 .main-container {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: row;
 
