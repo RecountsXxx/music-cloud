@@ -15,15 +15,20 @@ export default {
 
 <style scoped lang="scss">
 .search-container {
-  margin-right: 173px;
+  margin-right: calc(30 * 0.50vw);
+  margin-left: 203px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
-  width: 570px;
+  max-width: 570px;
+  width: 100%;
+  min-width: 370px;
   height: 48px;
   background-color: #291f32;
   border-radius: 7px;
+
+  transition: background-color 0.3s ease;
 
   img {
     width: 24px;
@@ -32,14 +37,25 @@ export default {
     margin-right: 10px;
   }
 
+  &:focus-within {
+    background: #3E304B;
+    border: 1px solid #9282FF
+  }
+
   .search {
     width: 100%;
     background-color: transparent;
     outline: none;
     border: none;
-
+    font-family: Inter, serif;
     font-size: 16px;
     font-weight: 400;
+    line-height: 19.36px;
+    color: #FFFFFF;
+
+    &:focus {
+      background: #3E304B;
+    }
 
     &::placeholder {
       color: #685A74;

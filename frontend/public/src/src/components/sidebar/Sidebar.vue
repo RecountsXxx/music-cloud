@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
-    <div class="title_wrapper">
-      <div class="title">Vibe Stream</div>
+    <div class="logo-wrapper">
+      <Logo/>
     </div>
     <nav class="aside-nav-panel">
       <router-link :to="{ name: 'Main' }"
@@ -15,7 +15,7 @@
                 stroke-linejoin="round"/>
           <path d="M4.5 21H19.5" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <div class="nav-panel-item-text">Главная</div>
+        <div class="nav-panel-item-text">{{ $t('SideBar.Main') }}</div>
       </router-link>
       <router-link to="#" :class="{'active-page': useRoute().name==='#' }"
                    class="nav-item">
@@ -28,7 +28,7 @@
           <path d="M7 6V18" stroke-width="2" stroke-linecap="round"/>
         </svg>
 
-        <div class="nav-panel-item-text">Исследуйте</div>
+        <div class="nav-panel-item-text">{{ $t('SideBar.Explore') }}</div>
       </router-link>
       <router-link v-if="useAuthStore().getIsAuthenticated" to="#"
                    class="nav-item">
@@ -46,13 +46,13 @@
                 stroke-linejoin="round"/>
         </svg>
 
-        <div class="nav-panel-item-text">Библиотека</div>
+        <div class="nav-panel-item-text">{{ $t('SideBar.Library') }}</div>
       </router-link>
     </nav>
 
     <div v-if="useAuthStore().getIsAuthenticated" class="playlists-wrapper">
       <h3 class="playlist-title">
-        <div class="title-text">Плейлисты</div>
+        <div class="title-text">{{ $t('SideBar.Playlists') }}</div>
         <router-link class="add-playlist" to="#">
           <img
               src="@/assets/images/sidebar/playlist/addPlaylist.svg"
@@ -66,7 +66,7 @@
           <div class="img-wrapper">
             <img src="@/assets/images/sidebar/playlist/Like.svg" alt="Like"/>
           </div>
-          <div class="playlist-item-info">Любимые треки</div>
+          <div class="playlist-item-info">{{ $t('SideBar.FavTracks') }}</div>
         </router-link>
 
         <router-link to="/playlist/item1231233" class="playlist-item">
@@ -94,21 +94,21 @@
       </div>
     </div>
     <div class="noAuthSidebar" v-else>
-      <div class="login-text">Войдите,что бы создавать плейлисты,делиться треками и
-        релизами,оставлять комментарии,получать рекомендации и моногое другое.
-      </div>
-      <router-link class="buttonLogin" :to="{name: 'Login'}">Вход</router-link>
+      <div class="login-text">{{ $t('SideBar.noAuth.login-text') }}</div>
+      <router-link class="buttonLogin" :to="{name: 'Login'}">{{ $t('SideBar.noAuth.buttonLogin') }}</router-link>
     </div>
   </aside>
 </template>
 
 <script>
 import {useAuthStore} from '@/stores/authStore.js'
-import {useRoute, useRouter} from 'vue-router'
+import {useRoute} from 'vue-router'
+import Logo from '@/components/logo/Logo.vue'
 
 export default {
   name: 'SideBar',
-  methods: {useRoute, useRouter, useAuthStore}
+  components: {Logo},
+  methods: {useRoute, useAuthStore}
 }
 </script>
 

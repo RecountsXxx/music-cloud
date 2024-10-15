@@ -5,7 +5,8 @@
       Главная
     </router-link>
     <language-dropdown/>
-    <div v-if="(route.name==='Preview' || route.name === 'Main') && !useAuthStore().getIsAuthenticated">
+    <div
+        v-if="(route.name==='Preview' || route.name === 'Main') && !useAuthStore().getIsAuthenticated">
       <router-link :to="{ name: 'Register' }" class="register-button"
       >{{ $t('header.buttonRegistration') }}
       </router-link>

@@ -38,6 +38,7 @@ import Footer from '@/pages/Footer.vue'
   }
 }
 
+
 .search-container {
   background-color: #291f32;
 
