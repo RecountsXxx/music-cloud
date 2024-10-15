@@ -4,12 +4,12 @@ $error_message_size: calc(4 * 0.25vw);
 // colors
 $placeholder__bc: #efefef;
 $submit__button__bc: #7c7c7c;
-$form__input__bc: #545454;
+$form__input__bc: #191023;
 $link__color: #b0b0b0;
 $form__input__text: #ffffff;
 
 #main__container {
-	background-color: #2B2A2A;
+	background-color: #120E15;
 	font-family: Inter, sefir, serif;
 	display: flex;
 	flex-direction: column;
@@ -17,14 +17,7 @@ $form__input__text: #ffffff;
 	height: 100%;
 	align-items: center;
 	
-	.header {
-		.search-container {
-			background-color: #444343;
-		}
-	}
-	
 	#error__message {
-		
 		visibility: hidden;
 		font-size: $error_message_size;
 		color: red;
