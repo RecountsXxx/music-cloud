@@ -2,7 +2,7 @@ $f-size-form-title: 40px;
 $font_size: 16px;
 $placeholder-bc: #bbbbbb;
 $submit-button-bc: #545454;
-$form-input-bc: #545454;
+$form-input-bc: #191023;
 $link-color: #b0b0b0;
 $form-input-text: #ffffff;
 $text-error-color: #ec5c5c;
@@ -12,7 +12,7 @@ $font-family: 'Inter', sans-serif;
 $form-width: 450px;
 
 #main__container {
-	background: #2B2A2A;
+	background: #120E15;
 	font-family: $font-family;
 	display: flex;
 	flex-direction: column;
@@ -21,19 +21,6 @@ $form-width: 450px;
 	min-height: 100%;
 	align-items: center;
 	
-	.header {
-		.search-container {
-			background-color: #444343;
-			
-			.search {
-				color: #FFFFFF;
-				
-				&::placeholder {
-					color: #FFFFFF
-				}
-			}
-		}
-	}
 	
 	.form__title {
 		color: #f7f7f7;

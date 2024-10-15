@@ -43,6 +43,7 @@ export default {
   }
 
   .search {
+    transition: background-color 0.3s ease;
     width: 100%;
     background-color: transparent;
     outline: none;
