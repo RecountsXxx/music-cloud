@@ -23,12 +23,12 @@ import SideBar from '@/components/sidebar/Sidebar.vue'
 
   display: flex;
   flex-direction: row;
-  background-color: #120E15;
 
   .main-content {
     width: 100%;
     height: 100%;
-    background-color: gray;
+    background-color: #120E15;
+
   }
 }
 </style>

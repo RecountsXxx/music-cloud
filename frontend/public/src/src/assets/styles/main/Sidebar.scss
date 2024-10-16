@@ -18,7 +18,7 @@ $background-color: rgba(0, 0, 0, 0.01);
 	.ellipse2 {
 		margin-top: 20px;
 		margin-left: 50px;
-		@include ellipse(100%, 40%, 650px, 0px, 50%, rgba(68, 23, 112, 0.6), 100px, 450px, 360px, 0, 700px);
+		@include ellipse(100%, 40%, 650px, 0px, 40%, rgba(68, 23, 112, 0.6), 150px, 450px, 360px, 0, 700px);
 	}
 	
 	backdrop-filter: blur(300px);
