@@ -19,7 +19,7 @@ import SideBar from '@/components/sidebar/Sidebar.vue'
 .main-container {
   width: 100%;
   height: 100%;
-  min-width: 700px;
+  min-width: 850px;
 
   display: flex;
   flex-direction: row;

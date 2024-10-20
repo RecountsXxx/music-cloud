@@ -10,7 +10,8 @@
 	.dropdown {
 		width: 60px;
 		font-family: 'Roboto Thin', sans-serif;
-		margin-right: 70px;
+		margin-right: 30px;
+		margin-left: 30px;
 		cursor: pointer;
 		padding-right: 50px;
 		background-color: transparent; // Тёмный фон для кнопки
@@ -43,7 +44,6 @@
 		position: absolute;
 		top: 100%;
 		right: 0;
-		margin-right: 53px;
 		width: 92px;
 		background-color: #393939; // Тёмный фон для списка
 		border: none; // Убираем границу

@@ -183,6 +183,6 @@ import Header from '@/components/header/topHeader.vue'
 import Footer from '@/pages/Footer.vue'
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import '@/assets/styles/preview/Preview';
 </style>
