@@ -179,7 +179,7 @@
 </template>
 
 <script setup lang="js">
-import Header from '@/components/header/Header.vue'
+import Header from '@/components/header/topHeader.vue'
 import Footer from '@/pages/Footer.vue'
 </script>
 

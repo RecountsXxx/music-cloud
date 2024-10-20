@@ -45,7 +45,8 @@ $font-family: 'Inter', sans-serif;
 .footer {
   font-family: $font-family;
   width: 100%;
-  height: fit-content;
+  min-width: 700px;
+  height: 50px;
   display: flex;
   flex-direction: column;
 

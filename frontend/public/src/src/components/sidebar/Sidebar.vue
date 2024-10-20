@@ -1,5 +1,7 @@
 <template>
   <aside class="sidebar">
+    <div class="ellipse ellipse1"></div>
+    <div class="ellipse ellipse2"></div>
     <div class="logo-wrapper">
       <Logo/>
     </div>
@@ -95,7 +97,9 @@
     </div>
     <div class="noAuthSidebar" v-else>
       <div class="login-text">{{ $t('SideBar.noAuth.login-text') }}</div>
-      <router-link class="buttonLogin" :to="{name: 'Login'}">{{ $t('SideBar.noAuth.buttonLogin') }}</router-link>
+      <router-link class="buttonLogin" :to="{name: 'Login'}">
+        {{ $t('SideBar.noAuth.buttonLogin') }}
+      </router-link>
     </div>
   </aside>
 </template>
@@ -113,5 +117,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/home/Sidebar.scss';
+@import '@/assets/styles/main/Sidebar.scss';
 </style>
