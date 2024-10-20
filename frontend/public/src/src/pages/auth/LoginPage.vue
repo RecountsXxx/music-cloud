@@ -91,7 +91,7 @@ import {showHidePassword} from '@/utils/showHidePassword.js'
 import {saveUserData} from '@/utils/saveUserData.js'
 import {login} from '@/utils/query-system/query-actions/authActions.js'
 import {useMainStore} from '@/stores/mainStore.js'
-import Header from '@/components/header/topHeader.vue'
+import Header from '@/components/header/Header.vue'
 
 const mainStore = useMainStore()
 

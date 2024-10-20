@@ -22,10 +22,6 @@
 		user-select: none;
 		transition: background-color 0.2s;
 		
-		//&:hover {
-		//  background-color: #444; // Цвет при наведении на кнопку
-		//}
-		
 		&:after {
 			position: absolute;
 			top: 5px;
@@ -43,9 +39,9 @@
 		margin-top: 15px;
 		position: absolute;
 		top: 100%;
-		right: 0;
+		right: 15px;
 		width: 92px;
-		background-color: #393939; // Тёмный фон для списка
+		background-color: #201b24; // Тёмный фон для списка
 		border: none; // Убираем границу
 		border-radius: 4px;
 		padding: 0;
@@ -58,7 +54,7 @@
 			font-size: 18px;
 			padding: 8px 12px;
 			cursor: pointer;
-			color: #ddd; // Светлый текст для элементов списка
+			color: rgba(192, 189, 189, 1); // Светлый текст для элементов списка
 			transition: background-color 0.2s;
 			
 			&:last-child, &:first-child {
@@ -66,7 +62,7 @@
 			}
 			
 			&:hover {
-				background-color: #545454; // Цвет при наведении на элемент списка
+				background-color: #382d3f; // Цвет при наведении на элемент списка
 			}
 		}
 	}

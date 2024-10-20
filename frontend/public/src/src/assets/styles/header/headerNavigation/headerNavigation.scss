@@ -1,0 +1,48 @@
+$background-color: rgba(56, 45, 63, 0.9);
+
+#header__navigation {
+	margin-left: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	.nav__button--next {
+		margin-left: 15px;
+	}
+	
+	.nav__button {
+		min-width: 44px;
+		max-width: 44px;
+		min-height: 44px;
+		max-height: 44px;
+		
+		svg {
+			width: inherit;
+			height: inherit;
+			transition: 150ms ease-in;
+			
+			path {
+				stroke: rgba(113, 95, 129, 1);
+			}
+			
+			circle {
+				fill: rgba(56, 45, 63, 0.5);
+			}
+			
+			circle, path {
+				transition: 150ms ease-in;
+			}
+			
+			&:hover {
+				
+				path {
+					stroke: rgba(255, 255, 255, 1);
+				}
+				
+				circle {
+					fill: rgba(56, 45, 63, 0.9);
+				}
+			}
+		}
+	}
+}

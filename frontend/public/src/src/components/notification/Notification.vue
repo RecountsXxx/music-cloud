@@ -1,6 +1,8 @@
 <template>
-  <svg width="44" height="44" viewBox="0 0 44 44" fill="none"
-       xmlns="http://www.w3.org/2000/svg">
+<span class="Notification">
+    <svg class="Notification" width="44" height="44" viewBox="0 0 44 44"
+         fill="none"
+         xmlns="http://www.w3.org/2000/svg">
     <circle cx="22" cy="22" r="22" fill="#382D3F" fill-opacity="0.5" />
     <path
       d="M15.7 28V19.1765C15.7 15.7653 18.5206 13 22 13C25.4794 13 28.3 15.7653 28.3 19.1765V28M13 28H31"
@@ -20,6 +22,7 @@
       </linearGradient>
     </defs>
   </svg>
+</span>
 
 </template>
 
@@ -28,8 +31,18 @@
 </script>
 
 <style scoped lang="scss">
-svg {
-  margin-right: 30px;
-  margin-left: 15px;
+
+.Notification {
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 44px;
+  max-height: 44px;
+
+  svg {
+    width: inherit;
+    height: inherit;
+    margin-right: 30px;
+    margin-left: 15px;
+  }
 }
 </style>

@@ -245,7 +245,7 @@ import {
 import { showHidePassword } from '@/utils/showHidePassword.js'
 import { register } from '@/utils/query-system/query-actions/authActions.js'
 import { saveUserData } from '@/utils/saveUserData.js'
-import Header from '@/components/header/topHeader.vue'
+import Header from '@/components/header/Header.vue'
 
 export default {
   components: {Header},
