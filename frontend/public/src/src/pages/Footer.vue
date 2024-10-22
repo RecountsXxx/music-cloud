@@ -43,11 +43,13 @@
 $font-family: 'Inter', sans-serif;
 
 .footer {
+  background-color: red;
+
   margin-top: auto;
   font-family: $font-family;
   width: 100%;
   min-width: 700px;
-  height: 50px;
+  height: auto;
   display: flex;
   flex-direction: column;
 
@@ -71,6 +73,7 @@ $font-family: 'Inter', sans-serif;
       display: flex;
 
       .item {
+        text-wrap: nowrap;
         font-size: 16px;
         font-weight: 500;
         line-height: 19.36px;
@@ -87,6 +90,7 @@ $font-family: 'Inter', sans-serif;
     }
 
     .image-links {
+      margin-left: auto;
       display: flex;
       flex-direction: row;
       align-items: center;

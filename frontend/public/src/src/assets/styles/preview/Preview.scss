@@ -3,3 +3,33 @@ $border-register-b: #9282ff;
 $font-size-button: 18px;
 $font-color-button: #f2f2f2;
 
+.main__container {
+	width: 100%;
+	height: 100%;
+	min-height: 920px;
+	
+	background-image: url("@/assets/images/preview/mainContentBackground.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	
+	.blade__filer {
+		height: 100%;
+		width: 100%;
+		background: linear-gradient(360deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+	}
+	
+	.content {
+		width: 100%;
+		height: 100%;
+	}
+	
+	#header {
+		background-color: transparent;
+		
+		.logo {
+			margin-left: 50px;
+			margin-right: auto;
+		}
+	}
+}

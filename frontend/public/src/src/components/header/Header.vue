@@ -1,9 +1,6 @@
 <template>
   <header id="header">
-    <router-link v-if="route.name === 'Preview'" :to="{ name: 'Preview' }">
-      <Logo />
-    </router-link>
-    >
+    <Logo v-if="route.name === 'Preview'" />
     <header-navigation />
     <Search />
     <HeaderControls />

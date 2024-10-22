@@ -1,6 +1,11 @@
 <template>
   <div class="main__container">
-    <Header />
+    <div class="blade__filer">
+      <Header />
+      <section>
+
+      </section>
+    </div>
   </div>
   <Footer />
 </template>
@@ -10,6 +15,6 @@ import Header from '@/components/header/Header.vue';
 import Footer from '@/pages/Footer.vue';
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import '@/assets/styles/preview/Preview';
 </style>

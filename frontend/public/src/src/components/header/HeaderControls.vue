@@ -4,19 +4,29 @@
   </router-link>
   <LanguageDropdown />
   <Upload />
-  <notification v-if="!useAuthStore().getIsAuthenticated" />
+  <notification v-if="useAuthStore().getIsAuthenticated" />
   <HeaderAuthControls />
   <div v-if="!useAuthStore().getIsAuthenticated">Account</div>
 </template>
 
-<script setup>
-
+<script lang="js">
 import { useAuthStore } from '@/stores/authStore.js';
 import Upload from '@/components/upload/Upload.vue';
 import Notification from '@/components/notification/Notification.vue';
 import LanguageDropdown from '@/components/languageSelect/LanguageSelect.vue';
-import route from 'vue-multiselect';
 import HeaderAuthControls from '@/components/header/HeaderAuthControls.vue';
+import { useRoute } from 'vue-router';
+
+export default {
+  methods: { useAuthStore },
+  components: { HeaderAuthControls, Notification, Upload, LanguageDropdown },
+  setup() {
+    const route = useRoute();
+    return {
+      route,
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">

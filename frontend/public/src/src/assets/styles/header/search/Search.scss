@@ -8,6 +8,7 @@ $font-color-active: rgba(247, 247, 247, 1);
 	margin-right: auto;
 	margin-left: 50px;
 	max-width: 570px;
+	min-width: 300px;
 	width: 100%;
 	height: 48px;
 	
@@ -63,9 +64,11 @@ $font-color-active: rgba(247, 247, 247, 1);
 			color: $font-color-normal;
 		}
 	}
+	
 	.clearSearch {
 		margin-right: 10px;
-		&:hover{
+		
+		&:hover {
 			cursor: pointer;
 		}
 	}
