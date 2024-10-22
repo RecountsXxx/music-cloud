@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { getPreferredLanguage } from '../../i18n.js'
 
 // Функция для загрузки пользователя из локального хранилища
 function loadUserFromLocalStore() {

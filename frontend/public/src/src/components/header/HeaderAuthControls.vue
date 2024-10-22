@@ -47,7 +47,6 @@ import { useAuthStore } from '@/stores/authStore.js';
 
     .auth__button--login {
       font-weight: 500;
-
       width: 104px;
       height: 39px;
       padding: 9px 30px;

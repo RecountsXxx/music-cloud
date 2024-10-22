@@ -41,7 +41,6 @@
   svg {
     width: inherit;
     height: inherit;
-    margin-right: 30px;
     margin-left: 15px;
   }
 }

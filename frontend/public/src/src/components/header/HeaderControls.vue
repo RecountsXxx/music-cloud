@@ -6,7 +6,8 @@
   <Upload />
   <notification v-if="useAuthStore().getIsAuthenticated" />
   <HeaderAuthControls />
-  <div v-if="!useAuthStore().getIsAuthenticated">Account</div>
+  <div v-if="useAuthStore().getIsAuthenticated">Account
+  </div>
 </template>
 
 <script lang="js">
