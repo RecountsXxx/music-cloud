@@ -1,6 +1,6 @@
 <template>
   <div class="header__auth__controls">
-    <div v-if="!useAuthStore().getIsAuthenticated" class="header__auth">
+    <div class="header__auth">
       <router-link :to="{ name: 'Register' }"
                    class="auth__button auth__button--register">Регистрация
       </router-link>
@@ -19,6 +19,7 @@ import { useAuthStore } from '@/stores/authStore.js';
 
 <style scoped lang="scss">
 .header__auth__controls {
+  margin-right: 50px;
   margin-left: 40px;
   width: fit-content;
   display: flex;

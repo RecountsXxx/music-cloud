@@ -5,7 +5,7 @@
   <LanguageDropdown />
   <Upload />
   <notification v-if="useAuthStore().getIsAuthenticated" />
-  <HeaderAuthControls />
+  <HeaderAuthControls v-if="!useAuthStore().getIsAuthenticated" />
   <div v-if="useAuthStore().getIsAuthenticated">Account
   </div>
 </template>

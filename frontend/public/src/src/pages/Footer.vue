@@ -43,8 +43,6 @@
 $font-family: 'Inter', sans-serif;
 
 .footer {
-  background-color: red;
-
   margin-top: auto;
   font-family: $font-family;
   width: 100%;
