@@ -21,48 +21,49 @@
     }
   },
   "header": {
-    "title": "Home",
+    "title": "Main",
     "buttonRegistration": "Sign Up",
     "buttonLogin": "Login",
     "search": "Search"
   },
   "PreviewPage": {
-    "title": "Title",
-    "text": "Text Text Text",
-    "info": "A free music streaming platform where you can listen, save, and discover your favorite artists and songs",
-    "linkRegister": "Register for free",
-    "Recommended": {
+    "hero": {
+      "title": "Catch the Vibe, Start Streaming",
+      "description": "A free music streaming platform where you can listen, save, and discover your favorite artists and songs.",
+      "button": "Sign up for free"
+    },
+    "recommendations": {
       "title": "Recommendations",
-      "text": "Recommendations tailored just for you. Choose your favorite artists and get great suggestions"
+      "description": "Recommendations tailored just for you. Choose your favorite artists and get great suggestions."
     },
-    "Playlists": {
+    "playlists": {
       "title": "Playlists",
-      "text": "Create your own playlist, save your favorite tracks, and enjoy your favorite music.",
-      "buttonCreate": "Create Playlists"
+      "description": "Create your own playlist and save favorite tracks to enjoy your music.",
+      "button": "Create Playlist"
     },
-    "Category": {
-      "title": "Genres and Categories",
-      "text": "Discover everything VibeStream has to offer. Millions of tracks, support on all platforms.",
+    "genres": {
+      "title": "Genres & Categories",
+      "description": "Discover everything VibeStream has to offer! Millions of tracks, available on all platforms.",
       "items": {
-        "HipHop": "Hip-Hop",
-        "Country": "Country",
-        "Disco": "Disco",
-        "Rock": "Rock",
-        "Reggaeton": "Reggaeton",
-        "Indie": "Indie",
-        "Classical": "Classical",
-        "Techno": "Techno"
+        "hiphop": "Hip-Hop",
+        "country": "Country",
+        "disco": "Disco",
+        "rock": "Rock",
+        "reggaeton": "Reggaeton",
+        "indie": "Indie",
+        "classical": "Classical",
+        "techno": "Techno"
       }
     },
-    "Search": {
+    "search": {
       "title": "Search",
-      "text": "Find what you're looking for with the search tool. Search by artists, albums, or songs.",
-      "goToSearch": "Go to Search"
+      "description": "Find what you're looking for through search. Available in categories: artists, albums, songs.",
+      "button": "Go to Search"
     },
-    "Account": {
+    "account": {
       "title": "Account",
-      "text": "Create an account anytime and save tracks, follow artists, and create playlists for the public",
-      "buttonRegistration": "Sign up for free"
+      "description": "Create an account to save your favorite music.",
+      "button": "Sign up for free"
     }
   },
   "loginForm": {
@@ -73,14 +74,14 @@
     },
     "buttonSubmit": "Login",
     "remember-me": "Remember me",
-    "forgot-password": "Forgot password?",
+    "forgot-password": "Forgot Password?",
     "register": {
       "noRegister": "Not registered yet?",
-      "createAccount": "Create an account"
+      "createAccount": "Create Account"
     },
     "Errors": {
-      "IncData": "Incorrect data",
-      "IncPassOrEmail": "Invalid email or password"
+      "IncData": "Invalid data",
+      "IncPassOrEmail": "Incorrect email or password"
     }
   },
   "RegisterForm": {
@@ -94,7 +95,7 @@
     },
     "login": {
       "haveAcc": "Already have an account?",
-      "signIn": "Sign in"
+      "signIn": "Sign In"
     },
     "accept": {
       "IAccept": "I accept",
@@ -106,29 +107,29 @@
     "Errors": {
       "display_name": {
         "Required": "This field is required",
-        "MinLength": "Display name must be at least 3 characters"
+        "MinLength": "Display Name must be at least 3 characters long"
       },
       "username": {
         "Required": "This field is required",
-        "MinLength": "Username must be at least 3 characters",
-        "MaxLength": "Username must be no more than 15 characters",
-        "Regex": "Username must contain only Latin letters and numbers (a-z, A-Z, 0-9)",
+        "MinLength": "Username must be at least 3 characters long",
+        "MaxLength": "Username must be no more than 15 characters long",
+        "Regex": "Username must contain only Latin letters and digits (a-z, A-Z, 0-9)",
         "uniqueUsername": "This username is already taken"
       },
       "email": {
         "Required": "This field is required",
-        "MinLength": "Email must be at least 3 characters",
+        "MinLength": "Email must be at least 3 characters long",
         "Regex": "Invalid email format",
-        "uniqueUsername": "This email is already in use"
+        "uniqueUsername": "This Email is already in use"
       },
       "password": {
-        "requirements": "Password must include at least:",
+        "requirements": "Password must contain at least:",
         "MinLength": "8 characters",
         "Uppercase": "one uppercase letter",
         "Lowercase": "one lowercase letter",
         "Digit": "one digit",
-        "SpecialSymbol": "one special symbol",
-        "IncorrectSymbol": "Invalid symbol",
+        "SpecialSymbol": "one special character",
+        "IncorrectSymbol": "Incorrect character",
         "Mismatch": "Passwords do not match",
         "IncorrectPassword": "Incorrect password"
       }

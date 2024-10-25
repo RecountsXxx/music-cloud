@@ -1,7 +1,7 @@
 <template>
   <div id="header__navigation">
     <!--  prev  -->
-    <a @click="this.$router.go(-1)" href="#"
+    <a @click="this.$router.go(-1)"
        class="nav__button nav__button--prev">
       <svg width="44" height="44" viewBox="0 0 44 44" fill="none"
            xmlns="http://www.w3.org/2000/svg">

@@ -1,12 +1,13 @@
 <template>
   <router-link v-if="route.name === 'Preview'" class="link__main"
-               :to="{name:'Main'}">Главная
+               :to="{name:'Main'}">{{$t('header.title')}}
   </router-link>
   <LanguageDropdown />
   <Upload />
   <notification v-if="useAuthStore().getIsAuthenticated" />
-  <HeaderAuthControls />
-  <div v-if="!useAuthStore().getIsAuthenticated">Account</div>
+  <HeaderAuthControls v-if="!useAuthStore().getIsAuthenticated" />
+  <div v-if="useAuthStore().getIsAuthenticated">Account
+  </div>
 </template>
 
 <script lang="js">

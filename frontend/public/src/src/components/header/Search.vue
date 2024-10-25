@@ -15,7 +15,7 @@
             stroke-linecap="round" stroke-linejoin="round" />
     </svg>
 
-    <input v-model="searchText" class="search__input"
+    <input v-model="searchText" id="search" class="search__input"
            @focus="onFocus"
            @blur="onBlur"
            :placeholder="$t('header.search')"
