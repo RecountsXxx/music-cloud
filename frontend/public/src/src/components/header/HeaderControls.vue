@@ -1,6 +1,6 @@
 <template>
   <router-link v-if="route.name === 'Preview'" class="link__main"
-               :to="{name:'Main'}">Главная
+               :to="{name:'Main'}">{{$t('header.title')}}
   </router-link>
   <LanguageDropdown />
   <Upload />

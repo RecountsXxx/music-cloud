@@ -2,10 +2,12 @@
   <div class="header__auth__controls">
     <div class="header__auth">
       <router-link :to="{ name: 'Register' }"
-                   class="auth__button auth__button--register">Регистрация
+                   class="auth__button auth__button--register">
+        {{ $t('header.buttonRegistration') }}
       </router-link>
       <router-link :to="{ name: 'Login' }"
-                   class="auth__button auth__button--login">Вход
+                   class="auth__button auth__button--login">
+        {{ $t('header.buttonLogin') }}
       </router-link>
     </div>
   </div>
