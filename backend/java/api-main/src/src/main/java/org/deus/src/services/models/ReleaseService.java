@@ -2,10 +2,14 @@ package org.deus.src.services.models;
 
 import lombok.RequiredArgsConstructor;
 import org.deus.src.dtos.ImageUrlsDTO;
+import org.deus.src.dtos.PageDTO;
+import org.deus.src.dtos.actions.UserProfileLikedRepostedDTO;
+import org.deus.src.dtos.fromModels.release.PublicReleaseDTO;
 import org.deus.src.dtos.fromModels.release.ReleaseDTO;
 import org.deus.src.dtos.fromModels.release.ShortReleaseDTO;
 import org.deus.src.dtos.fromModels.song.ShortSongDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.*;
 import org.deus.src.repositories.ReleaseRepository;
@@ -21,6 +25,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,14 +49,16 @@ public class ReleaseService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "releases_pageable", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<ShortReleaseDTO> getAll(Pageable pageable) {
-        return releaseRepository
+    public PageDTO<ShortReleaseDTO> getAll(Pageable pageable) {
+        Page<ShortReleaseDTO> page = releaseRepository
                 .findAll(pageable)
                 .map(release -> {
                     UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
 
                     return getShortReleaseDTO(release, creatorUserProfile, imageService);
                 });
+
+        return new PageDTO<>(page);
     }
 
     @Cacheable(value = "release", key = "#id")
@@ -59,6 +66,13 @@ public class ReleaseService {
         return releaseRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Release not found"));
+    }
+
+    @Cacheable(value = "release", key = "#id")
+    public ReleaseModel getByIdAndCreatorUserProfile(UUID id, UserProfileModel creatorUserProfile) throws ActionCannotBePerformedException {
+        return releaseRepository
+                .findByIdAndCreatorUserProfile(id, creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Release not found or you don't have access to it"));
     }
 
     @Transactional(readOnly = true)
@@ -72,18 +86,29 @@ public class ReleaseService {
         return getReleaseDTO(release, creatorUserProfile, imageService);
     }
 
+    @Transactional(readOnly = true)
+    @Cacheable(value = "public_release_dto", key = "#id")
+    public PublicReleaseDTO getPublicDTOById(UUID id) throws DataNotFoundException {
+        ReleaseModel release = releaseRepository
+                .findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Release not found"));
+        UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
+
+        return getPublicReleaseDTO(release, creatorUserProfile, imageService);
+    }
+
     @Transactional
     @Caching(
             evict = {
                     @CacheEvict(value = {"releases_pageable", "releases_by_creator_user_profile"}, allEntries = true)
             },
             put = {
-                    @CachePut(value = "release", key = "#result.id")
+                    @CachePut(value = "release", key = "#result.id"),
             }
     )
-    public ReleaseModel create(ReleaseCreateRequest request) throws DataNotFoundException {
+    public ReleaseModel create(ReleaseCreateRequest request, UUID userId) throws DataNotFoundException {
         UserProfileModel creatorUserProfile = userProfileRepository
-                .findById(UUID.fromString(request.getCreatorUserProfileId()))
+                .findByUserId(userId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
 
         ReleaseModel release = createReleaseModel(request, creatorUserProfile);
@@ -100,16 +125,20 @@ public class ReleaseService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"releases_pageable", "release_songs", "releases_by_creator_user_profile", "releases_liked_by_user_profile", "releases_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = "release_dto", key = "#result.id")
+                    @CacheEvict(value = {"release_dto", "public_release_dto"}, key = "#result.id")
             },
             put = {
                     @CachePut(value = "release", key = "#result.id")
             }
     )
-    public ReleaseModel update(ReleaseUpdateRequest request) throws DataNotFoundException {
+    public ReleaseModel update(ReleaseUpdateRequest request, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+        UserProfileModel creatorUserProfile = userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
+
         ReleaseModel release = releaseRepository
-                .findById(UUID.fromString(request.getId()))
-                .orElseThrow(() -> new DataNotFoundException("Release not found"));
+                .findByIdAndCreatorUserProfile(UUID.fromString(request.getId()), creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Release not found or you don't have permission to update it"));
 
         if (request.getName() != null) {
             release.setName(request.getName());
@@ -137,15 +166,17 @@ public class ReleaseService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"releases_pageable", "release_songs", "releases_by_creator_user_profile", "releases_liked_by_user_profile", "releases_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = {"release", "release_dto"}, key = "#id")
+                    @CacheEvict(value = {"release", "release_dto", "public_release_dto"}, key = "#id")
             }
     )
-    public void delete(UUID id) throws DataNotFoundException {
-        ReleaseModel release = releaseRepository
-                .findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Release not found"));
+    public void delete(UUID id, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+        UserProfileModel creatorUserProfile = userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
 
-        UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
+        ReleaseModel release = releaseRepository
+                .findByIdAndCreatorUserProfile(id, creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Release not found or you don't have permission to delete it"));
 
         releaseRepository.delete(release);
 
@@ -171,12 +202,29 @@ public class ReleaseService {
                 .collect(Collectors.toList());
     }
 
-    public List<ShortUserProfileDTO> getUserProfilesThatLiked(UUID releaseId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatLiked(UUID releaseId) throws DataNotFoundException {
         return userProfileLikedReleaseService.getUserProfilesThatLikedContent(releaseId);
     }
 
-    public List<ShortUserProfileDTO> getUserProfilesThatReposted(UUID releaseId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatReposted(UUID releaseId) throws DataNotFoundException {
         return userProfileRepostedReleaseService.getUserProfilesThatRepostedContent(releaseId);
+    }
+
+
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "top_releases", key = "#limit", unless = "#result == null || #result.size() == 0")
+    public List<ShortReleaseDTO> getTopReleases(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+
+        return releaseRepository
+                .findTopReleases(pageable).stream()
+                .map(release -> {
+                    UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
+
+                    return getShortReleaseDTO(release, creatorUserProfile, imageService);
+                })
+                .toList();
     }
 
 
@@ -197,6 +245,15 @@ public class ReleaseService {
         ImageUrlsDTO cover = imageService.getCoverForCollection(release.getId().toString());
 
         return ReleaseModel.toDTO(release, creatorUserProfileDTO, cover);
+    }
+
+    @NotNull
+    public static PublicReleaseDTO getPublicReleaseDTO(ReleaseModel release, UserProfileModel creatorUserProfile, ImageService imageService) {
+        ShortUserProfileDTO creatorUserProfileDTO = getShortUserProfileDTO(creatorUserProfile, imageService);
+
+        ImageUrlsDTO cover = imageService.getCoverForCollection(release.getId().toString());
+
+        return ReleaseModel.toPublicDTO(release, creatorUserProfileDTO, cover);
     }
 
     @NotNull

@@ -1,8 +1,11 @@
 package org.deus.src.services.models.intermediateTables.reposts;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.actions.RepostContentDTO;
+import org.deus.src.dtos.actions.UserProfileLikedRepostedDTO;
 import org.deus.src.dtos.fromModels.song.ShortSongDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.enums.ContentType;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.ReleaseModel;
@@ -28,7 +31,7 @@ import static org.deus.src.services.models.UserProfileService.getShortUserProfil
 
 @Service
 @RequiredArgsConstructor
-public class UserProfileRepostedSongService {
+public class UserProfileRepostedSongService implements UserProfileRepostedInterface {
     private final UserProfileRepostedSongRepository userProfileRepostedSongRepository;
     private final UserProfileRepository userProfileRepository;
     private final SongRepository songRepository;
@@ -36,20 +39,23 @@ public class UserProfileRepostedSongService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_profiles_reposted_song", key = "#contentId")
-    public List<ShortUserProfileDTO> getUserProfilesThatRepostedContent(UUID contentId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatRepostedContent(UUID contentId) throws DataNotFoundException {
         SongModel song = songRepository
                 .findById(contentId)
                 .orElseThrow(() -> new DataNotFoundException("Song not found"));
 
         return userProfileRepostedSongRepository
                 .findBySong(song).stream()
-                .map(userProfileRepostedSongModel -> getShortUserProfileDTO(userProfileRepostedSongModel.getUserProfile(), imageService))
+                .map(userProfileRepostedSongModel -> new UserProfileLikedRepostedDTO(
+                        getShortUserProfileDTO(userProfileRepostedSongModel.getUserProfile(), imageService),
+                        userProfileRepostedSongModel.getCreatedAt()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "songs_reposted_by_user_profile", key = "#userProfileId")
-    public List<ShortSongDTO> getRepostedContent(UUID userProfileId) throws DataNotFoundException {
+    public List<RepostContentDTO> getRepostedContent(UUID userProfileId) throws DataNotFoundException {
         UserProfileModel userProfile = userProfileRepository
                 .findById(userProfileId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile not found"));
@@ -61,7 +67,9 @@ public class UserProfileRepostedSongService {
                     ReleaseModel release = song.getRelease();
                     UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
 
-                    return getShortSongDTO(song, release, creatorUserProfile, imageService);
+                    ShortSongDTO shortSongDTO = getShortSongDTO(song, release, creatorUserProfile, imageService);
+
+                    return new RepostContentDTO(shortSongDTO, ContentType.SONG, userProfileRepostedSongModel.getCreatedAt());
                 })
                 .collect(Collectors.toList());
     }

@@ -1,8 +1,11 @@
 package org.deus.src.services.models.intermediateTables.reposts;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.actions.RepostContentDTO;
+import org.deus.src.dtos.actions.UserProfileLikedRepostedDTO;
 import org.deus.src.dtos.fromModels.release.ShortReleaseDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.enums.ContentType;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.ReleaseModel;
@@ -27,7 +30,7 @@ import static org.deus.src.services.models.UserProfileService.getShortUserProfil
 
 @Service
 @RequiredArgsConstructor
-public class UserProfileRepostedReleaseService {
+public class UserProfileRepostedReleaseService implements UserProfileRepostedInterface {
     private final UserProfileRepostedReleaseRepository userProfileRepostedReleaseRepository;
     private final ReleaseRepository releaseRepository;
     private final UserProfileRepository userProfileRepository;
@@ -35,20 +38,23 @@ public class UserProfileRepostedReleaseService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_profiles_reposted_release", key = "#contentId")
-    public List<ShortUserProfileDTO> getUserProfilesThatRepostedContent(UUID contentId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatRepostedContent(UUID contentId) throws DataNotFoundException {
         ReleaseModel release = releaseRepository
                 .findById(contentId)
                 .orElseThrow(() -> new DataNotFoundException("Release not found"));
 
         return userProfileRepostedReleaseRepository
                 .findByRelease(release).stream()
-                .map(userProfileRepostedReleaseModel -> getShortUserProfileDTO(userProfileRepostedReleaseModel.getUserProfile(), imageService))
+                .map(userProfileRepostedReleaseModel -> new UserProfileLikedRepostedDTO(
+                        getShortUserProfileDTO(userProfileRepostedReleaseModel.getUserProfile(), imageService),
+                        userProfileRepostedReleaseModel.getCreatedAt()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "releases_reposted_by_user_profile", key = "#userProfileId")
-    public List<ShortReleaseDTO> getRepostedContent(UUID userProfileId) throws DataNotFoundException {
+    public List<RepostContentDTO> getRepostedContent(UUID userProfileId) throws DataNotFoundException {
         UserProfileModel userProfile = userProfileRepository
                 .findById(userProfileId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile not found"));
@@ -59,7 +65,9 @@ public class UserProfileRepostedReleaseService {
                     ReleaseModel release = userProfileRepostedReleaseModel.getRelease();
                     UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
 
-                    return getShortReleaseDTO(release, creatorUserProfile, imageService);
+                    ShortReleaseDTO shortReleaseDTO = getShortReleaseDTO(release, creatorUserProfile, imageService);
+
+                    return new RepostContentDTO(shortReleaseDTO, ContentType.RELEASE, userProfileRepostedReleaseModel.getCreatedAt());
                 })
                 .collect(Collectors.toList());
     }

@@ -2,6 +2,7 @@ package org.deus.src.services.models.intermediateTables;
 
 import lombok.RequiredArgsConstructor;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.dtos.fromModels.userProfile.UserProfileActionDTO;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.UserProfileModel;
@@ -31,20 +32,24 @@ public class UserBlockService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_blocks", key = "#id")
-    public List<ShortUserProfileDTO> getBlockedUsers(UUID id) throws DataNotFoundException {
+    public List<UserProfileActionDTO> getBlockedUsers(UUID id) throws DataNotFoundException {
         UserProfileModel user = userProfileRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
         return userBlockRepository
                 .findByBlocker(user).stream()
-                .map(userBlockModel -> getShortUserProfileDTO(userBlockModel.getBlocked(), imageService))
+                .map(userBlockModel -> new UserProfileActionDTO(
+                        getShortUserProfileDTO(userBlockModel.getBlocked(), imageService),
+                        userBlockModel.getCreatedAt()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = "user_blocks", key = "#blockerId")
+                    @CacheEvict(value = {"user_blocks", "user_profile_by_id", "user_profile_by_user_id", "user_profile_by_username", "user_profile_by_id_dto"}, key = "#blockerId"),
+                    @CacheEvict(value = {"user_profile_by_id", "user_profile_by_user_id", "user_profile_by_username", "user_profile_by_id_dto"}, key = "#blockedId")
             }
     )
     public void blockUser(UUID blockerId, UUID blockedId) throws DataNotFoundException, ActionCannotBePerformedException {
@@ -71,12 +76,12 @@ public class UserBlockService {
         // Unfollow each other if they were following
         try {
             userFollowingService.unfollowUser(blockerId, blockedId);
-        } catch (RuntimeException e) {
+        } catch (ActionCannotBePerformedException e) {
             // Ignore if they weren't following
         }
         try {
             userFollowingService.unfollowUser(blockedId, blockerId);
-        } catch (RuntimeException e) {
+        } catch (ActionCannotBePerformedException e) {
             // Ignore if they weren't following
         }
 
@@ -88,7 +93,8 @@ public class UserBlockService {
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = "user_blocks", key = "#blockerId")
+                    @CacheEvict(value = {"user_blocks", "user_profile_by_id", "user_profile_by_user_id", "user_profile_by_username", "user_profile_by_id_dto"}, key = "#blockerId"),
+                    @CacheEvict(value = {"user_profile_by_id", "user_profile_by_user_id", "user_profile_by_username", "user_profile_by_id_dto"}, key = "#blockedId")
             }
     )
     public void unblockUser(UUID blockerId, UUID blockedId) throws DataNotFoundException, ActionCannotBePerformedException {

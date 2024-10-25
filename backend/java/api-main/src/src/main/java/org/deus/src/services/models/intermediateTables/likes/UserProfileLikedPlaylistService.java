@@ -1,8 +1,11 @@
 package org.deus.src.services.models.intermediateTables.likes;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.actions.LikeContentDTO;
+import org.deus.src.dtos.actions.UserProfileLikedRepostedDTO;
 import org.deus.src.dtos.fromModels.playlist.ShortPlaylistDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.enums.ContentType;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.PlaylistModel;
@@ -27,7 +30,7 @@ import static org.deus.src.services.models.UserProfileService.getShortUserProfil
 
 @Service
 @RequiredArgsConstructor
-public class UserProfileLikedPlaylistService {
+public class UserProfileLikedPlaylistService implements UserProfileLikedInterface {
     private final UserProfileLikedPlaylistRepository userProfileLikedPlaylistRepository;
     private final UserProfileRepository userProfileRepository;
     private final PlaylistRepository playlistRepository;
@@ -35,20 +38,23 @@ public class UserProfileLikedPlaylistService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_profiles_liked_playlist", key = "#contentId")
-    public List<ShortUserProfileDTO> getUserProfilesThatLikedContent(UUID contentId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatLikedContent(UUID contentId) throws DataNotFoundException {
         PlaylistModel playlist = playlistRepository
                 .findById(contentId)
                 .orElseThrow(() -> new DataNotFoundException("Playlist not found"));
 
         return userProfileLikedPlaylistRepository
                 .findByPlaylist(playlist).stream()
-                .map(userProfileLikedPlaylistModel -> getShortUserProfileDTO(userProfileLikedPlaylistModel.getUserProfile(), imageService))
+                .map(userProfileLikedPlaylistModel -> new UserProfileLikedRepostedDTO(
+                        getShortUserProfileDTO(userProfileLikedPlaylistModel.getUserProfile(), imageService),
+                        userProfileLikedPlaylistModel.getCreatedAt()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "playlists_liked_by_user_profile", key = "#userProfileId")
-    public List<ShortPlaylistDTO> getLikedContent(UUID userProfileId) throws DataNotFoundException {
+    public List<LikeContentDTO> getLikedContent(UUID userProfileId) throws DataNotFoundException {
         UserProfileModel userProfile = userProfileRepository
                 .findById(userProfileId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile not found"));
@@ -59,7 +65,9 @@ public class UserProfileLikedPlaylistService {
                     PlaylistModel playlist = userProfileLikedPlaylistModel.getPlaylist();
                     UserProfileModel creatorUserProfile = playlist.getCreatorUserProfile();
 
-                    return getShortPlaylistDTO(playlist, creatorUserProfile, imageService);
+                    ShortPlaylistDTO shortPlaylistDTO = getShortPlaylistDTO(playlist, creatorUserProfile, imageService);
+
+                    return new LikeContentDTO(shortPlaylistDTO, ContentType.PLAYLIST, userProfileLikedPlaylistModel.getCreatedAt());
                 })
                 .collect(Collectors.toList());
     }
