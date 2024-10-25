@@ -3,6 +3,7 @@ package org.deus.src.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.deus.src.dtos.fromModels.tag.ShortTagDTO;
 import org.deus.src.dtos.fromModels.tag.TagDTO;
 import org.deus.src.models.base.BaseIdCreate;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,6 +28,7 @@ public class TagModel extends BaseIdCreate {
     @Column(name = "name", length = 50, nullable = false, unique = true)
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private Set<SongModel> songs = new HashSet<>();
 

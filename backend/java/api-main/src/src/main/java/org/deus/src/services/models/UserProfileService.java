@@ -2,15 +2,18 @@ package org.deus.src.services.models;
 
 import lombok.RequiredArgsConstructor;
 import org.deus.src.dtos.ImageUrlsDTO;
+import org.deus.src.dtos.PageDTO;
+import org.deus.src.dtos.actions.LikeContentDTO;
+import org.deus.src.dtos.actions.RepostContentDTO;
 import org.deus.src.dtos.fromModels.playlist.ShortPlaylistDTO;
 import org.deus.src.dtos.fromModels.release.ShortReleaseDTO;
-import org.deus.src.dtos.fromModels.song.ShortSongDTO;
 import org.deus.src.dtos.fromModels.song.SongListenedDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.dtos.fromModels.userProfile.UserProfileActionDTO;
 import org.deus.src.dtos.fromModels.userProfile.UserProfileDTO;
+import org.deus.src.dtos.fromModels.userProfile.PublicUserProfileDTO;
 import org.deus.src.enums.AudioQuality;
-import org.deus.src.enums.LikeType;
-import org.deus.src.enums.RepostType;
+import org.deus.src.enums.ContentType;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.*;
@@ -35,6 +38,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,34 +70,65 @@ public class UserProfileService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_profiles_pageable", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<ShortUserProfileDTO> getAll(Pageable pageable) {
-        return userProfileRepository
+    public PageDTO<ShortUserProfileDTO> getAll(Pageable pageable) {
+        Page<ShortUserProfileDTO> page = userProfileRepository
                 .findAll(pageable)
                 .map(userProfile -> getShortUserProfileDTO(userProfile, imageService));
+
+        return new PageDTO<>(page);
     }
 
     @Cacheable(value = "user_profile_by_id", key = "#id")
     public UserProfileModel getById(UUID id) throws DataNotFoundException {
-        return userProfileRepository.findById(id).orElseThrow(() -> new DataNotFoundException("User profile not found"));
+        return userProfileRepository
+                .findById(id)
+                .orElseThrow(() -> new DataNotFoundException("User profile not found"));
     }
 
     @Cacheable(value = "user_profile_by_user_id", key = "#userId")
     public UserProfileModel getByUserId(UUID userId) throws DataNotFoundException {
-        return userProfileRepository.findByUserId(userId).orElseThrow(() -> new DataNotFoundException("User profile not found"));
+        return userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User profile not found"));
     }
 
+    public Boolean existsByIdAndUserId(UUID id, UUID userId) throws ActionCannotBePerformedException {
+        return userProfileRepository.existsByIdAndUserId(id, userId);
+    }
+
+    @Cacheable(value = "user_profile_by_username", key = "#username")
+    public UserProfileModel getByUsername(String username) throws DataNotFoundException {
+        return userProfileRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new DataNotFoundException("User profile not found"));
+    }
+
+    @Transactional(readOnly = true)
     @Cacheable(value = "user_profile_by_id_dto", key = "#id")
     public UserProfileDTO getDTOById(UUID id) throws DataNotFoundException {
         UserProfileModel userProfile = userProfileRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("User profile not found"));
 
-        return getUserProfileDTO(userProfile, imageService);
+        Short countryId = userProfile.getCountry() != null ?
+                userProfile.getCountry().getId() :
+                null;
+
+        return getUserProfileDTO(userProfile, imageService, countryId);
     }
 
-    @Cacheable(value = "user_profile_by_id_dto", key = "#model.id")
-    public UserProfileDTO getDTOById(UserProfileModel model) {
-        return getUserProfileDTO(model, imageService);
+    @Transactional(readOnly = true)
+    @Cacheable(value = "public_user_profile_by_id_dto", key = "#id")
+    public PublicUserProfileDTO getPublicDTOById(UUID id) throws DataNotFoundException {
+        UserProfileModel userProfile = userProfileRepository
+                .findById(id)
+                .orElseThrow(() -> new DataNotFoundException("User profile not found"));
+
+        String countryName = userProfile.getCountry() != null ?
+                userProfile.getCountry().getName() :
+                null;
+
+        return getPublicUserProfileDTO(userProfile, imageService, countryName);
     }
 
     @Transactional
@@ -106,10 +141,10 @@ public class UserProfileService {
                     @CachePut(value = "user_profile_by_user_id", key = "#result.userId")
             }
     )
-    public UserProfileModel create(UserProfileCreateRequest request) {
+    public UserProfileModel create(UserProfileCreateRequest request, UUID userId) {
         UserProfileModel userProfile = new UserProfileModel();
 
-        userProfile.setUserId(UUID.fromString(request.getUserId()));
+        userProfile.setUserId(userId);
         userProfile.setUsername(request.getUsername());
         userProfile.setDisplayName(request.getDisplayName());
         userProfile.setPreferredQuality(AudioQuality.MEDIUM);
@@ -121,16 +156,16 @@ public class UserProfileService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"user_profiles_pageable", "user_profiles_liked_playlist", "user_profiles_liked_release", "user_profiles_liked_song", "user_profiles_reposted_playlist", "user_profiles_reposted_release", "user_profiles_reposted_song"}, allEntries = true),
-                    @CacheEvict(value = "user_profile_by_id_dto", key = "#result.id")
+                    @CacheEvict(value = {"user_profile_by_id_dto", "public_user_profile_by_id_dto"}, key = "#result.id")
             },
             put = {
                     @CachePut(value = "user_profile_by_id", key = "#result.id"),
                     @CachePut(value = "user_profile_by_user_id", key = "#result.userId")
             }
     )
-    public UserProfileModel update(UserProfileUpdateRequest request) throws DataNotFoundException {
-        UserProfileModel userProfile = userProfileRepository.findById(UUID.fromString(request.getId()))
-                .orElseThrow(() -> new DataNotFoundException("User profile not found"));
+    public UserProfileModel update(UserProfileUpdateRequest request, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+        UserProfileModel userProfile = userProfileRepository.findByIdAndUserId(UUID.fromString(request.getId()), userId)
+                .orElseThrow(() -> new ActionCannotBePerformedException("User profile not found or you don't have permission to update it"));
 
         if (request.getDisplayName() != null) {
             userProfile.setDisplayName(request.getDisplayName());
@@ -165,10 +200,15 @@ public class UserProfileService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"user_profiles_pageable", "user_profiles_liked_playlist", "user_profiles_liked_release", "user_profiles_liked_song", "user_profiles_reposted_playlist", "user_profiles_reposted_release", "user_profiles_reposted_song"}, allEntries = true),
-                    @CacheEvict(value = {"user_profile_by_id", "user_profile_by_id_dto"}, key = "#id")
+                    @CacheEvict(value = {"user_profile_by_id", "user_profile_by_id_dto", "public_user_profile_by_id_dto"}, key = "#id"),
+                    @CacheEvict(value = {"user_profile_by_user_id"}, key = "#userId")
             }
     )
-    public void delete(UUID id) {
+    public void delete(UUID id, UUID userId) throws ActionCannotBePerformedException {
+        if (!existsByIdAndUserId(id, userId)) {
+            throw new ActionCannotBePerformedException("User profile not found or you don't have permission to delete it");
+        }
+
         userProfileRepository.deleteById(id);
     }
 
@@ -179,11 +219,7 @@ public class UserProfileService {
 
         return releaseRepository
                 .findAllByCreatorUserProfile(userProfile).stream()
-                .map(release -> {
-                    UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
-
-                    return getShortReleaseDTO(release, creatorUserProfile, imageService);
-                })
+                .map(release -> getShortReleaseDTO(release, userProfile, imageService))
                 .collect(Collectors.toList());
     }
 
@@ -204,53 +240,53 @@ public class UserProfileService {
 
 
 
-    public void likeContent(UUID userProfileId, UUID contentId, LikeType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
+    public void likeContent(UUID userProfileId, UUID contentId, ContentType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
         switch (contentType) {
             case RELEASE -> userProfileLikedReleaseService.likeContent(userProfileId, contentId);
             case PLAYLIST -> userProfileLikedPlaylistService.likeContent(userProfileId, contentId);
             case SONG -> userProfileLikedSongService.likeContent(userProfileId, contentId);
         }
     }
-    public void removeLikeFromContent(UUID userProfileId, UUID contentId, LikeType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
+    public void removeLikeFromContent(UUID userProfileId, UUID contentId, ContentType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
         switch (contentType) {
             case RELEASE -> userProfileLikedReleaseService.removeLikeFromContent(userProfileId, contentId);
             case PLAYLIST -> userProfileLikedPlaylistService.removeLikeFromContent(userProfileId, contentId);
             case SONG -> userProfileLikedSongService.removeLikeFromContent(userProfileId, contentId);
         }
     }
-    public List<ShortReleaseDTO> getLikedReleases(UUID userProfileId) throws DataNotFoundException {
+    public List<LikeContentDTO> getLikedReleases(UUID userProfileId) throws DataNotFoundException {
         return userProfileLikedReleaseService.getLikedContent(userProfileId);
     }
-    public List<ShortPlaylistDTO> getLikedPlaylists(UUID userProfileId) throws DataNotFoundException {
+    public List<LikeContentDTO> getLikedPlaylists(UUID userProfileId) throws DataNotFoundException {
         return userProfileLikedPlaylistService.getLikedContent(userProfileId);
     }
-    public List<ShortSongDTO> getLikedSongs(UUID userProfileId) throws DataNotFoundException {
+    public List<LikeContentDTO> getLikedSongs(UUID userProfileId) throws DataNotFoundException {
         return userProfileLikedSongService.getLikedContent(userProfileId);
     }
 
 
 
-    public void repostContent(UUID userProfileId, UUID contentId, RepostType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
+    public void repostContent(UUID userProfileId, UUID contentId, ContentType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
         switch (contentType) {
             case RELEASE -> userProfileRepostedReleaseService.repostContent(userProfileId, contentId);
             case PLAYLIST -> userProfileRepostedPlaylistService.repostContent(userProfileId, contentId);
             case SONG -> userProfileRepostedSongService.repostContent(userProfileId, contentId);
         }
     }
-    public void removeRepostFromContent(UUID userProfileId, UUID contentId, RepostType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
+    public void removeRepostFromContent(UUID userProfileId, UUID contentId, ContentType contentType) throws DataNotFoundException, ActionCannotBePerformedException {
         switch (contentType) {
             case RELEASE -> userProfileRepostedReleaseService.removeRepostOfContent(userProfileId, contentId);
             case PLAYLIST -> userProfileRepostedPlaylistService.removeRepostOfContent(userProfileId, contentId);
             case SONG -> userProfileRepostedSongService.removeRepostOfContent(userProfileId, contentId);
         }
     }
-    public List<ShortReleaseDTO> getRepostedReleases(UUID userProfileId) throws DataNotFoundException {
+    public List<RepostContentDTO> getRepostedReleases(UUID userProfileId) throws DataNotFoundException {
         return userProfileRepostedReleaseService.getRepostedContent(userProfileId);
     }
-    public List<ShortPlaylistDTO> getRepostedPlaylists(UUID userProfileId) throws DataNotFoundException {
+    public List<RepostContentDTO> getRepostedPlaylists(UUID userProfileId) throws DataNotFoundException {
         return userProfileRepostedPlaylistService.getRepostedContent(userProfileId);
     }
-    public List<ShortSongDTO> getRepostedSongs(UUID userProfileId) throws DataNotFoundException {
+    public List<RepostContentDTO> getRepostedSongs(UUID userProfileId) throws DataNotFoundException {
         return userProfileRepostedSongService.getRepostedContent(userProfileId);
     }
 
@@ -274,14 +310,32 @@ public class UserProfileService {
     public void unfollowUser(UUID followerId, UUID followingId) throws DataNotFoundException, ActionCannotBePerformedException {
         userFollowingService.unfollowUser(followerId, followingId);
     }
-    public List<ShortUserProfileDTO> getFollowers(UUID id) throws DataNotFoundException {
+    public List<UserProfileActionDTO> getFollowers(UUID id) throws DataNotFoundException {
         return userFollowingService.getFollowers(id);
     }
-    public List<ShortUserProfileDTO> getFollowings(UUID id) throws DataNotFoundException {
+    public List<UserProfileActionDTO> getFollowings(UUID id) throws DataNotFoundException {
         return userFollowingService.getFollowings(id);
     }
-    public List<ShortUserProfileDTO> getBlockedUsers(UUID id) throws DataNotFoundException {
+    public void blockUser(UUID blockerId, UUID blockedId) throws DataNotFoundException, ActionCannotBePerformedException {
+        userBlockService.blockUser(blockerId, blockedId);
+    }
+    public void unblockUser(UUID blockerId, UUID blockedId) throws DataNotFoundException, ActionCannotBePerformedException {
+        userBlockService.unblockUser(blockerId, blockedId);
+    }
+    public List<UserProfileActionDTO> getBlockedUsers(UUID id) throws DataNotFoundException {
         return userBlockService.getBlockedUsers(id);
+    }
+
+
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "top_artists", key = "#limit", unless = "#result == null || #result.size() == 0")
+    public List<ShortUserProfileDTO> getTopArtists(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        List<UserProfileModel> topArtists = userProfileRepository.findTopArtists(pageable);
+        return topArtists.stream()
+                .map(userProfile -> getShortUserProfileDTO(userProfile, imageService))
+                .collect(Collectors.toList());
     }
 
 
@@ -294,9 +348,16 @@ public class UserProfileService {
     }
 
     @NotNull
-    public static UserProfileDTO getUserProfileDTO(UserProfileModel userProfile, ImageService imageService) {
+    public static UserProfileDTO getUserProfileDTO(UserProfileModel userProfile, ImageService imageService, Short countryId) {
         ImageUrlsDTO avatar = imageService.getAvatarForUser(userProfile.getUserId().toString());
 
-        return UserProfileModel.toDTO(userProfile, avatar);
+        return UserProfileModel.toDTO(userProfile, avatar, countryId);
+    }
+
+    @NotNull
+    public static PublicUserProfileDTO getPublicUserProfileDTO(UserProfileModel userProfile, ImageService imageService, String countryName) {
+        ImageUrlsDTO avatar = imageService.getAvatarForUser(userProfile.getUserId().toString());
+
+        return UserProfileModel.toPublicDTO(userProfile, avatar, countryName);
     }
 }

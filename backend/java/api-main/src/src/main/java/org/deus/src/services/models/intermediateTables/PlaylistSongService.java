@@ -1,7 +1,9 @@
 package org.deus.src.services.models.intermediateTables;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.fromModels.playlist.PlaylistSongDTO;
 import org.deus.src.dtos.fromModels.playlist.ShortPlaylistDTO;
+import org.deus.src.dtos.fromModels.playlist.SongPlaylistDTO;
 import org.deus.src.dtos.fromModels.song.ShortSongDTO;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
@@ -37,7 +39,7 @@ public class PlaylistSongService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "song_playlists", key = "#songId")
-    public List<ShortPlaylistDTO> getPlaylistsBySongId(UUID songId) throws DataNotFoundException {
+    public List<SongPlaylistDTO> getPlaylistsBySongId(UUID songId) throws DataNotFoundException {
         SongModel song = songRepository
                 .findById(songId)
                 .orElseThrow(() -> new DataNotFoundException("Song not found"));
@@ -48,14 +50,14 @@ public class PlaylistSongService {
                     PlaylistModel playlist = playlistSongModel.getPlaylist();
                     UserProfileModel creatorUserProfile = playlist.getCreatorUserProfile();
 
-                    return getShortPlaylistDTO(playlist, creatorUserProfile, imageService);
+                    return new SongPlaylistDTO(getShortPlaylistDTO(playlist, creatorUserProfile, imageService), playlistSongModel.getCreatedAt());
                 })
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "playlist_songs", key = "#playlistId")
-    public List<ShortSongDTO> getSongsByPlaylistId(UUID playlistId) throws DataNotFoundException {
+    public List<PlaylistSongDTO> getSongsByPlaylistId(UUID playlistId) throws DataNotFoundException {
         PlaylistModel playlist = playlistRepository
                 .findById(playlistId)
                 .orElseThrow(() -> new DataNotFoundException("Playlist not found"));
@@ -67,7 +69,10 @@ public class PlaylistSongService {
                     ReleaseModel release = song.getRelease();
                     UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
 
-                    return getShortSongDTO(song, release, creatorUserProfile, imageService);
+                    return new PlaylistSongDTO(
+                            getShortSongDTO(song, release, creatorUserProfile, imageService),
+                            playlistSongModel.getCreatedAt()
+                    );
                 })
                 .collect(Collectors.toList());
     }

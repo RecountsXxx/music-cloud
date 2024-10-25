@@ -2,8 +2,13 @@ package org.deus.src.services.models;
 
 import lombok.RequiredArgsConstructor;
 import org.deus.src.dtos.ImageUrlsDTO;
+import org.deus.src.dtos.PageDTO;
+import org.deus.src.dtos.actions.UserProfileLikedRepostedDTO;
 import org.deus.src.dtos.fromModels.playlist.PlaylistDTO;
+import org.deus.src.dtos.fromModels.playlist.PlaylistSongDTO;
+import org.deus.src.dtos.fromModels.playlist.PublicPlaylistDTO;
 import org.deus.src.dtos.fromModels.playlist.ShortPlaylistDTO;
+import org.deus.src.dtos.fromModels.release.PublicReleaseDTO;
 import org.deus.src.dtos.fromModels.song.ShortSongDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
@@ -24,6 +29,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,14 +50,16 @@ public class PlaylistService {
     private final ImageService imageService;
 
     @Cacheable(value = "playlists_pageable", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<ShortPlaylistDTO> getAll(Pageable pageable) {
-        return playlistRepository
+    public PageDTO<ShortPlaylistDTO> getAll(Pageable pageable) {
+        Page<ShortPlaylistDTO> page = playlistRepository
                 .findAll(pageable)
                 .map(playlist -> {
                     UserProfileModel creatorUserProfile = playlist.getCreatorUserProfile();
 
                     return getShortPlaylistDTO(playlist, creatorUserProfile, imageService);
                 });
+
+        return new PageDTO<>(page);
     }
 
     @Cacheable(value = "playlist", key = "#id")
@@ -59,6 +67,13 @@ public class PlaylistService {
         return playlistRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Playlist not found"));
+    }
+
+    @Cacheable(value = "playlist", key = "#id")
+    public PlaylistModel getByIdAndCreatorUserProfile(UUID id, UserProfileModel creatorUserProfile) throws DataNotFoundException, ActionCannotBePerformedException {
+        return playlistRepository
+                .findByIdAndCreatorUserProfile(id, creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Playlist not found or you don't have access to it"));
     }
 
     @Cacheable(value = "playlist_dto", key = "#id")
@@ -71,6 +86,16 @@ public class PlaylistService {
         return getPlaylistDTO(playlist, creatorUserProfile, imageService);
     }
 
+    @Cacheable(value = "public_playlist_dto", key = "#id")
+    public PublicPlaylistDTO getPublicDTOById(UUID id) throws DataNotFoundException {
+        PlaylistModel playlist = playlistRepository
+                .findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Playlist not found"));
+        UserProfileModel creatorUserProfile = playlist.getCreatorUserProfile();
+
+        return getPublicPlaylistDTO(playlist, creatorUserProfile, imageService);
+    }
+
     @Transactional
     @Caching(
             evict = {
@@ -80,9 +105,9 @@ public class PlaylistService {
                     @CachePut(value = "playlist", key = "#result.id")
             }
     )
-    public PlaylistModel create(PlaylistCreateRequest request) throws DataNotFoundException {
+    public PlaylistModel create(PlaylistCreateRequest request, UUID userId) throws DataNotFoundException {
         UserProfileModel creatorUserProfile = userProfileRepository
-                .findById(UUID.fromString(request.getCreatorUserProfileId()))
+                .findByUserId(userId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
 
         PlaylistModel playlist = new PlaylistModel();
@@ -105,16 +130,20 @@ public class PlaylistService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"playlists_pageable", "song_playlists", "playlists_by_creator_user_profile", "playlists_liked_by_user_profile", "playlists_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = "playlist_dto", key = "#result.id")
+                    @CacheEvict(value = {"playlist_dto", "public_playlist_dto"}, key = "#result.id")
             },
             put = {
                     @CachePut(value = "playlist", key = "#result.id")
             }
     )
-    public PlaylistModel update(PlaylistUpdateRequest request) throws DataNotFoundException {
+    public PlaylistModel update(PlaylistUpdateRequest request, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+        UserProfileModel creatorUserProfile = userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
+
         PlaylistModel playlist = playlistRepository
-                .findById(UUID.fromString(request.getId()))
-                .orElseThrow(() -> new DataNotFoundException("Playlist not found"));
+                .findByIdAndCreatorUserProfile(UUID.fromString(request.getId()), creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Playlist not found or you don't have permission to update it"));
 
         if (request.getName() != null) {
             playlist.setName(request.getName());
@@ -133,15 +162,17 @@ public class PlaylistService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"playlists_pageable", "song_playlists", "playlists_by_creator_user_profile", "playlists_liked_by_user_profile", "playlists_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = {"playlist", "playlist_dto"}, key = "#id")
+                    @CacheEvict(value = {"playlist", "playlist_dto", "public_playlist_dto"}, key = "#id")
             }
     )
-    public void delete(UUID id) throws DataNotFoundException {
-        PlaylistModel playlist = playlistRepository
-                .findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Playlist not found"));
+    public void delete(UUID id, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+        UserProfileModel creatorUserProfile = userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
 
-        UserProfileModel creatorUserProfile = playlist.getCreatorUserProfile();
+        PlaylistModel playlist = playlistRepository
+                .findByIdAndCreatorUserProfile(id, creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Playlist not found or you don't have permission to delete it"));
 
         playlistRepository.delete(playlist);
 
@@ -160,15 +191,32 @@ public class PlaylistService {
 
 
 
-    public List<ShortSongDTO> getSongsByPlaylistId(UUID playlistId) throws DataNotFoundException {
+    public List<PlaylistSongDTO> getSongsByPlaylistId(UUID playlistId) throws DataNotFoundException {
         return playlistSongService.getSongsByPlaylistId(playlistId);
     }
-    public List<ShortUserProfileDTO> getUserProfilesThatLiked(UUID playlistId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatLiked(UUID playlistId) throws DataNotFoundException {
         return userProfileLikedPlaylistService.getUserProfilesThatLikedContent(playlistId);
     }
 
-    public List<ShortUserProfileDTO> getUserProfilesThatReposted(UUID playlistId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatReposted(UUID playlistId) throws DataNotFoundException {
         return userProfileRepostedPlaylistService.getUserProfilesThatRepostedContent(playlistId);
+    }
+
+
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "top_playlists", key = "#limit", unless = "#result == null || #result.size() == 0")
+    public List<ShortPlaylistDTO> getTopPlaylists(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+
+        return playlistRepository
+                .findTopPlaylists(pageable).stream()
+                .map(playlist -> {
+                    UserProfileModel creatorUserProfile = playlist.getCreatorUserProfile();
+
+                    return getShortPlaylistDTO(playlist, creatorUserProfile, imageService);
+                })
+                .toList();
     }
 
 
@@ -189,5 +237,14 @@ public class PlaylistService {
         ImageUrlsDTO cover = imageService.getCoverForCollection(playlist.getId().toString());
 
         return PlaylistModel.toDTO(playlist, creatorUserProfileDTO, cover);
+    }
+
+    @NotNull
+    public static PublicPlaylistDTO getPublicPlaylistDTO(PlaylistModel playlist, UserProfileModel creatorUserProfile, ImageService imageService) {
+        ShortUserProfileDTO creatorUserProfileDTO = getShortUserProfileDTO(creatorUserProfile, imageService);
+
+        ImageUrlsDTO cover = imageService.getCoverForCollection(playlist.getId().toString());
+
+        return PlaylistModel.toPublicDTO(playlist, creatorUserProfileDTO, cover);
     }
 }

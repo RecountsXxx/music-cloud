@@ -200,7 +200,8 @@ export default {
         releaseDate: '',
         type: 'SINGLE',
         description: '',
-        privacy: 'PUBLIC'
+        privacy: 'PUBLIC',
+        duration: 0,
       },
       tracks: [],
       genres: [],
@@ -244,6 +245,7 @@ export default {
             name: file.name,
             id: fileId,
             position: this.tracks.length + 1,
+            duration: 0/*get duration from file*/,
             genres: [],
             tags: [],
           };
@@ -279,26 +281,27 @@ export default {
 
 
     async uploadRelease() {
-      // const releaseData = {
-      //   title: this.release.title,
-      //   releaseDate: this.release.releaseDate,
-      //   type: this.release.type,
-      //   description: this.release.description,
-      //   privacy: this.release.privacy,
-      //   buyLink: this.release.buyLink,
-      //   recordLabel: this.release.recordLabel,
-      //   tracks: this.tracks.map(track => ({
-      //     fileId: track.id,
-      //     name: track.name,
-      //     position: track.position,
-      //     genreIds: track.genres.map(genre => genre.id),
-      //     tags: track.tags.map(tag => tag)
-      //   }))
-      // };
+      const releaseData = {
+        title: this.release.title,
+        releaseDate: this.release.releaseDate,
+        type: this.release.type,
+        description: this.release.description,
+        privacy: this.release.privacy,
+        buyLink: this.release.buyLink,
+        recordLabel: this.release.recordLabel,
+        tracks: this.tracks.map(track => ({
+          fileId: track.id,
+          name: track.name,
+          position: track.position,
+          duration: track.duration,
+          genreIds: track.genres.map(genre => genre.id),
+          tags: track.tags.map(tag => tag)
+        }))
+      };
 
-      //const collectionId = await createRelease(releaseData);
+      const collectionId = await createRelease(releaseData);
 
-      //await this.uploadCover(collectionId);
+      await this.uploadCover(collectionId);
 
       // const songId = '1';
       // const fileId = 'c339853a-f269-4ab0-8814-d9ded5c89e7f';
@@ -309,9 +312,9 @@ export default {
       //   toastInfo(message);
       // }
 
-      const collectionId = "1";
-
-      await this.uploadCover(collectionId);
+      // const collectionId = "1";
+      //
+      // await this.uploadCover(collectionId);
     },
 
 

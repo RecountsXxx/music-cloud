@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.deus.src.dtos.fromModels.release.ShortReleaseDTO;
+import org.deus.src.dtos.fromModels.song.PublicSongDTO;
 import org.deus.src.dtos.fromModels.song.ShortSongDTO;
 import org.deus.src.dtos.fromModels.song.SongDTO;
 import org.deus.src.enums.AudioStatus;
@@ -28,6 +30,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -42,6 +45,7 @@ public class SongModel extends BaseIdCreateUpdate {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "release_id", nullable = false)
     private ReleaseModel release;
@@ -73,6 +77,7 @@ public class SongModel extends BaseIdCreateUpdate {
 
 
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "song_genres",
@@ -81,6 +86,7 @@ public class SongModel extends BaseIdCreateUpdate {
     )
     private Set<GenreModel> genres = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "song_tags",
@@ -89,18 +95,23 @@ public class SongModel extends BaseIdCreateUpdate {
     )
     private Set<TagModel> tags = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "song")
     private Set<CommentModel> comments = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "song")
     private Set<UserProfileListenedHistoryModel> userProfilesListenedHistory = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "song")
     private Set<UserProfileLikedSongModel> userProfilesLiked = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "song")
     private Set<UserProfileRepostedSongModel> userProfilesReposted = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "song")
     private Set<PlaylistSongModel> songInPlaylists = new HashSet<>();
 
@@ -111,9 +122,22 @@ public class SongModel extends BaseIdCreateUpdate {
                 model.getId().toString(),
                 model.getName(),
                 releaseDTO,
-                model.getPlaceNumber(),
                 model.getDuration(),
                 model.getStatus(),
+                model.getNumberOfPlays(),
+                model.getNumberOfLikes(),
+                model.getNumberOfReposts(),
+                model.getNumberOfComments(),
+                model.getNumberOfPlaylistsWhichContainsSong()
+        );
+    }
+
+    public static PublicSongDTO toPublicDTO(SongModel model, ShortReleaseDTO releaseDTO) {
+        return new PublicSongDTO(
+                model.getId().toString(),
+                model.getName(),
+                releaseDTO,
+                model.getDuration(),
                 model.getNumberOfPlays(),
                 model.getNumberOfLikes(),
                 model.getNumberOfReposts(),

@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentCreateUpdateRequest {
-    @NotBlank(message = "The creatorUserProfileId cannot be empty")
-    private String creatorUserProfileId;
-
+public class CommentCreateRequest {
     @NotBlank(message = "The songId cannot be empty")
     private String songId;
 

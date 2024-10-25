@@ -5,9 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.deus.src.dtos.ImageUrlsDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
 import org.deus.src.dtos.fromModels.userProfile.UserProfileDTO;
+import org.deus.src.dtos.fromModels.userProfile.PublicUserProfileDTO;
 import org.deus.src.enums.AudioQuality;
 import org.deus.src.enums.Gender;
 import org.deus.src.models.base.BaseIdUpdate;
@@ -34,6 +36,7 @@ import org.deus.src.models.intermediateTables.likes.UserProfileLikedSongModel;
 import org.deus.src.models.intermediateTables.reposts.UserProfileRepostedPlaylistModel;
 import org.deus.src.models.intermediateTables.reposts.UserProfileRepostedReleaseModel;
 import org.deus.src.models.intermediateTables.reposts.UserProfileRepostedSongModel;
+import org.springframework.data.redis.core.RedisHash;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -71,6 +74,7 @@ public class UserProfileModel extends BaseIdUpdate {
     @Column(name = "biography", length = 400)
     private String biography;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "country_id")
     private CountryModel country;
@@ -113,53 +117,67 @@ public class UserProfileModel extends BaseIdUpdate {
 
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "creatorUserProfile")
     private Set<ReleaseModel> releases = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "creatorUserProfile")
     private Set<PlaylistModel> playlists = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "creatorUserProfile")
     private Set<CommentModel> comments = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileListenedHistoryModel> songsListenedHistory = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileLikedReleaseModel> releasesLiked = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileRepostedReleaseModel> releasesReposted = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileLikedPlaylistModel> playlistsLiked = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileRepostedPlaylistModel> playlistsReposted = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileLikedSongModel> songsLiked = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userProfile")
     private Set<UserProfileRepostedSongModel> songsReposted = new HashSet<>();
 
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserFollowingModel> followings = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserFollowingModel> followers = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "blocker", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserBlockModel> blockedUsers = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "blocked", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserBlockModel> blockedByUsers = new HashSet<>();
 
 
 
-    public static UserProfileDTO toDTO(UserProfileModel model, ImageUrlsDTO avatar) {
+    public static UserProfileDTO toDTO(UserProfileModel model, ImageUrlsDTO avatar, Short countryId) {
         return new UserProfileDTO(
                 model.getId().toString(),
                 model.getUsername(),
@@ -171,10 +189,23 @@ public class UserProfileModel extends BaseIdUpdate {
                 model.getGender(),
                 model.getPreferredQuality(),
                 model.getBiography(),
-                model.getCountry() != null ? model.getCountry().getId() : null,
+                countryId,
                 model.getNumberOfFollowers(),
                 model.getNumberOfFollowings(),
                 model.getNumberOfBlockedUsers()
+        );
+    }
+
+    public static PublicUserProfileDTO toPublicDTO(UserProfileModel model, ImageUrlsDTO avatar, String countryName) {
+        return new PublicUserProfileDTO(
+                model.getId().toString(),
+                model.getUsername(),
+                model.getDisplayName(),
+                avatar,
+                model.getBiography(),
+                countryName,
+                model.getNumberOfFollowers(),
+                model.getNumberOfFollowings()
         );
     }
 

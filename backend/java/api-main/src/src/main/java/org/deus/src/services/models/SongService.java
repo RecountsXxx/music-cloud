@@ -1,21 +1,23 @@
 package org.deus.src.services.models;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.PageDTO;
+import org.deus.src.dtos.actions.UserProfileLikedRepostedDTO;
 import org.deus.src.dtos.fromModels.comment.CommentDTO;
 import org.deus.src.dtos.fromModels.genre.GenreDTO;
-import org.deus.src.dtos.fromModels.playlist.ShortPlaylistDTO;
+import org.deus.src.dtos.fromModels.playlist.SongPlaylistDTO;
 import org.deus.src.dtos.fromModels.release.ShortReleaseDTO;
+import org.deus.src.dtos.fromModels.song.PublicSongDTO;
 import org.deus.src.dtos.fromModels.song.ShortSongDTO;
 import org.deus.src.dtos.fromModels.song.SongDTO;
 import org.deus.src.dtos.fromModels.tag.TagDTO;
-import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
 import org.deus.src.dtos.helpers.AudioConvertingDTO;
 import org.deus.src.enums.AudioStatus;
+import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.exceptions.message.MessageSendingException;
 import org.deus.src.models.*;
 import org.deus.src.repositories.*;
-import org.deus.src.requests.comment.CommentCreateUpdateRequest;
 import org.deus.src.requests.song.SongCreateRequest;
 import org.deus.src.requests.song.SongUpdateRequest;
 import org.deus.src.services.ImageService;
@@ -29,6 +31,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +46,7 @@ import static org.deus.src.services.models.ReleaseService.getShortReleaseDTO;
 public class SongService {
     private final SongRepository songRepository;
     private final ReleaseRepository releaseRepository;
+    private final UserProfileRepository userProfileRepository;
     private final TagRepository tagRepository;
     private final GenreRepository genreRepository;
     private final TagService tagService;
@@ -55,8 +59,8 @@ public class SongService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "songs_pageable", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<ShortSongDTO> getAll(Pageable pageable) {
-        return songRepository
+    public PageDTO<ShortSongDTO> getAll(Pageable pageable) {
+        Page<ShortSongDTO> page = songRepository
                 .findAll(pageable)
                 .map(song -> {
                     ReleaseModel release = song.getRelease();
@@ -64,6 +68,8 @@ public class SongService {
 
                     return getShortSongDTO(song, release, creatorUserProfile, imageService);
                 });
+
+        return new PageDTO<>(page);
     }
 
     @Cacheable(value = "song", key = "#id")
@@ -71,6 +77,20 @@ public class SongService {
         return songRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Song not found"));
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "song", key = "#id")
+    public SongModel getByIdAndCreatorUserProfile(UUID id, UserProfileModel creatorUserProfile) throws DataNotFoundException, ActionCannotBePerformedException {
+        SongModel song = songRepository
+                .findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Song not found"));
+
+        if (!song.getRelease().getCreatorUserProfile().equals(creatorUserProfile)) {
+            throw new ActionCannotBePerformedException("You don't have access to this song");
+        }
+
+        return song;
     }
 
     @Transactional(readOnly = true)
@@ -86,19 +106,35 @@ public class SongService {
         return getSongDTO(song, release, creatorUserProfile, imageService);
     }
 
+    @Transactional(readOnly = true)
+    @Cacheable(value = "public_song_dto", key = "#id")
+    public PublicSongDTO getPublicDTOById(UUID id) throws DataNotFoundException {
+        SongModel song = songRepository
+                .findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Song not found"));
+
+        ReleaseModel release = song.getRelease();
+        UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
+
+        return getPublicSongDTO(song, release, creatorUserProfile, imageService);
+    }
+
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = {"songs_pageable", "release", "release_dto"}, allEntries = true)
+                    @CacheEvict(value = {"songs_pageable", "release", "release_dto", "public_release_dto"}, allEntries = true)
             },
             put = {
                     @CachePut(value = "song", key = "#result.id")
             }
     )
-    public SongModel create(SongCreateRequest request, String userId) throws DataNotFoundException, MessageSendingException {
+    public SongModel create(SongCreateRequest request, UUID userId) throws DataNotFoundException, MessageSendingException, ActionCannotBePerformedException {
+        UserProfileModel creatorUserProfile = userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
         ReleaseModel release = releaseRepository
-                .findById(UUID.fromString(request.getReleaseId()))
-                .orElseThrow(() -> new DataNotFoundException("Release not found"));
+                .findByIdAndCreatorUserProfile(UUID.fromString(request.getReleaseId()), creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Release for this song not found or you don't have permission to perform operations with it"));
         Set<GenreModel> genres = getGenresFromIds(request.getGenreIds());
         Set<TagModel> tags = getTagsFromTagNames(request.getTags());
 
@@ -118,7 +154,7 @@ public class SongService {
         release.setNumberOfSongs((short) (release.getNumberOfSongs() + 1));
         releaseRepository.save(release);
 
-        AudioConvertingDTO audioConvertingDTO = new AudioConvertingDTO(userId, savedSong.getId().toString(), request.getTempFileId());
+        AudioConvertingDTO audioConvertingDTO = new AudioConvertingDTO(userId.toString(), savedSong.getId().toString(), request.getTempFileId());
 
         String queueName = "convert.audio";
 
@@ -135,17 +171,26 @@ public class SongService {
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = {"songs_pageable", "playlist_songs", "songs_listened_history_of_user_profile", "songs_liked_by_user_profile", "songs_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = "song_dto", key = "#result.id")
+                    @CacheEvict(value = {
+                            "songs_pageable", "playlist_songs",
+                            "songs_listened_history_of_user_profile",
+                            "songs_liked_by_user_profile", "songs_reposted_by_user_profile"}, allEntries = true),
+                    @CacheEvict(value = {"song_dto", "public_song_dto"}, key = "#result.id")
             },
             put = {
                     @CachePut(value = "song", key = "#result.id")
             }
     )
-    public SongModel update(SongUpdateRequest request, String userId) throws DataNotFoundException, MessageSendingException {
+    public SongModel update(SongUpdateRequest request, UUID userId) throws DataNotFoundException, MessageSendingException, ActionCannotBePerformedException {
+        UserProfileModel creatorUserProfile = userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
         SongModel song = songRepository
                 .findById(UUID.fromString(request.getId()))
                 .orElseThrow(() -> new DataNotFoundException("Song not found"));
+        ReleaseModel release = releaseRepository
+                .findByIdAndCreatorUserProfile(song.getRelease().getId(), creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Release for this song not found or you don't have permission to perform operations with it"));
 
         if (request.getName() != null && !request.getName().isEmpty()) {
             song.setName(request.getName());
@@ -169,14 +214,13 @@ public class SongService {
             song.setTempFileId(UUID.fromString(request.getTempFileId()));
 
             if (request.getDuration() != null) {
-                ReleaseModel release = song.getRelease();
                 release.setDuration(release.getDuration() - song.getDuration() + request.getDuration());
                 releaseRepository.save(release);
             }
 
             song.setStatus(AudioStatus.PROCESSING);
 
-            AudioConvertingDTO audioConvertingDTO = new AudioConvertingDTO(userId, request.getId(), request.getTempFileId());
+            AudioConvertingDTO audioConvertingDTO = new AudioConvertingDTO(userId.toString(), request.getId(), request.getTempFileId());
 
             String queueName = "convert.audio";
 
@@ -194,16 +238,24 @@ public class SongService {
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = {"songs_pageable", "song_genres", "song_tags", "playlist_songs", "songs_listened_history_of_user_profile", "songs_liked_by_user_profile", "songs_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = {"song", "song_dto", "song_genres", "song_tags"}, key = "#id")
+                    @CacheEvict(value = {
+                            "songs_pageable", "song_genres",
+                            "song_tags", "playlist_songs",
+                            "songs_listened_history_of_user_profile",
+                            "songs_liked_by_user_profile", "songs_reposted_by_user_profile"}, allEntries = true),
+                    @CacheEvict(value = {"song", "song_dto", "public_song_dto", "song_genres", "song_tags"}, key = "#id")
             }
     )
-    public void delete(UUID id) throws DataNotFoundException {
+    public void delete(UUID id, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+        UserProfileModel creatorUserProfile = userProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
         SongModel song = songRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Song not found"));
-
-        ReleaseModel release = song.getRelease();
+        ReleaseModel release = releaseRepository
+                .findByIdAndCreatorUserProfile(song.getRelease().getId(), creatorUserProfile)
+                .orElseThrow(() -> new ActionCannotBePerformedException("Release for this song not found or you don't have permission to perform operations with it"));
 
         songRepository.delete(song);
 
@@ -240,31 +292,38 @@ public class SongService {
                 .collect(Collectors.toList());
     }
 
-
-
-    public CommentModel addComment(CommentCreateUpdateRequest request) throws DataNotFoundException {
-        return commentService.addCommentToSong(request);
-    }
-    public CommentModel updateComment(CommentCreateUpdateRequest request) throws DataNotFoundException {
-        return commentService.updateCommentFromSong(request);
-    }
-    public void removeComment(UUID creatorUserProfileId, UUID songId) throws DataNotFoundException {
-        commentService.removeCommentFromSong(creatorUserProfileId, songId);
-    }
     public List<CommentDTO> getCommentsBySongId(UUID songId) throws DataNotFoundException {
         return commentService.getCommentsDTOBySongId(songId);
     }
 
 
 
-    public List<ShortPlaylistDTO> getPlaylistsBySongId(UUID songId) throws DataNotFoundException {
+    public List<SongPlaylistDTO> getPlaylistsBySongId(UUID songId) throws DataNotFoundException {
         return playlistSongService.getPlaylistsBySongId(songId);
     }
-    public List<ShortUserProfileDTO> getUserProfilesThatLiked(UUID songId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatLiked(UUID songId) throws DataNotFoundException {
         return userProfileLikedSongService.getUserProfilesThatLikedContent(songId);
     }
-    public List<ShortUserProfileDTO> getUserProfilesThatReposted(UUID songId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatReposted(UUID songId) throws DataNotFoundException {
         return userProfileRepostedSongService.getUserProfilesThatRepostedContent(songId);
+    }
+
+
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "top_songs", key = "#limit", unless = "#result == null || #result.size() == 0")
+    public List<ShortSongDTO> getTopSongs(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+
+        return songRepository
+                .findTopSongs(pageable).stream()
+                .map(song -> {
+                    ReleaseModel release = song.getRelease();
+                    UserProfileModel creatorUserProfile = release.getCreatorUserProfile();
+
+                    return getShortSongDTO(song, release, creatorUserProfile, imageService);
+                })
+                .toList();
     }
 
 
@@ -281,6 +340,13 @@ public class SongService {
         ShortReleaseDTO releaseDTO = getShortReleaseDTO(release, creatorUserProfile, imageService);
 
         return SongModel.toDTO(song, releaseDTO);
+    }
+
+    @NotNull
+    public static PublicSongDTO getPublicSongDTO(SongModel song, ReleaseModel release, UserProfileModel creatorUserProfile, ImageService imageService) {
+        ShortReleaseDTO releaseDTO = getShortReleaseDTO(release, creatorUserProfile, imageService);
+
+        return SongModel.toPublicDTO(song, releaseDTO);
     }
 
 

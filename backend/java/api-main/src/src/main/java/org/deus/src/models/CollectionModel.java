@@ -1,5 +1,6 @@
 package org.deus.src.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.deus.src.enums.Privacy;
 import org.deus.src.models.base.BaseIdCreateUpdate;
+import org.springframework.data.redis.core.RedisHash;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,6 +28,7 @@ public abstract class CollectionModel extends BaseIdCreateUpdate {
     @Column(name = "privacy", length = 7)
     private Privacy privacy;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_profile_id", nullable = false)
     private UserProfileModel creatorUserProfile;

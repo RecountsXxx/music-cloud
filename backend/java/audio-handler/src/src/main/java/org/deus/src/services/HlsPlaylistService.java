@@ -95,7 +95,7 @@ public class HlsPlaylistService {
                 "ffmpeg", // Invokes the ffmpeg command
                 "-i", "pipe:0", // Takes input from the standard input (stdin)
                 "-c:a", audioFormat, // Re-encodes audio to the specified format
-                "-b:a", bitrate + "k", // Re-encodes audio to the specified format
+                "-b:a", bitrate + "k", // Re-encodes audio to the specified bitrate
                 "-fflags", "+genpts", // Generate PTS (Presentation TimeStamp)
                 "-start_number", "0", // Starts segment numbering from 0
                 "-hls_time", segmentLength, // Length of segments in seconds

@@ -2,6 +2,7 @@ package org.deus.src.services.models.intermediateTables;
 
 import lombok.RequiredArgsConstructor;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.dtos.fromModels.userProfile.UserProfileActionDTO;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.UserProfileModel;
@@ -30,35 +31,41 @@ public class UserFollowingService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_followers", key = "#id")
-    public List<ShortUserProfileDTO> getFollowers(UUID id) throws DataNotFoundException {
+    public List<UserProfileActionDTO> getFollowers(UUID id) throws DataNotFoundException {
         UserProfileModel user = userProfileRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
         return userFollowingRepository
                 .findByFollowing(user).stream()
-                .map(userFollowingModel -> getShortUserProfileDTO(userFollowingModel.getFollower(), imageService))
+                .map(userFollowingModel -> new UserProfileActionDTO(
+                        getShortUserProfileDTO(userFollowingModel.getFollower(), imageService),
+                        userFollowingModel.getCreatedAt()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_followings", key = "#id")
-    public List<ShortUserProfileDTO> getFollowings(UUID id) throws DataNotFoundException {
+    public List<UserProfileActionDTO> getFollowings(UUID id) throws DataNotFoundException {
         UserProfileModel user = userProfileRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
         return userFollowingRepository
                 .findByFollower(user).stream()
-                .map(userFollowingModel -> getShortUserProfileDTO(userFollowingModel.getFollowing(), imageService))
+                .map(userFollowingModel -> new UserProfileActionDTO(
+                        getShortUserProfileDTO(userFollowingModel.getFollowing(), imageService),
+                        userFollowingModel.getCreatedAt()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = "user_followers", key = "#followingId"),
-                    @CacheEvict(value = "user_followings", key = "#followerId")
+                    @CacheEvict(value = {"user_followers", "user_profile_by_id", "user_profile_by_user_id", "user_profile_by_username", "user_profile_by_id_dto", "public_user_profile_by_id_dto"}, key = "#followingId"),
+                    @CacheEvict(value = {"user_followings", "user_profile_by_id", "user_profile_by_user_id", "user_profile_by_username", "user_profile_by_id_dto", "public_user_profile_by_id_dto"}, key = "#followerId")
             }
     )
     public void followUser(UUID followerId, UUID followingId) throws DataNotFoundException, ActionCannotBePerformedException {
@@ -93,7 +100,7 @@ public class UserFollowingService {
     @Caching(
             evict = {
                     @CacheEvict(value = "user_followers", key = "#followingId"),
-                    @CacheEvict(value = "user_followings", key = "#followerId")
+                    @CacheEvict(value = {"user_followings", "user_profile_by_id", "user_profile_by_user_id", "user_profile_by_username", "user_profile_by_id_dto", "public_user_profile_by_id_dto"}, key = "#followerId")
             }
     )
     public void unfollowUser(UUID followerId, UUID followingId) throws DataNotFoundException, ActionCannotBePerformedException {
