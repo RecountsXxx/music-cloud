@@ -2,16 +2,19 @@
   <div class="dropdown-container">
     <div class="dropdown" @click="toggleDropdown">{{ currentLanguage }}</div>
     <ul v-if="isDropdownOpen" class="dropdown-list">
-      <li v-for="(lang, code) in languages" :key="code" @click="changeLang(code)">{{ lang }}</li>
+      <li v-for="(lang, code) in languages" :key="code"
+          @click="changeLang(code)">{{ lang }}
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { changeLanguage, getPreferredLanguage } from '../../../i18n.js'
+import {onBeforeUnmount, onMounted, ref} from 'vue'
+import {changeLanguage, getPreferredLanguage} from '../../../i18n.js'
 
 export default {
+  name: 'LanguageDropdown',
   setup() {
     const languages = {
       en: 'Eng',
@@ -61,5 +64,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/header/langDropDown.scss';
+@import '@/assets/styles/Header/langDropDown/langDropDown.scss';
 </style>

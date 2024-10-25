@@ -74,7 +74,7 @@ export function getPreferredLanguage() {
   if (supportedLanguages.includes(browserLang)) {
     return browserLang // Возвращаем язык браузера, если он поддерживается
   }
-  return 'ru' // Язык по умолчанию, если ничего не найдено
+  return 'en' // Язык по умолчанию, если ничего не найдено
 }
 
 export default i18n

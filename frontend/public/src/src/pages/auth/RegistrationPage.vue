@@ -1,5 +1,6 @@
 <template>
   <main id="main__container">
+    <Header/>
     <div class="form__title">{{ $t('RegisterForm.form__title') }}</div>
     <!-- Ссылка на страницу входа -->
     <div class="link__login__account">
@@ -9,7 +10,9 @@
 
     <form id="register__form" @submit.prevent="registerSubmit">
       <!-- Поле ввода для Отображаемое имя -->
-      <label for="display_name">{{ $t('RegisterForm.placeholder.display_name') }}</label>
+      <label class="label-form" for="display_name">{{
+        $t('RegisterForm.placeholder.display_name')
+      }}</label>
       <div class="input__container">
         <input
           id="display_name"
@@ -25,7 +28,7 @@
         </span>
       </div>
 
-      <label for="username">{{ $t('RegisterForm.placeholder.username') }}</label>
+      <label class="label-form" for="username">{{ $t('RegisterForm.placeholder.username') }}</label>
       <!-- Поле ввода для имени пользователя -->
       <div class="input__container">
         <input
@@ -41,7 +44,7 @@
         </span>
       </div>
 
-      <label for="email">{{ $t('RegisterForm.placeholder.email') }}</label>
+      <label class="label-form" for="email">{{ $t('RegisterForm.placeholder.email') }}</label>
       <div class="input__container">
         <!-- Поле ввода для email -->
         <input
@@ -57,7 +60,7 @@
         </span>
       </div>
 
-      <label for="password">{{ $t('loginForm.placeholder.password') }}</label>
+      <label class="label-form" for="password">{{ $t('loginForm.placeholder.password') }}</label>
       <div class="input__container">
         <!-- Поле ввода для пароля -->
         <div class="password__field">
@@ -78,12 +81,107 @@
             />
           </div>
         </div>
-        <span v-if="validation.password.$error">
-          <div class="Errors__Message" v-for="error in passwordErrors(validation)">{{ error }}</div>
-        </span>
+
+        <div v-if="validation.password.$error" class="password-errors-wrapper">
+          <div class="title-password-errors">
+            {{ $t('RegisterForm.Errors.password.requirements') }}
+          </div>
+
+          <div
+            v-if="
+              validation.password.$model.length > 0 && validation.password.isValidPassword.$invalid
+            "
+          >
+            <div style="margin-left: 0; margin-top: 10px" class="error-text">
+              {{ $t('RegisterForm.Errors.password.IncorrectSymbol') }}
+            </div>
+          </div>
+          <div v-else>
+            <label
+              class="checkbox-container"
+              :class="{
+                checked:
+                  !validation.password.required.$invalid && !validation.password.minLength.$invalid
+              }"
+            >
+              <input type="checkbox" id="1" disabled />
+              <div
+                :class="{
+                  correct:
+                    !validation.password.required.$invalid &&
+                    !validation.password.minLength.$invalid
+                }"
+                class="error-text"
+              >
+                {{ $t('RegisterForm.Errors.password.MinLength') }}
+              </div>
+              <span class="custom-checkbox"></span>
+            </label>
+
+            <label
+              class="checkbox-container"
+              :class="{
+                checked: !validation.password.hasLowerCase.$invalid
+              }"
+            >
+              <input type="checkbox" id="2" disabled />
+              <div
+                :class="{ correct: !validation.password.hasLowerCase.$invalid }"
+                class="error-text"
+              >
+                {{ $t('RegisterForm.Errors.password.Lowercase') }}
+              </div>
+              <span class="custom-checkbox"></span>
+            </label>
+
+            <label
+              class="checkbox-container"
+              :class="{ checked: !validation.password.hasUpperCase.$invalid }"
+            >
+              <input type="checkbox" id="3" disabled />
+              <div
+                :class="{ correct: !validation.password.hasUpperCase.$invalid }"
+                class="error-text"
+              >
+                {{ $t('RegisterForm.Errors.password.Uppercase') }}
+              </div>
+              <span class="custom-checkbox"></span>
+            </label>
+
+            <label
+              class="checkbox-container"
+              :class="{ checked: !validation.password.hasSpecialChar.$invalid }"
+            >
+              <input type="checkbox" id="4" disabled />
+              <div
+                :class="{ correct: !validation.password.hasSpecialChar.$invalid }"
+                class="error-text"
+              >
+                {{ $t('RegisterForm.Errors.password.SpecialSymbol') }}
+              </div>
+              <span class="custom-checkbox"></span>
+            </label>
+
+            <label
+              class="checkbox-container"
+              :class="{ checked: !validation.password.hasNumber.$invalid }"
+            >
+              <input type="checkbox" id="5" />
+              <div :class="{ correct: !validation.password.hasNumber.$invalid }" class="error-text">
+                {{ $t('RegisterForm.Errors.password.Digit') }}
+              </div>
+              <span class="custom-checkbox"></span>
+              <div class="t-incorrect-password">
+                {{ $t('RegisterForm.Errors.password.IncorrectPassword') }}
+              </div>
+            </label>
+          </div>
+        </div>
       </div>
 
-      <label for="confirmPassword">{{ $t('RegisterForm.placeholder.confirmPassword') }}</label>
+      <label class="label-form" for="confirmPassword">{{
+        $t('RegisterForm.placeholder.confirmPassword')
+      }}</label>
       <div class="input__container">
         <!-- Поле ввода для подтверждения пароля -->
         <div class="password__field">
@@ -112,7 +210,7 @@
       </div>
 
       <div class="acceptPrivacyPolicy">
-        <label class="custom-checkbox">
+        <label class="acceptCheckBox">
           <input
             id="acceptCheckBox"
             :class="{ highlight: accept }"
@@ -121,7 +219,7 @@
             v-model="acceptLic"
           />
         </label>
-        <label for="acceptCheckBox">
+        <label style="padding-left: 10px; color: white" for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
           <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
           {{ $t('RegisterForm.accept.and') }}
@@ -142,18 +240,18 @@ import {
   display_nameErrors,
   emailErrors,
   passwordConfirmErrors,
-  passwordErrors,
   usernameErrors
 } from '@/services/validator/validationErrors/errorMessages.js'
 import { showHidePassword } from '@/utils/showHidePassword.js'
 import { register } from '@/utils/query-system/query-actions/authActions.js'
 import { saveUserData } from '@/utils/saveUserData.js'
+import Header from '@/components/header/Header.vue'
 
 export default {
+  components: {Header},
   methods: {
     display_nameErrors,
     passwordConfirmErrors,
-    passwordErrors,
     showHidePassword,
     emailErrors,
     usernameErrors
@@ -198,7 +296,8 @@ export default {
         hasLowerCase: (value) => /[a-z]/.test(value), // Проверка на строчную букву
         hasDigit: (value) => /\d/.test(value), // Проверка на наличие цифры
         hasSpecialChar: (value) => /[@$!%*?&#]/.test(value), // Проверка на наличие специального символа
-        isValidPassword: (value) => /^[A-Za-z0-9@$!%*?&#]+$/.test(value)
+        isValidPassword: (value) => /^[A-Za-z0-9@$!%*?&#]+$/.test(value),
+        hasNumber: helpers.withMessage('Требуется хотя бы одна цифра', (value) => /\d/.test(value))
       },
       confirmPassword: {
         required,
@@ -220,6 +319,7 @@ export default {
         if (!validation.value.$invalid) {
           // если username или email ужа заняты вернет ошибку
           const data = {
+            display_name: display_name.value,
             username: username.value,
             email: email.value,
             password: password.value,
@@ -228,6 +328,7 @@ export default {
 
           try {
             const res = await register(data)
+            console.log(res)
             if (res) {
               if (res === 'Email') {
                 uniqueEmail.value = true
@@ -267,6 +368,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import '../../assets/styles/auth/Registration';
+<style lang="scss">
+@import '../../assets/styles/auth/Registration.scss';
 </style>

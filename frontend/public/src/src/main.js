@@ -9,7 +9,7 @@ import App from './App.vue'
 import router from '@/router/router.js'
 
 import "bootstrap/dist/css/bootstrap.min.css"
-import "@/assets/scss/styles.scss"
+import "@/assets/styles/styles.scss"
 import "bootstrap"
 import { useSocketStore } from '@/stores/socketStore.js'
 

@@ -1,9 +1,74 @@
 {
+  "SideBar": {
+    "Main": "Main",
+    "Explore": "Explore",
+    "Library": "Library",
+    "Playlists": "Playlists",
+    "FavTracks": "Favorite Tracks",
+    "noAuth": {
+      "login-text": "Log in to create playlists, share tracks and releases, leave comments, get recommendations, and much more.",
+      "buttonLogin": "Login"
+    }
+  },
+  "footer": {
+    "About": "About Us",
+    "Conditions": "Terms of Use",
+    "Blog": "Blog",
+    "Feedback": "Contact Us",
+    "bottomText": {
+      "text1": "VibeStream 2010-2024. All rights reserved",
+      "text2": "Privacy Policy"
+    }
+  },
+  "header": {
+    "title": "Home",
+    "buttonRegistration": "Sign Up",
+    "buttonLogin": "Login",
+    "search": "Search"
+  },
+  "PreviewPage": {
+    "title": "Title",
+    "text": "Text Text Text",
+    "info": "A free music streaming platform where you can listen, save, and discover your favorite artists and songs",
+    "linkRegister": "Register for free",
+    "Recommended": {
+      "title": "Recommendations",
+      "text": "Recommendations tailored just for you. Choose your favorite artists and get great suggestions"
+    },
+    "Playlists": {
+      "title": "Playlists",
+      "text": "Create your own playlist, save your favorite tracks, and enjoy your favorite music.",
+      "buttonCreate": "Create Playlists"
+    },
+    "Category": {
+      "title": "Genres and Categories",
+      "text": "Discover everything VibeStream has to offer. Millions of tracks, support on all platforms.",
+      "items": {
+        "HipHop": "Hip-Hop",
+        "Country": "Country",
+        "Disco": "Disco",
+        "Rock": "Rock",
+        "Reggaeton": "Reggaeton",
+        "Indie": "Indie",
+        "Classical": "Classical",
+        "Techno": "Techno"
+      }
+    },
+    "Search": {
+      "title": "Search",
+      "text": "Find what you're looking for with the search tool. Search by artists, albums, or songs.",
+      "goToSearch": "Go to Search"
+    },
+    "Account": {
+      "title": "Account",
+      "text": "Create an account anytime and save tracks, follow artists, and create playlists for the public",
+      "buttonRegistration": "Sign up for free"
+    }
+  },
   "loginForm": {
     "form__title": "Login",
     "placeholder": {
-      "email": "Example@gmail.com",
-      "email_label": "Email",
+      "email": "Email",
       "password": "Password"
     },
     "buttonSubmit": "Login",
@@ -11,7 +76,7 @@
     "forgot-password": "Forgot password?",
     "register": {
       "noRegister": "Not registered yet?",
-      "createAccount": "Create account"
+      "createAccount": "Create an account"
     },
     "Errors": {
       "IncData": "Incorrect data",
@@ -21,10 +86,11 @@
   "RegisterForm": {
     "form__title": "Sign Up",
     "placeholder": {
+      "display_name": "Display Name",
       "username": "Username",
       "email": "Email",
       "password": "Password",
-      "confirmPassword": "Confirm password"
+      "confirmPassword": "Confirm Password"
     },
     "login": {
       "haveAcc": "Already have an account?",
@@ -32,34 +98,39 @@
     },
     "accept": {
       "IAccept": "I accept",
-      "terms": "Terms of service",
+      "terms": "Terms of Use",
       "and": "and",
-      "privacy_policy": "Privacy policy"
+      "privacy_policy": "Privacy Policy"
     },
     "buttonSubmit": "Sign Up",
     "Errors": {
+      "display_name": {
+        "Required": "This field is required",
+        "MinLength": "Display name must be at least 3 characters"
+      },
       "username": {
-        "Required": "Field is required",
-        "MinLength": "Username must be at least 3 characters long",
-        "MaxLength": "Username must be no more than 15 characters long",
+        "Required": "This field is required",
+        "MinLength": "Username must be at least 3 characters",
+        "MaxLength": "Username must be no more than 15 characters",
         "Regex": "Username must contain only Latin letters and numbers (a-z, A-Z, 0-9)",
         "uniqueUsername": "This username is already taken"
       },
       "email": {
-        "Required": "Field is required",
-        "MinLength": "Email must be at least 3 characters long",
+        "Required": "This field is required",
+        "MinLength": "Email must be at least 3 characters",
         "Regex": "Invalid email format",
         "uniqueUsername": "This email is already in use"
       },
       "password": {
-        "Required": "Field is required",
-        "MinLength": "Password must be at least 8 characters long",
-        "Uppercase": "Password must contain at least one uppercase letter",
-        "Lowercase": "Password must contain at least one lowercase letter",
-        "Digit": "Password must contain at least one number",
-        "SpecialChar": "Password must contain at least one special character",
+        "requirements": "Password must include at least:",
+        "MinLength": "8 characters",
+        "Uppercase": "one uppercase letter",
+        "Lowercase": "one lowercase letter",
+        "Digit": "one digit",
+        "SpecialSymbol": "one special symbol",
         "IncorrectSymbol": "Invalid symbol",
-        "Mismatch": "Passwords do not match"
+        "Mismatch": "Passwords do not match",
+        "IncorrectPassword": "Incorrect password"
       }
     }
   }
