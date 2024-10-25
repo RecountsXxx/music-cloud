@@ -11,10 +11,14 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShortPlaylistDTO {
+public class PublicPlaylistDTO {
     private String id;
-    private ShortUserProfileDTO creatorUserProfile;
     private String name;
+    private Float duration;
+    private Short numberOfSongs;
     private ImageUrlsDTO cover;
+    private ShortUserProfileDTO creatorUserProfile;
+    private String description;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
