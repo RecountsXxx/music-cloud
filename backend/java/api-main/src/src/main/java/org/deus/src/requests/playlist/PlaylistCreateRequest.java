@@ -18,9 +18,5 @@ public class PlaylistCreateRequest {
     @NotNull(message = "The name cannot be null")
     private Privacy privacy;
 
-    @NotNull(message = "The creatorUserProfileId cannot be null")
-    @NotBlank(message = "The creatorUserProfileId cannot be empty")
-    private String creatorUserProfileId;
-
     private String description;
 }
