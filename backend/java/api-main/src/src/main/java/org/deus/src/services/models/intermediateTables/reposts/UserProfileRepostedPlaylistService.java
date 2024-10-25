@@ -1,8 +1,11 @@
 package org.deus.src.services.models.intermediateTables.reposts;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.actions.RepostContentDTO;
+import org.deus.src.dtos.actions.UserProfileLikedRepostedDTO;
 import org.deus.src.dtos.fromModels.playlist.ShortPlaylistDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
+import org.deus.src.enums.ContentType;
 import org.deus.src.exceptions.action.ActionCannotBePerformedException;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.PlaylistModel;
@@ -27,7 +30,7 @@ import static org.deus.src.services.models.UserProfileService.getShortUserProfil
 
 @Service
 @RequiredArgsConstructor
-public class UserProfileRepostedPlaylistService {
+public class UserProfileRepostedPlaylistService implements UserProfileRepostedInterface {
     private final UserProfileRepostedPlaylistRepository userProfileRepostedPlaylistRepository;
     private final PlaylistRepository playlistRepository;
     private final UserProfileRepository userProfileRepository;
@@ -35,20 +38,23 @@ public class UserProfileRepostedPlaylistService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user_profiles_reposted_playlist", key = "#contentId")
-    public List<ShortUserProfileDTO> getUserProfilesThatRepostedContent(UUID contentId) throws DataNotFoundException {
+    public List<UserProfileLikedRepostedDTO> getUserProfilesThatRepostedContent(UUID contentId) throws DataNotFoundException {
         PlaylistModel playlist = playlistRepository
                 .findById(contentId)
                 .orElseThrow(() -> new DataNotFoundException("Playlist not found"));
 
         return userProfileRepostedPlaylistRepository
                 .findByPlaylist(playlist).stream()
-                .map(userProfileRepostedPlaylistModel -> getShortUserProfileDTO(userProfileRepostedPlaylistModel.getUserProfile(), imageService))
+                .map(userProfileRepostedPlaylistModel -> new UserProfileLikedRepostedDTO(
+                        getShortUserProfileDTO(userProfileRepostedPlaylistModel.getUserProfile(), imageService),
+                        userProfileRepostedPlaylistModel.getCreatedAt()
+                ))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "playlists_reposted_by_user_profile", key = "#userProfileId")
-    public List<ShortPlaylistDTO> getRepostedContent(UUID userProfileId) throws DataNotFoundException {
+    public List<RepostContentDTO> getRepostedContent(UUID userProfileId) throws DataNotFoundException {
         UserProfileModel userProfile = userProfileRepository
                 .findById(userProfileId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile not found"));
@@ -59,7 +65,9 @@ public class UserProfileRepostedPlaylistService {
                     PlaylistModel playlist = userProfileRepostedPlaylistModel.getPlaylist();
                     UserProfileModel creatorUserProfile = playlist.getCreatorUserProfile();
 
-                    return getShortPlaylistDTO(playlist, creatorUserProfile, imageService);
+                    ShortPlaylistDTO shortPlaylistDTO = getShortPlaylistDTO(playlist, creatorUserProfile, imageService);
+
+                    return new RepostContentDTO(shortPlaylistDTO, ContentType.PLAYLIST, userProfileRepostedPlaylistModel.getCreatedAt());
                 })
                 .collect(Collectors.toList());
     }

@@ -1,6 +1,7 @@
 package org.deus.src.services.models;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.PageDTO;
 import org.deus.src.dtos.fromModels.tag.TagDTO;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.TagModel;
@@ -23,10 +24,12 @@ public class TagService {
     private final TagRepository tagRepository;
 
     @Cacheable(value = "tags_pageable", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<TagDTO> getAll(Pageable pageable) {
-        return tagRepository
+    public PageDTO<TagDTO> getAll(Pageable pageable) {
+        Page<TagDTO> page = tagRepository
                 .findAll(pageable)
                 .map(TagModel::toDTO);
+
+        return new PageDTO<>(page);
     }
 
     @Cacheable(value = "tag", key = "#id")

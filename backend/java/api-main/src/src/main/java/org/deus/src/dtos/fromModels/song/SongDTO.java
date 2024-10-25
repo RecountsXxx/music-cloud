@@ -13,7 +13,6 @@ public class SongDTO {
     private String id;
     private String name;
     private ShortReleaseDTO release;
-    private Short placeNumber;
     private Float duration;
     private AudioStatus status;
     private Integer numberOfPlays;

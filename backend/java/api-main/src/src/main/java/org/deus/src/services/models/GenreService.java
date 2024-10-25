@@ -1,6 +1,7 @@
 package org.deus.src.services.models;
 
 import lombok.RequiredArgsConstructor;
+import org.deus.src.dtos.PageDTO;
 import org.deus.src.dtos.fromModels.genre.GenreDTO;
 import org.deus.src.exceptions.data.DataNotFoundException;
 import org.deus.src.models.GenreModel;
@@ -12,6 +13,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +28,12 @@ public class GenreService {
     private final GenreRepository genreRepository;
 
     @Cacheable(value = "genres_pageable", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<GenreDTO> getAll(Pageable pageable) {
-        return genreRepository
+    public PageDTO<GenreDTO> getAll(Pageable pageable) {
+        Page<GenreDTO> page = genreRepository
                 .findAll(pageable)
                 .map(GenreModel::toDTO);
+
+        return new PageDTO<>(page);
     }
 
     @Cacheable(value = "genres")
@@ -101,5 +105,17 @@ public class GenreService {
     })
     public void delete(Short id) {
         genreRepository.deleteById(id);
+    }
+
+
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "top_genres", key = "#limit", unless = "#result == null || #result.size() == 0")
+    public List<GenreDTO> getTopGenres(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        List<GenreModel> topGenres = genreRepository.findTopGenres(pageable);
+        return topGenres.stream()
+                .map(GenreModel::toDTO)
+                .collect(Collectors.toList());
     }
 }

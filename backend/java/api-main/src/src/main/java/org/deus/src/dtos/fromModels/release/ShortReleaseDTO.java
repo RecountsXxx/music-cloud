@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.deus.src.dtos.ImageUrlsDTO;
 import org.deus.src.dtos.fromModels.userProfile.ShortUserProfileDTO;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,4 +16,5 @@ public class ShortReleaseDTO {
     private ShortUserProfileDTO creatorUserProfile;
     private String name;
     private ImageUrlsDTO cover;
+    private LocalDateTime createdAt;
 }

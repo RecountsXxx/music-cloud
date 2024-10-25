@@ -1,5 +1,6 @@
 package org.deus.src.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class CountryModel {
 
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "country")
     private Set<UserProfileModel> userProfiles = new HashSet<>();
 
