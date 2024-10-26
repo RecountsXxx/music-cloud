@@ -14,10 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReleaseUpdateRequest {
-    @NotNull(message = "The id cannot be null")
-    @NotBlank(message = "The id cannot be empty")
-    private String id;
-
     private String name;
     private Privacy privacy;
     private LocalDate releaseDate;

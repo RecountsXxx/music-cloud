@@ -12,10 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SongUpdateRequest {
-    @NotNull(message = "The id cannot be null")
-    @NotBlank(message = "The id cannot be empty")
-    private String id;
-
     private String tempFileId;
     private String name;
     private Short placeNumber;

@@ -138,7 +138,7 @@ public class UserProfileService {
             },
             put = {
                     @CachePut(value = "user_profile_by_id", key = "#result.id"),
-                    @CachePut(value = "user_profile_by_user_id", key = "#result.userId")
+                    @CachePut(value = "user_profile_by_user_id", key = "#userId")
             }
     )
     public UserProfileModel create(UserProfileCreateRequest request, UUID userId) {
@@ -156,15 +156,15 @@ public class UserProfileService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"user_profiles_pageable", "user_profiles_liked_playlist", "user_profiles_liked_release", "user_profiles_liked_song", "user_profiles_reposted_playlist", "user_profiles_reposted_release", "user_profiles_reposted_song"}, allEntries = true),
-                    @CacheEvict(value = {"user_profile_by_id_dto", "public_user_profile_by_id_dto"}, key = "#result.id")
+                    @CacheEvict(value = {"user_profile_by_id_dto", "public_user_profile_by_id_dto"}, key = "#userProfileId")
             },
             put = {
-                    @CachePut(value = "user_profile_by_id", key = "#result.id"),
-                    @CachePut(value = "user_profile_by_user_id", key = "#result.userId")
+                    @CachePut(value = "user_profile_by_id", key = "#userProfileId"),
+                    @CachePut(value = "user_profile_by_user_id", key = "#userId")
             }
     )
-    public UserProfileModel update(UserProfileUpdateRequest request, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
-        UserProfileModel userProfile = userProfileRepository.findByIdAndUserId(UUID.fromString(request.getId()), userId)
+    public UserProfileModel update(UserProfileUpdateRequest request, UUID userProfileId, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+        UserProfileModel userProfile = userProfileRepository.findByIdAndUserId(userProfileId, userId)
                 .orElseThrow(() -> new ActionCannotBePerformedException("User profile not found or you don't have permission to update it"));
 
         if (request.getDisplayName() != null) {

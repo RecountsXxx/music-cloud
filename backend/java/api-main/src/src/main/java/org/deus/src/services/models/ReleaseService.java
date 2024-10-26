@@ -125,19 +125,19 @@ public class ReleaseService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"releases_pageable", "release_songs", "releases_by_creator_user_profile", "releases_liked_by_user_profile", "releases_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = {"release_dto", "public_release_dto"}, key = "#result.id")
+                    @CacheEvict(value = {"release_dto", "public_release_dto"}, key = "#releaseId")
             },
             put = {
-                    @CachePut(value = "release", key = "#result.id")
+                    @CachePut(value = "release", key = "#releaseId")
             }
     )
-    public ReleaseModel update(ReleaseUpdateRequest request, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+    public ReleaseModel update(ReleaseUpdateRequest request, UUID releaseId, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
         UserProfileModel creatorUserProfile = userProfileRepository
                 .findByUserId(userId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
 
         ReleaseModel release = releaseRepository
-                .findByIdAndCreatorUserProfile(UUID.fromString(request.getId()), creatorUserProfile)
+                .findByIdAndCreatorUserProfile(releaseId, creatorUserProfile)
                 .orElseThrow(() -> new ActionCannotBePerformedException("Release not found or you don't have permission to update it"));
 
         if (request.getName() != null) {

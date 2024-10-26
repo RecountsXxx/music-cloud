@@ -175,18 +175,18 @@ public class SongService {
                             "songs_pageable", "playlist_songs",
                             "songs_listened_history_of_user_profile",
                             "songs_liked_by_user_profile", "songs_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = {"song_dto", "public_song_dto"}, key = "#result.id")
+                    @CacheEvict(value = {"song_dto", "public_song_dto"}, key = "#songId")
             },
             put = {
-                    @CachePut(value = "song", key = "#result.id")
+                    @CachePut(value = "song", key = "#songId")
             }
     )
-    public SongModel update(SongUpdateRequest request, UUID userId) throws DataNotFoundException, MessageSendingException, ActionCannotBePerformedException {
+    public SongModel update(SongUpdateRequest request, UUID songId, UUID userId) throws DataNotFoundException, MessageSendingException, ActionCannotBePerformedException {
         UserProfileModel creatorUserProfile = userProfileRepository
                 .findByUserId(userId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
         SongModel song = songRepository
-                .findById(UUID.fromString(request.getId()))
+                .findById(songId)
                 .orElseThrow(() -> new DataNotFoundException("Song not found"));
         ReleaseModel release = releaseRepository
                 .findByIdAndCreatorUserProfile(song.getRelease().getId(), creatorUserProfile)
@@ -220,7 +220,7 @@ public class SongService {
 
             song.setStatus(AudioStatus.PROCESSING);
 
-            AudioConvertingDTO audioConvertingDTO = new AudioConvertingDTO(userId.toString(), request.getId(), request.getTempFileId());
+            AudioConvertingDTO audioConvertingDTO = new AudioConvertingDTO(userId.toString(), songId.toString(), request.getTempFileId());
 
             String queueName = "convert.audio";
 
