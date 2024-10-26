@@ -7,11 +7,7 @@
 
     <!-- Форма для входа в систему -->
     <form id="login__form" @submit.prevent="loginSubmit">
-      <label
-        class="align-self-start"
-        for="email"
-      >{{ $t('loginForm.placeholder.email') }}</label
-      >
+      <label class="align-self-start" for="email">{{ $t('loginForm.placeholder.email') }}</label>
       <!-- Поле ввода для email -->
       <input
         autocomplete="off"
@@ -24,11 +20,9 @@
       />
 
       <!-- Поле ввода для пароля с возможностью показа/скрытия пароля -->
-      <label
-        class="align-self-start"
-        for="password"
-      >{{ $t('loginForm.placeholder.password') }}</label
-      >
+      <label class="align-self-start" for="password">{{
+        $t('loginForm.placeholder.password')
+      }}</label>
       <div class="password__field">
         <input
           class="form__input"
@@ -55,22 +49,19 @@
         <!-- Чекбокс "Запомнить меня" -->
         <div class="remember-me">
           <label class="custom-checkbox">
-            <input id="remember-me" name="remember-me" type="checkbox"
-                   v-model="rememberMe" />
+            <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe" />
             <span class="remember-text">{{ $t('loginForm.remember-me') }}</span>
           </label>
         </div>
 
         <!-- Ссылка на страницу восстановления пароля -->
         <div class="forgot-password">
-          <router-link to="#">{{ $t('loginForm.forgot-password') }}
-          </router-link>
+          <router-link to="#">{{ $t('loginForm.forgot-password') }} </router-link>
         </div>
       </div>
 
       <!-- Кнопка отправки формы -->
-      <input type="submit" class="submit__button"
-             :value="$t('loginForm.buttonSubmit')" />
+      <input type="submit" class="submit__button" :value="$t('loginForm.buttonSubmit')" />
     </form>
 
     <!-- Сообщение об ошибке -->
