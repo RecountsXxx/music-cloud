@@ -1,8 +1,11 @@
 <template>
   <header id="header">
     <Logo v-if="route.name === 'Preview'" />
-    <header-navigation />
-    <Search />
+    <router-link :to="{ name: 'Main' }">
+      <Logo v-if="route.name === 'Register' || route.name === 'Login'" />
+    </router-link>
+    <header-navigation v-if="!(route.name === 'Register' || route.name === 'Login')" />
+    <Search v-if="!(route.name === 'Register' || route.name === 'Login')" />
     <HeaderControls />
   </header>
 </template>

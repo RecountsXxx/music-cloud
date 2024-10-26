@@ -3,10 +3,24 @@
     >{{ $t('header.title') }}
   </router-link>
   <LanguageDropdown />
-  <Upload />
-  <notification v-if="useAuthStore().getIsAuthenticated" />
-  <HeaderAuthControls v-if="!useAuthStore().getIsAuthenticated" />
-  <div v-if="useAuthStore().getIsAuthenticated">Account</div>
+  <Upload v-if="!(route.name === 'Register' || route.name === 'Login')" />
+  <notification
+    v-if="
+      useAuthStore().getIsAuthenticated && !(route.name === 'Register' || route.name === 'Login')
+    "
+  />
+  <HeaderAuthControls
+    v-if="
+      !useAuthStore().getIsAuthenticated && !(route.name === 'Register' || route.name === 'Login')
+    "
+  />
+  <div
+    v-if="
+      useAuthStore().getIsAuthenticated && !(route.name === 'Register' || route.name === 'Login')
+    "
+  >
+    Account
+  </div>
 </template>
 
 <script lang="js">
