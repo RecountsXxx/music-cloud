@@ -1,11 +1,11 @@
 <template>
   <main id="main__container">
-    <Header/>
+    <Header />
     <div class="form__title">{{ $t('RegisterForm.form__title') }}</div>
     <!-- Ссылка на страницу входа -->
     <div class="link__login__account">
       {{ $t('RegisterForm.login.haveAcc') }}
-      <router-link :to="{ name: 'Login' }">{{ $t('RegisterForm.login.signIn') }}</router-link>
+      <router-link :to="{ name: 'Login' }">{{ $t('RegisterForm.login.signIn') }} </router-link>
     </div>
 
     <form id="register__form" @submit.prevent="registerSubmit">
@@ -221,9 +221,9 @@
         </label>
         <label style="padding-left: 10px; color: white" for="acceptCheckBox">
           {{ $t('RegisterForm.accept.IAccept') }}
-          <router-link to="#">{{ $t('RegisterForm.accept.terms') }}</router-link>
+          <router-link to="#">{{ $t('RegisterForm.accept.terms') }} </router-link>
           {{ $t('RegisterForm.accept.and') }}
-          <router-link to="#">{{ $t('RegisterForm.accept.privacy_policy') }}</router-link>
+          <router-link to="#">{{ $t('RegisterForm.accept.privacy_policy') }} </router-link>
         </label>
       </div>
       <!-- Кнопка отправки формы -->
@@ -248,7 +248,7 @@ import { saveUserData } from '@/utils/saveUserData.js'
 import Header from '@/components/header/Header.vue'
 
 export default {
-  components: {Header},
+  components: { Header },
   methods: {
     display_nameErrors,
     passwordConfirmErrors,

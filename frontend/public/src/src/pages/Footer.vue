@@ -3,41 +3,36 @@
     <div class="info">
       <div class="text-info">
         <router-link to="#" class="item">{{ $t('footer.About') }}</router-link>
-        <router-link to="#" class="item">{{ $t('footer.Conditions') }}
-        </router-link>
+        <router-link to="#" class="item">{{ $t('footer.Conditions') }} </router-link>
         <router-link to="#" class="item">{{ $t('footer.Blog') }}</router-link>
-        <router-link to="#" class="item">{{ $t('footer.Feedback') }}
-        </router-link>
+        <router-link to="#" class="item">{{ $t('footer.Feedback') }} </router-link>
       </div>
       <div class="image-links">
         <router-link class="item" to="#">
-          <img src="@/assets/images/footer/facebook.svg" alt="facebook">
+          <img src="@/assets/images/footer/facebook.svg" alt="facebook" />
         </router-link>
         <router-link class="item" to="#">
-          <img src="@/assets/images/footer/X.svg" alt="X">
+          <img src="@/assets/images/footer/X.svg" alt="X" />
         </router-link>
         <router-link class="item" to="#">
-          <img src="@/assets/images/footer/instagram.svg" alt="instagram">
+          <img src="@/assets/images/footer/instagram.svg" alt="instagram" />
         </router-link>
         <router-link class="item" to="#">
-          <img src="@/assets/images/footer/youtube.svg" alt="youtube">
+          <img src="@/assets/images/footer/youtube.svg" alt="youtube" />
         </router-link>
       </div>
     </div>
     <div class="underline"></div>
     <div class="bottom-info">
-      <div class="f1"><img src="@/assets/images/footer/footer.svg"
-                           alt="">{{ $t('footer.bottomText.text1') }}
+      <div class="f1">
+        <img src="@/assets/images/footer/footer.svg" alt="" />{{ $t('footer.bottomText.text1') }}
       </div>
-      <router-link to="#" class="f2">{{ $t('footer.bottomText.text2') }}
-      </router-link>
+      <router-link to="#" class="f2">{{ $t('footer.bottomText.text2') }} </router-link>
     </div>
   </footer>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style scoped lang="scss">
 $font-family: 'Inter', sans-serif;
@@ -52,11 +47,10 @@ $font-family: 'Inter', sans-serif;
   flex-direction: column;
 
   .underline {
-    border-bottom: 1px solid #291F32;
+    border-bottom: 1px solid #291f32;
     width: auto; /* Длина нижней границы */
     margin: auto 55px; /* Выравнивание по центру */
   }
-
 
   .info {
     width: 100%;
@@ -77,10 +71,10 @@ $font-family: 'Inter', sans-serif;
         line-height: 19.36px;
         text-align: left;
         text-decoration: none;
-        color: #BFBBBB;
+        color: #bfbbbb;
 
         &:first-child {
-          color: #F0F0F0;
+          color: #f0f0f0;
         }
 
         margin-right: 30px;
@@ -106,7 +100,7 @@ $font-family: 'Inter', sans-serif;
         width: 50px;
         height: 50px;
         margin-right: 10px;
-        background: #291F3280;
+        background: #291f3280;
 
         img {
           width: 100%;
@@ -118,7 +112,7 @@ $font-family: 'Inter', sans-serif;
 
   .bottom-info {
     margin-top: 20px;
-    color: #FFFFFF;
+    color: #ffffff;
     width: 100%;
     display: flex;
 
@@ -148,7 +142,7 @@ $font-family: 'Inter', sans-serif;
 
     .f2 {
       margin-top: 3px;
-      color: #FFFFFF;
+      color: #ffffff;
     }
   }
 }

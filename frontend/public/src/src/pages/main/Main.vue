@@ -1,12 +1,12 @@
 <template>
   <div class="main-container">
-    <SideBar/>
+    <SideBar />
     <div class="main-content">
-      <TopHeader/>
+      <TopHeader />
       <div class="content"></div>
     </div>
   </div>
-  <Footer/>
+  <Footer />
 </template>
 
 <script setup>
@@ -27,8 +27,7 @@ import SideBar from '@/components/sidebar/Sidebar.vue'
   .main-content {
     width: 100%;
     height: 100%;
-    background-color: #120E15;
-
+    background-color: #120e15;
   }
 }
 </style>

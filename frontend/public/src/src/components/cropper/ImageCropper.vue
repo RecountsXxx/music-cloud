@@ -1,6 +1,6 @@
 <script>
-import { Cropper } from "vue-advanced-cropper";
-import "vue-advanced-cropper/dist/style.css";
+import { Cropper } from 'vue-advanced-cropper'
+import 'vue-advanced-cropper/dist/style.css'
 import NavigationForCropper from '@/components/cropper/NavigationForCropper.vue'
 
 export default {
@@ -11,159 +11,151 @@ export default {
   props: {
     file: {
       type: File,
-      required: true,
+      required: true
     },
     aspectRatio: {
       type: Number,
-      default: 1,
-    },
+      default: 1
+    }
   },
   data() {
     return {
       zoom: 0,
       imageSrc: '',
       result: null
-    };
+    }
   },
   watch: {
     file: {
       immediate: true,
       handler(newFile) {
         if (newFile) {
-          this.loadImage(newFile);
+          this.loadImage(newFile)
         }
-      },
-    },
+      }
+    }
   },
   methods: {
     loadImage(file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (e) => {
-        this.imageSrc = e.target.result;
-      };
-      reader.readAsDataURL(file);
+        this.imageSrc = e.target.result
+      }
+      reader.readAsDataURL(file)
     },
-
 
     getCroppedImage() {
       return new Promise((resolve, reject) => {
-        const cropper = this.$refs.cropper;
+        const cropper = this.$refs.cropper
 
         if (cropper) {
           // Отримання обрізаного зображення
-          const {canvas} = cropper.getResult();
+          const { canvas } = cropper.getResult()
 
           if (canvas) {
-            canvas.toBlob(blob => {
+            canvas.toBlob((blob) => {
               if (blob) {
-                const file = new File([blob], "cropped-image.png", { type: "image/png" });
-                resolve(file);
+                const file = new File([blob], 'cropped-image.png', { type: 'image/png' })
+                resolve(file)
               } else {
-                reject(new Error("Failed to crop image"));
+                reject(new Error('Failed to crop image'))
               }
-            }, "image/png");
+            }, 'image/png')
           } else {
-            reject(new Error("Failed to create cropped canvas"));
+            reject(new Error('Failed to create cropped canvas'))
           }
         } else {
-          reject(new Error("Cropper reference not found"));
+          reject(new Error('Cropper reference not found'))
         }
-      });
+      })
     },
-
 
     defaultSize({ imageSize }) {
       return {
         width: Math.min(imageSize.height, imageSize.width),
-        height: Math.min(imageSize.height, imageSize.width),
-      };
+        height: Math.min(imageSize.height, imageSize.width)
+      }
     },
-
 
     stencilSize({ boundaries }) {
       return {
         width: Math.min(boundaries.height, boundaries.width) - 48,
-        height: Math.min(boundaries.height, boundaries.width) - 48,
-      };
+        height: Math.min(boundaries.height, boundaries.width) - 48
+      }
     },
 
-
     onChange(result) {
-      const cropper = this.$refs.cropper;
+      const cropper = this.$refs.cropper
 
       if (cropper) {
-        const { coordinates, imageSize } = cropper;
-        if (
-            imageSize.width / imageSize.height >
-            coordinates.width / coordinates.height
-        ) {
+        const { coordinates, imageSize } = cropper
+        if (imageSize.width / imageSize.height > coordinates.width / coordinates.height) {
           // Determine the position of slider bullet
           // It's 0 if the stencil has the maximum size and it's 1 if the has the minimum size
           this.zoom =
-              (cropper.imageSize.height - cropper.coordinates.height) /
-              (cropper.imageSize.height - cropper.sizeRestrictions.minHeight);
+            (cropper.imageSize.height - cropper.coordinates.height) /
+            (cropper.imageSize.height - cropper.sizeRestrictions.minHeight)
         } else {
           this.zoom =
-              (cropper.imageSize.width - cropper.coordinates.width) /
-              (cropper.imageSize.width - cropper.sizeRestrictions.minWidth);
+            (cropper.imageSize.width - cropper.coordinates.width) /
+            (cropper.imageSize.width - cropper.sizeRestrictions.minWidth)
         }
       }
     },
 
-
     onZoom(value) {
-      const cropper = this.$refs.cropper;
+      const cropper = this.$refs.cropper
       if (cropper) {
         if (cropper.imageSize.height < cropper.imageSize.width) {
-          const minHeight = cropper.sizeRestrictions.minHeight;
-          const imageHeight = cropper.imageSize.height;
+          const minHeight = cropper.sizeRestrictions.minHeight
+          const imageHeight = cropper.imageSize.height
           // Determine the current absolute zoom and the new absolute zoom
           // to calculate the sought relative zoom value
           cropper.zoom(
-              (imageHeight - this.zoom * (imageHeight - minHeight)) /
+            (imageHeight - this.zoom * (imageHeight - minHeight)) /
               (imageHeight - value * (imageHeight - minHeight))
-          );
+          )
         } else {
-          const minWidth = cropper.sizeRestrictions.minWidth;
-          const imageWidth = cropper.imageSize.width;
+          const minWidth = cropper.sizeRestrictions.minWidth
+          const imageWidth = cropper.imageSize.width
           cropper.zoom(
-              (imageWidth - this.zoom * (imageWidth - minWidth)) /
+            (imageWidth - this.zoom * (imageWidth - minWidth)) /
               (imageWidth - value * (imageWidth - minWidth))
-          );
+          )
         }
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <template>
   <div>
     <Cropper
-        ref="cropper"
-        class="twitter-cropper"
-        background-class="twitter-cropper__background"
-        foreground-class="twitter-cropper__foreground"
-        image-restriction="stencil"
-        :stencil-size="stencilSize"
-        :stencil-props="{
+      ref="cropper"
+      class="twitter-cropper"
+      background-class="twitter-cropper__background"
+      foreground-class="twitter-cropper__foreground"
+      image-restriction="stencil"
+      :stencil-size="stencilSize"
+      :stencil-props="{
         lines: {},
         handlers: {},
         movable: false,
         scalable: true,
         aspectRatio: this.aspectRatio,
-        previewClass: 'twitter-cropper__stencil',
+        previewClass: 'twitter-cropper__stencil'
       }"
-        :transitions="false"
-        :canvas="true"
-        :debounce="false"
-        :default-size="defaultSize"
-        :min-width="150"
-        :min-height="150"
-        :src="imageSrc"
-        @change="onChange"
+      :transitions="false"
+      :canvas="true"
+      :debounce="false"
+      :default-size="defaultSize"
+      :min-width="150"
+      :min-height="150"
+      :src="imageSrc"
+      @change="onChange"
     />
-    <navigation-for-cropper :zoom="zoom" @change="onZoom"/>
+    <navigation-for-cropper :zoom="zoom" @change="onZoom" />
   </div>
 </template>
 
