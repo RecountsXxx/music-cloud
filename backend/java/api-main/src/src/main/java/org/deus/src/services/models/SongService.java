@@ -26,6 +26,8 @@ import org.deus.src.services.models.intermediateTables.PlaylistSongService;
 import org.deus.src.services.models.intermediateTables.likes.UserProfileLikedSongService;
 import org.deus.src.services.models.intermediateTables.reposts.UserProfileRepostedSongService;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -56,6 +58,7 @@ public class SongService {
     private final UserProfileRepostedSongService userProfileRepostedSongService;
     private final RabbitMQService rabbitMQService;
     private final ImageService imageService;
+    private static final Logger logger = LoggerFactory.getLogger(SongService.class);
 
     @Transactional(readOnly = true)
     @Cacheable(value = "songs_pageable", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
@@ -267,11 +270,11 @@ public class SongService {
     @Transactional(readOnly = true)
     @Cacheable(value = "song_genres", key = "#songId")
     public List<GenreDTO> getGenresBySongId(UUID songId) throws DataNotFoundException {
-        SongModel song = songRepository
-                .findById(songId)
-                .orElseThrow(() -> new DataNotFoundException("Song not found"));
+        List<GenreModel> genres = songRepository.findGenresBySongId(songId);
 
-        Set<GenreModel> genres = song.getGenres();
+        if (genres.isEmpty()) {
+            throw new DataNotFoundException("No genres found for song");
+        }
 
         return genres.stream()
                 .map(GenreModel::toDTO)
@@ -281,11 +284,11 @@ public class SongService {
     @Transactional(readOnly = true)
     @Cacheable(value = "song_tags", key = "#songId")
     public List<TagDTO> getTagsBySongId(UUID songId) throws DataNotFoundException {
-        SongModel song = songRepository
-                .findById(songId)
-                .orElseThrow(() -> new DataNotFoundException("Song not found"));
+        List<TagModel> tags = songRepository.findTagsBySongId(songId);
 
-        Set<TagModel> tags = song.getTags();
+        if (tags.isEmpty()) {
+            throw new DataNotFoundException("No tags found for song");
+        }
 
         return tags.stream()
                 .map(TagModel::toDTO)
@@ -311,7 +314,7 @@ public class SongService {
 
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "top_songs", key = "#limit", unless = "#result == null || #result.size() == 0")
+//    @Cacheable(value = "top_songs", key = "#limit", unless = "#result == null || #result.size() == 0")
     public List<ShortSongDTO> getTopSongs(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
 
@@ -354,10 +357,18 @@ public class SongService {
     private Set<GenreModel> getGenresFromIds(Set<Short> genreIds) {
         Set<GenreModel> genres = new HashSet<>();
         if(genreIds != null) {
-            for(Short genreId : genreIds) {
-                Optional<GenreModel> genreOptional = genreRepository.findById(genreId);
-                genreOptional.ifPresent(genres::add);
+            if(!genreIds.isEmpty()) {
+                for(Short genreId : genreIds) {
+                    Optional<GenreModel> genreOptional = genreRepository.findById(genreId);
+                    genreOptional.ifPresent(genres::add);
+                }
             }
+            else {
+                logger.error("genreIds is empty");
+            }
+        }
+        else {
+            logger.error("genreIds is null");
         }
 
         return genres;
@@ -366,15 +377,23 @@ public class SongService {
     private Set<TagModel> getTagsFromTagNames(Set<String> tagNames) {
         Set<TagModel> tags = new HashSet<>();
         if(tagNames != null) {
-            for(String tagName : tagNames) {
-                Optional<TagModel> existingTag = tagRepository.findByName(tagName);
+            if (!tagNames.isEmpty()) {
+                for(String tagName : tagNames) {
+                    Optional<TagModel> existingTag = tagRepository.findByName(tagName);
 
-                if (existingTag.isPresent()) {
-                    tags.add(existingTag.get());
-                } else {
-                    tags.add(tagService.create(tagName));
+                    if (existingTag.isPresent()) {
+                        tags.add(existingTag.get());
+                    } else {
+                        tags.add(tagService.create(tagName));
+                    }
                 }
             }
+            else {
+                logger.error("tagNames is empty");
+            }
+        }
+        else {
+            logger.error("tagNames is null");
         }
 
         return tags;

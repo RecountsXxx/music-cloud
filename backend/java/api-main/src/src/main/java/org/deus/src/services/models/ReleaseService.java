@@ -213,7 +213,7 @@ public class ReleaseService {
 
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "top_releases", key = "#limit", unless = "#result == null || #result.size() == 0")
+//    @Cacheable(value = "top_releases", key = "#limit", unless = "#result == null || #result.size() == 0")
     public List<ShortReleaseDTO> getTopReleases(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
 

@@ -205,7 +205,7 @@ public class PlaylistService {
 
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "top_playlists", key = "#limit", unless = "#result == null || #result.size() == 0")
+//    @Cacheable(value = "top_playlists", key = "#limit", unless = "#result == null || #result.size() == 0")
     public List<ShortPlaylistDTO> getTopPlaylists(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
 

@@ -59,6 +59,9 @@ public class RabbitMQService {
     private <T> Optional<T> deserializeMessage(Message message, Class<T> targetClass) {
         try {
             String json = new String(message.getBody());
+
+            logger.info(json);
+
             T object = objectMapper.readValue(json, targetClass);
             return Optional.of(object);
         }

@@ -147,8 +147,8 @@ public class PublicUserProfileController {
 
             switch (contentType) {
                 case RELEASE -> contentList = userProfileService.getLikedReleases(id);
-                case SONG -> contentList = userProfileService.getLikedPlaylists(id);
-                case PLAYLIST -> contentList = userProfileService.getLikedSongs(id);
+                case SONG -> contentList = userProfileService.getLikedSongs(id);
+                case PLAYLIST -> contentList = userProfileService.getLikedPlaylists(id);
             };
 
             return ResponseEntity
@@ -175,8 +175,8 @@ public class PublicUserProfileController {
 
             switch (contentType) {
                 case RELEASE -> contentList = userProfileService.getRepostedReleases(id);
-                case SONG -> contentList = userProfileService.getRepostedPlaylists(id);
-                case PLAYLIST -> contentList = userProfileService.getRepostedSongs(id);
+                case SONG -> contentList = userProfileService.getRepostedSongs(id);
+                case PLAYLIST -> contentList = userProfileService.getRepostedPlaylists(id);
             };
 
             return ResponseEntity
