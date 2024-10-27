@@ -14,10 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileUpdateRequest {
-    @NotNull(message = "The id cannot be null")
-    @NotBlank(message = "The id cannot be empty")
-    private String id;
-
     private String displayName;
     private String firstName;
     private String lastName;

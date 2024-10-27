@@ -107,10 +107,10 @@ public class ProtectedPlaylistController {
         }
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<SuccessPlaylistResponse> update(@RequestBody @Valid PlaylistUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<SuccessPlaylistResponse> update(@PathVariable UUID id, @RequestBody @Valid PlaylistUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
         try {
-            PlaylistModel playlist = playlistService.update(request, UUID.fromString(userDTO.getId()));
+            PlaylistModel playlist = playlistService.update(request, id, UUID.fromString(userDTO.getId()));
             PlaylistDTO playlistDTO = playlistService.getDTOById(playlist.getId());
 
             return ResponseEntity

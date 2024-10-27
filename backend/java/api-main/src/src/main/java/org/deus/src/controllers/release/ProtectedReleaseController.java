@@ -105,10 +105,10 @@ public class ProtectedReleaseController {
         }
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<SuccessReleaseResponse> update(@RequestBody @Valid ReleaseUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<SuccessReleaseResponse> update(@PathVariable UUID id, @RequestBody @Valid ReleaseUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
         try {
-            ReleaseModel release = releaseService.update(request, UUID.fromString(userDTO.getId()));
+            ReleaseModel release = releaseService.update(request, id, UUID.fromString(userDTO.getId()));
             ReleaseDTO releaseDTO = releaseService.getDTOById(release.getId());
 
             return ResponseEntity

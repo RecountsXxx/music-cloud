@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import { useAuthStore } from '@/stores/authStore'
 import { useAvatarsStore } from '@/stores/avatarsStore.js'
+import { useUserProfileStore } from '@/stores/userProfileStore.js'
 
 export const useMainStore = defineStore('useMainStore', {
   state: () => ({}),
@@ -13,11 +14,13 @@ export const useMainStore = defineStore('useMainStore', {
       useAuthStore().initialize()
       useUserStore().initialize()
       useAvatarsStore().initialize()
+      useUserProfileStore().initialize()
     },
     clearStore() {
-      useAvatarsStore().clearAvatars()
       useAuthStore().clearJWT()
       useUserStore().clearUser()
+      useAvatarsStore().clearAvatars()
+      useUserProfileStore().clearObject()
     }
   }
 })

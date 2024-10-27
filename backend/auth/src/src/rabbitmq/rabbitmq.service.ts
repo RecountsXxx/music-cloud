@@ -29,13 +29,13 @@ export class RabbitMQService {
   }
 
   async sendMessage(queue: string, message: any) {
-    this.logger.log(
-      `Sending message to queue ${queue}: ${JSON.stringify(message)}`,
-    );
+    const stringifiedMessage = JSON.stringify(message);
+    this.logger.log(`Sending message to queue ${queue}: ${stringifiedMessage}`);
     if (!this.channel) {
       await this.connect();
     }
-    this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)), {
+    this.channel.sendToQueue(queue, Buffer.from(stringifiedMessage, 'utf-8'), {
+      contentType: 'application/json',
       persistent: true,
     });
   }

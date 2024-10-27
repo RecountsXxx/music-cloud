@@ -41,16 +41,16 @@
         </select>
       </div>
 
-      <div class="form-group d-block mb-4">
-        <label for="description" class="align-content-center p-2">Description</label>
-        <textarea
-            id="description"
-            v-model="release.description"
-            class="form-control"
-            rows="3"
-            placeholder="Describe your release">
-        </textarea>
-      </div>
+<!--      <div class="form-group d-block mb-4">-->
+<!--        <label for="description" class="align-content-center p-2">Description</label>-->
+<!--        <textarea-->
+<!--            id="description"-->
+<!--            v-model="release.description"-->
+<!--            class="form-control"-->
+<!--            rows="3"-->
+<!--            placeholder="Describe your release">-->
+<!--        </textarea>-->
+<!--      </div>-->
 
       <div class="form-group d-block mb-4">
         <label for="privacy" class="align-content-center p-2">Privacy</label>
@@ -166,21 +166,20 @@
 </template>
 
 <script>
-import draggable from "vuedraggable"
-import Vue3TagsInput from 'vue3-tags-input';
-import Multiselect from 'vue-multiselect';
-import ImageCropper from '@/components/cropper/ImageCropper.vue';
+import draggable from 'vuedraggable'
+import Vue3TagsInput from 'vue3-tags-input'
+import Multiselect from 'vue-multiselect'
+import ImageCropper from '@/components/cropper/ImageCropper.vue'
 import {
   createRelease,
-  requestFileId, songConvert,
+  requestFileId,
   startUpload,
   uploadCover
-} from "@/utils/query-system/query-actions/releaseActions.js";
-import {toastInfo} from "@/utils/toast/toastNotification.js";
-import { useSocketStore } from '@/stores/socketStore.js'
+} from '@/utils/query-system/query-actions/releaseActions.js'
+import { toastInfo } from '@/utils/toast/toastNotification.js'
 import { subscribeToCoverUpload } from '@/utils/socket/eventHandlers.js'
-
-const socketStore = useSocketStore();
+import { createSong } from '@/utils/query-system/query-actions/songActions.js'
+import { getGenres } from '@/utils/query-system/query-actions/genreActions.js'
 
 export default {
   computed: {},
@@ -199,9 +198,8 @@ export default {
         recordLabel: '',
         releaseDate: '',
         type: 'SINGLE',
-        description: '',
-        privacy: 'PUBLIC',
-        duration: 0,
+        // description: '',
+        privacy: 'PUBLIC'
       },
       tracks: [],
       genres: [],
@@ -209,16 +207,7 @@ export default {
     };
   },
   async created() {
-    // Getting genres from the backend when loading a component
-    try {
-      this.genres = [
-        { id: '1', name: "Rock" },
-        { id: '2', name: "Pop" },
-        { id: '3', name: "Rap" },
-      ] // It is assumed that the backend returns a list of objects with the id and name fields
-    } catch (error) {
-      console.error('Error fetching genres:', error);
-    }
+    this.genres = await getGenres();
   },
   methods: {
     openFileDialog() {
@@ -239,19 +228,39 @@ export default {
 
       for (let file of selectedFiles) {
         try {
-          const fileId = await requestFileId();
-          const track = {
-            file,
-            name: file.name,
-            id: fileId,
-            position: this.tracks.length + 1,
-            duration: 0/*get duration from file*/,
-            genres: [],
-            tags: [],
-          };
-          this.tracks.push(track);
-          this.uploadProgress = { ...this.uploadProgress, [track.id]: 0 };
-          this.startUpload(track);
+          if (file && file.type.startsWith('audio/')) {
+            const fileId = await requestFileId();
+
+            const audio = new Audio();
+            audio.src = URL.createObjectURL(file);
+
+            await new Promise((resolve, reject) => {
+              audio.onloadedmetadata = () => {
+                const durationInSeconds = Math.floor(audio.duration);
+                const track = {
+                  file,
+                  name: file.name,
+                  id: fileId,
+                  position: this.tracks.length + 1,
+                  duration: durationInSeconds,
+                  genres: [],
+                  tags: [],
+                };
+                this.tracks.push(track);
+                this.uploadProgress = { ...this.uploadProgress, [track.id]: 0 };
+                this.startUpload(track);
+                resolve();
+              };
+
+              audio.onerror = () => {
+                console.error('Impossible to get duration of audio');
+                reject();
+              };
+            });
+          }
+          else {
+            console.error('Please, choose audio file/s');
+          }
         } catch (error) {
           console.error('Failed to get fileId:', error);
         }
@@ -282,39 +291,33 @@ export default {
 
     async uploadRelease() {
       const releaseData = {
-        title: this.release.title,
+        name: this.release.title,
+        privacy: this.release.privacy,
         releaseDate: this.release.releaseDate,
         type: this.release.type,
-        description: this.release.description,
-        privacy: this.release.privacy,
         buyLink: this.release.buyLink,
-        recordLabel: this.release.recordLabel,
-        tracks: this.tracks.map(track => ({
-          fileId: track.id,
-          name: track.name,
-          position: track.position,
-          duration: track.duration,
-          genreIds: track.genres.map(genre => genre.id),
-          tags: track.tags.map(tag => tag)
-        }))
+        recordLabel: this.release.recordLabel
       };
 
-      const collectionId = await createRelease(releaseData);
+      const responseRelease = await createRelease(releaseData);
 
-      await this.uploadCover(collectionId);
+      const releaseId = responseRelease.id;
 
-      // const songId = '1';
-      // const fileId = 'c339853a-f269-4ab0-8814-d9ded5c89e7f';
-      //
-      //
-      // const message = await songConvert(songId, fileId);
-      // if(message) {
-      //   toastInfo(message);
-      // }
+      await this.uploadCover(releaseId);
 
-      // const collectionId = "1";
-      //
-      // await this.uploadCover(collectionId);
+      const tracks = this.tracks.map(track => ({
+        tempFileId: track.id,
+        name: track.name,
+        releaseId: releaseId,
+        placeNumber: track.position,
+        duration: track.duration,
+        genreIds: track.genres.map(genre => genre.id),
+        tags: track.tags.map(tag => tag)
+      }));
+
+      for (const track of tracks) {
+        await createSong(track);
+      }
     },
 
 
@@ -336,5 +339,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/assets/styles/upload/UploadPage";
+@use "@/assets/styles/upload/UploadPage";
 </style>

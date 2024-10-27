@@ -107,10 +107,10 @@ public class ProtectedUserProfileController {
         }
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<SuccessUserProfileResponse> update(@RequestBody @Valid UserProfileUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
+    @PutMapping(path = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<SuccessUserProfileResponse> update(@PathVariable UUID id, @RequestBody @Valid UserProfileUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
         try {
-            UserProfileModel userProfile = userProfileService.update(request, UUID.fromString(userDTO.getId()));
+            UserProfileModel userProfile = userProfileService.update(request, id, UUID.fromString(userDTO.getId()));
             UserProfileDTO userProfileDTO = userProfileService.getDTOById(userProfile.getId());
 
             return ResponseEntity

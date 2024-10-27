@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import org.deus.src.dtos.fromModels.release.ShortReleaseDTO;
 import org.deus.src.dtos.fromModels.song.PublicSongDTO;
 import org.deus.src.dtos.fromModels.song.ShortSongDTO;
@@ -16,21 +17,10 @@ import org.deus.src.models.intermediateTables.UserProfileListenedHistoryModel;
 import org.deus.src.models.intermediateTables.reposts.UserProfileRepostedSongModel;
 import org.deus.src.models.intermediateTables.PlaylistSongModel;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.redis.core.RedisHash;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

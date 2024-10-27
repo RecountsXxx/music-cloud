@@ -130,19 +130,19 @@ public class PlaylistService {
     @Caching(
             evict = {
                     @CacheEvict(value = {"playlists_pageable", "song_playlists", "playlists_by_creator_user_profile", "playlists_liked_by_user_profile", "playlists_reposted_by_user_profile"}, allEntries = true),
-                    @CacheEvict(value = {"playlist_dto", "public_playlist_dto"}, key = "#result.id")
+                    @CacheEvict(value = {"playlist_dto", "public_playlist_dto"}, key = "#playlistId")
             },
             put = {
-                    @CachePut(value = "playlist", key = "#result.id")
+                    @CachePut(value = "playlist", key = "#playlistId")
             }
     )
-    public PlaylistModel update(PlaylistUpdateRequest request, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
+    public PlaylistModel update(PlaylistUpdateRequest request, UUID playlistId, UUID userId) throws DataNotFoundException, ActionCannotBePerformedException {
         UserProfileModel creatorUserProfile = userProfileRepository
                 .findByUserId(userId)
                 .orElseThrow(() -> new DataNotFoundException("User Profile of creator not found"));
 
         PlaylistModel playlist = playlistRepository
-                .findByIdAndCreatorUserProfile(UUID.fromString(request.getId()), creatorUserProfile)
+                .findByIdAndCreatorUserProfile(playlistId, creatorUserProfile)
                 .orElseThrow(() -> new ActionCannotBePerformedException("Playlist not found or you don't have permission to update it"));
 
         if (request.getName() != null) {
@@ -205,7 +205,7 @@ public class PlaylistService {
 
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "top_playlists", key = "#limit", unless = "#result == null || #result.size() == 0")
+//    @Cacheable(value = "top_playlists", key = "#limit", unless = "#result == null || #result.size() == 0")
     public List<ShortPlaylistDTO> getTopPlaylists(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
 

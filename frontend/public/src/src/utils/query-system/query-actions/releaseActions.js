@@ -8,6 +8,18 @@ import {toastError, toastInfo, toastSuccess} from "@/utils/toast/toastNotificati
 
 const authStore = useAuthStore();
 
+export async function createRelease(data) {
+  try {
+    const responseData = await PerformQuery(QueryMethods.POST, QueryPaths.crudRelease(), data, QueryContentTypes.applicationJson, authStore.getJWT);
+    toastInfo(`Release "${data.name}" was successfully created`);
+    return responseData.release;
+  }
+  catch (error) {
+    console.log(error);
+    toastError(`Failed to create release`);
+  }
+}
+
 export async function requestFileId() {
   const responseData = await PerformQuery(QueryMethods.POST, QueryPaths.requestFileId(), null, QueryContentTypes.applicationJson, authStore.getJWT);
   return responseData.fileId;
@@ -70,15 +82,5 @@ export async function songConvert(songId, fileId) {
   }
   catch (error) {
     toastError(`Failed to send message for converting song. ${error.message}`);
-  }
-}
-
-export async function createRelease(data) {
-  try {
-    const responseData = await PerformQuery(QueryMethods.POST, QueryPaths.crudReleases(), data, QueryContentTypes.applicationJson, authStore.getJWT);
-    return responseData.collectionId;
-  }
-  catch (error) {
-    toastError(`Failed to create release. ${error.message}`);
   }
 }

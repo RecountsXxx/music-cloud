@@ -11,10 +11,6 @@ import org.deus.src.enums.Privacy;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlaylistUpdateRequest {
-    @NotNull(message = "The id cannot be null")
-    @NotBlank(message = "The id cannot be empty")
-    private String id;
-
     private String name;
     private Privacy privacy;
     private String description;
