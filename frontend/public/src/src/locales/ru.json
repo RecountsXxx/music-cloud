@@ -1,4 +1,8 @@
 {
+	"GenreCategory": {
+		"title": "Жанры и категории",
+		"buttonShowAll": "Смотреть всё"
+	},
 	"SideBar": {
 		"Main": "Главная",
 		"Explore": "Исследуйте",

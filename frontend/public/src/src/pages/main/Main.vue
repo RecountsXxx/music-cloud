@@ -1,34 +1,31 @@
 <template>
   <div class="main-container">
-    <SideBar/>
+    <SideBar />
     <div class="main-content">
-      <TopHeader/>
-      <div class="content"></div>
+      <TopHeader />
+      <div class="content">
+        <GenreCategory />
+      </div>
     </div>
   </div>
-  <Footer/>
+  <Footer />
 </template>
 
-<script setup>
+<script>
+import { defineComponent } from 'vue'
 import TopHeader from '@/components/header/Header.vue'
 import Footer from '@/pages/Footer.vue'
 import SideBar from '@/components/sidebar/Sidebar.vue'
+import GenreCategory from '@/components/Main/genreCategory/GenreCategory.vue'
+
+export default defineComponent({
+  components: { GenreCategory, SideBar, TopHeader, Footer },
+  setup() {
+    return {}
+  }
+})
 </script>
 
 <style lang="scss">
-.main-container {
-  width: 100%;
-  height: 100%;
-  min-width: 850px;
-
-  display: flex;
-  flex-direction: row;
-
-  .main-content {
-    width: 100%;
-    height: 100%;
-    background-color: #120E15;
-
-  }
-}
+@import '@/assets/styles/main/Main.scss';
 </style>

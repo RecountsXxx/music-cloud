@@ -14,7 +14,7 @@ export function saveUserToLocalStore(user) {
 // Определение хранилища пользователя с помощью Pinia
 export const useUserStore = defineStore('useUserStore', {
   state: () => ({
-    user: null, // Начальное состояние - пользователь не задан
+    user: null // Начальное состояние - пользователь не задан
   }),
   getters: {
     getUser: (state) => state.user,

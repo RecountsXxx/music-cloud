@@ -1,33 +1,46 @@
 <template>
-  <router-link v-if="route.name === 'Preview'" class="link__main"
-               :to="{name:'Main'}">{{$t('header.title')}}
+  <router-link v-if="route.name === 'Preview'" class="link__main" :to="{ name: 'Main' }"
+    >{{ $t('header.title') }}
   </router-link>
   <LanguageDropdown />
-  <Upload />
-  <notification v-if="useAuthStore().getIsAuthenticated" />
-  <HeaderAuthControls v-if="!useAuthStore().getIsAuthenticated" />
-  <div v-if="useAuthStore().getIsAuthenticated">Account
+  <Upload v-if="!(route.name === 'Register' || route.name === 'Login')" />
+  <notification
+    v-if="
+      useAuthStore().getIsAuthenticated && !(route.name === 'Register' || route.name === 'Login')
+    "
+  />
+  <HeaderAuthControls
+    v-if="
+      !useAuthStore().getIsAuthenticated && !(route.name === 'Register' || route.name === 'Login')
+    "
+  />
+  <div
+    v-if="
+      useAuthStore().getIsAuthenticated && !(route.name === 'Register' || route.name === 'Login')
+    "
+  >
+    Account
   </div>
 </template>
 
 <script lang="js">
-import { useAuthStore } from '@/stores/authStore.js';
-import Upload from '@/components/upload/Upload.vue';
-import Notification from '@/components/notification/Notification.vue';
-import LanguageDropdown from '@/components/languageSelect/LanguageSelect.vue';
-import HeaderAuthControls from '@/components/header/HeaderAuthControls.vue';
-import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore.js'
+import Upload from '@/components/upload/Upload.vue'
+import Notification from '@/components/notification/Notification.vue'
+import LanguageDropdown from '@/components/languageSelect/LanguageSelect.vue'
+import HeaderAuthControls from '@/components/header/HeaderAuthControls.vue'
+import { useRoute } from 'vue-router'
 
 export default {
   methods: { useAuthStore },
   components: { HeaderAuthControls, Notification, Upload, LanguageDropdown },
   setup() {
-    const route = useRoute();
+    const route = useRoute()
     return {
-      route,
-    };
-  },
-};
+      route
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

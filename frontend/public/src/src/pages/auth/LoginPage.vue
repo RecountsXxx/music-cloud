@@ -7,9 +7,7 @@
 
     <!-- Форма для входа в систему -->
     <form id="login__form" @submit.prevent="loginSubmit">
-      <label class="align-self-start"
-             style="margin-left: 75px;margin-bottom: 7px;color: white"
-             for="email">{{ $t('loginForm.placeholder.email') }}</label>
+      <label class="align-self-start" for="email">{{ $t('loginForm.placeholder.email') }}</label>
       <!-- Поле ввода для email -->
       <input
         autocomplete="off"
@@ -22,9 +20,9 @@
       />
 
       <!-- Поле ввода для пароля с возможностью показа/скрытия пароля -->
-      <label class="align-self-start"
-             style="margin-left: 75px;margin-bottom: 7px;color: white"
-             for="password">{{ $t('loginForm.placeholder.password') }}</label>
+      <label class="align-self-start" for="password">{{
+        $t('loginForm.placeholder.password')
+      }}</label>
       <div class="password__field">
         <input
           class="form__input"
@@ -51,24 +49,19 @@
         <!-- Чекбокс "Запомнить меня" -->
         <div class="remember-me">
           <label class="custom-checkbox">
-            <input id="remember-me" name="remember-me" type="checkbox"
-                   v-model="rememberMe" />
+            <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe" />
             <span class="remember-text">{{ $t('loginForm.remember-me') }}</span>
           </label>
         </div>
 
         <!-- Ссылка на страницу восстановления пароля -->
         <div class="forgot-password">
-          <router-link to="#">{{
-              $t('loginForm.forgot-password')
-            }}
-          </router-link>
+          <router-link to="#">{{ $t('loginForm.forgot-password') }} </router-link>
         </div>
       </div>
 
       <!-- Кнопка отправки формы -->
-      <input type="submit" class="submit__button"
-             :value="$t('loginForm.buttonSubmit')" />
+      <input type="submit" class="submit__button" :value="$t('loginForm.buttonSubmit')" />
     </form>
 
     <!-- Сообщение об ошибке -->
@@ -87,28 +80,28 @@
 </template>
 
 <script>
-import { showHidePassword } from '@/utils/showHidePassword.js';
-import { saveUserData } from '@/utils/saveUserData.js';
-import { login } from '@/utils/query-system/query-actions/authActions.js';
-import { useMainStore } from '@/stores/mainStore.js';
-import Header from '@/components/header/Header.vue';
+import { showHidePassword } from '@/utils/showHidePassword.js'
+import { saveUserData } from '@/utils/saveUserData.js'
+import { login } from '@/utils/query-system/query-actions/authActions.js'
+import { useMainStore } from '@/stores/mainStore.js'
+import Header from '@/components/header/Header.vue'
 
-const mainStore = useMainStore();
+const mainStore = useMainStore()
 
 export default {
   components: {
-    Header,
+    Header
   },
   data() {
     return {
       isError: false, // состояние ошибки
       email: '', // введенный email
       password: '', // введенный пароль
-      rememberMe: false, // запомнить пользователя
-    };
+      rememberMe: false // запомнить пользователя
+    }
   },
   async beforeCreate() {
-    mainStore.clearStore();
+    mainStore.clearStore()
   },
   methods: {
     // Метод отправки формы для входа в систему
@@ -116,45 +109,45 @@ export default {
       if (this.email.length > 3 && this.password.length > 3) {
         const data = {
           email: this.email,
-          password: this.password,
-        };
-        this.clearError(); // Скрываем ошибки, если они были
+          password: this.password
+        }
+        this.clearError() // Скрываем ошибки, если они были
         // Попытка аутентификации пользователя
         try {
-          const res = await login(data);
+          const res = await login(data)
           if (res) {
-            saveUserData(res, this.rememberMe);
+            saveUserData(res, this.rememberMe)
           } else {
-            this.showError(); // Показ ошибки при неудачной аутентификации
+            this.showError() // Показ ошибки при неудачной аутентификации
           }
         } catch (error) {
-          this.showError(); // Показ ошибки в случае исключения
+          this.showError() // Показ ошибки в случае исключения
         }
       } else {
-        this.showError(); // Показ ошибки при невалидных данных
+        this.showError() // Показ ошибки при невалидных данных
       }
     },
 
     // Метод для изменения видимости пароля
     changeVisiblePassword() {
-      showHidePassword(this.$refs.passwordInput);
+      showHidePassword(this.$refs.passwordInput)
     },
 
     // Метод для очистки состояния ошибки
     clearError() {
       if (this.isError) {
-        this.isError = false;
-        this.$refs.errorMessage.style.visibility = 'hidden';
+        this.isError = false
+        this.$refs.errorMessage.style.visibility = 'hidden'
       }
     },
 
     // Метод для показа ошибки
     showError() {
-      this.isError = true;
-      this.$refs.errorMessage.style.visibility = 'visible';
-    },
-  },
-};
+      this.isError = true
+      this.$refs.errorMessage.style.visibility = 'visible'
+    }
+  }
+}
 </script>
 
 <style lang="scss">
