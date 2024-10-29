@@ -1,10 +1,10 @@
 <template>
-  <router-link to="#" class="genres__item">
-    <img class="genres__image"
-         :src="path" :alt="path" />
-    <div class="genres__color__fade"></div>
-    <div class="genres__name">{{ name }}</div>
-  </router-link>
+  <!--  <router-link to="#" class="genres__item">-->
+  <!--    <img class="genres__image"-->
+  <!--         :src="path" :alt="path" />-->
+  <!--    <div class="genres__color__fade"></div>-->
+  <!--    <div class="genres__name">{{ name }}</div>-->
+  <!--  </router-link>-->
 
 </template>
 
