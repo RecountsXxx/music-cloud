@@ -246,6 +246,8 @@ import { showHidePassword } from '@/utils/showHidePassword.js'
 import { register } from '@/utils/query-system/query-actions/authActions.js'
 import { saveUserData } from '@/utils/saveUserData.js'
 import Header from '@/components/header/Header.vue'
+import { createUserProfile, requestGravatar } from '@/utils/query-system/query-actions/userProfileActions.js'
+import { useUserProfileStore } from '@/stores/userProfileStore.js'
 
 export default {
   components: { Header },
@@ -336,6 +338,12 @@ export default {
                 uniqueUsername.value = true
               } else {
                 saveUserData(res, this.rememberMe)
+
+                const createRequest = {username: data.username, displayName: data.display_name};
+                const responseUserProfile = await createUserProfile(createRequest);
+                useUserProfileStore().setObject(responseUserProfile);
+
+                await requestGravatar();
               }
             }
           } catch (error) {
@@ -369,5 +377,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/styles/auth/Registration.scss';
+@use '@/assets/styles/auth/Registration';
 </style>

@@ -117,10 +117,10 @@ public class ProtectedSongController {
         }
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<SuccessSongResponse> update(@RequestBody @Valid SongUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<SuccessSongResponse> update(@PathVariable UUID id, @RequestBody @Valid SongUpdateRequest request, @RequestAttribute("userDTO") UserDTO userDTO) throws StatusException {
         try {
-            SongModel song = songService.update(request, UUID.fromString(userDTO.getId()));
+            SongModel song = songService.update(request, id, UUID.fromString(userDTO.getId()));
             SongDTO songDTO = songService.getDTOById(song.getId());
 
             return ResponseEntity
