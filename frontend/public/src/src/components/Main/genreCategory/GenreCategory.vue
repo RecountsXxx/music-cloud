@@ -30,7 +30,7 @@ export default {
       },
       {
         name: t('PreviewPage.genres.items.hiphop'),
-        path: new URL('@/assets/images/preview/genres/genreitem.jpg', import.meta.url).href // замените путь на реальный путь к изображению
+        path: new URL('@/assets/images/preview/genres/hiphop.jpg', import.meta.url).href // замените путь на реальный путь к изображению
       }
     ]
     return {
