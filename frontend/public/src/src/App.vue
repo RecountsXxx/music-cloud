@@ -3,21 +3,21 @@
 </template>
 
 <script lang="js">
-import { computed, defineComponent } from 'vue'
-import Sidebar from '@/components/sidebar/Sidebar.vue'
-import { useAuthStore } from '@/stores/authStore.js'
+import { computed, defineComponent } from 'vue';
+import Sidebar from '@/components/sidebar/Sidebar.vue';
+import { useAuthStore } from '@/stores/authStore.js';
 
 export default defineComponent({
   components: { Sidebar },
   setup() {
-    const authStore = useAuthStore()
-    const isAuth = computed(() => authStore.getIsAuthenticated)
+    const authStore = useAuthStore();
+    const isAuth = computed(() => authStore.getIsAuthenticated);
 
     return {
-      isAuth
-    }
-  }
-})
+      isAuth,
+    };
+  },
+});
 </script>
 
 <style lang="scss">

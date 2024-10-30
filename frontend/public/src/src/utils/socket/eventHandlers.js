@@ -1,18 +1,18 @@
-import { useSocketStore } from '@/stores/socketStore.js'
+import { useSocketStore } from '@/stores/socketStore.js';
 import { toastInfo } from '@/utils/toast/toastNotification.js'
 
-const socketStore = useSocketStore()
+const socketStore = useSocketStore();
 
 export const subscribeToCoverUpload = () => {
-  const eventName = 'cover.ready'
+  const eventName = 'cover.ready';
 
   const onCoverUploaded = (data) => {
-    console.log('Cover uploaded:', data)
+    console.log('Cover uploaded:', data);
 
-    toastInfo(data.message)
+    toastInfo(data.message);
 
-    socketStore.unsubscribe(eventName, onCoverUploaded)
-  }
+    socketStore.unsubscribe(eventName, onCoverUploaded);
+  };
 
-  socketStore.subscribe(eventName, onCoverUploaded)
-}
+  socketStore.subscribe(eventName, onCoverUploaded);
+};

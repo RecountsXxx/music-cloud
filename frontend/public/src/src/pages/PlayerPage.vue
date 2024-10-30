@@ -1,5 +1,5 @@
 <script>
-import AudioPlayer from '@/components/player/AudioPlayer.vue'
+import AudioPlayer from "@/components/player/AudioPlayer.vue";
 
 export default {
   components: {
@@ -14,4 +14,6 @@ export default {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+</style>

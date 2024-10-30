@@ -1,18 +1,22 @@
 <template>
   <div class="header__auth__controls">
     <div class="header__auth">
-      <router-link :to="{ name: 'Register' }" class="auth__button auth__button--register">
+      <router-link :to="{ name: 'Register' }"
+                   class="auth__button auth__button--register">
         {{ $t('header.buttonRegistration') }}
       </router-link>
-      <router-link :to="{ name: 'Login' }" class="auth__button auth__button--login">
+      <router-link :to="{ name: 'Login' }"
+                   class="auth__button auth__button--login">
         {{ $t('header.buttonLogin') }}
       </router-link>
     </div>
   </div>
 </template>
 
+
 <script setup>
-import { useAuthStore } from '@/stores/authStore.js'
+
+import { useAuthStore } from '@/stores/authStore.js';
 </script>
 
 <style scoped lang="scss">
@@ -41,6 +45,7 @@ import { useAuthStore } from '@/stores/authStore.js'
       font-size: 18px;
       line-height: 21.78px;
       text-align: center;
+
     }
 
     .auth__button--login {
@@ -49,7 +54,8 @@ import { useAuthStore } from '@/stores/authStore.js'
       height: 39px;
       padding: 9px 30px;
       border-radius: 5px;
-      background: linear-gradient(180deg, #dc7aef -52.56%, #9282ff 100%);
+      background: linear-gradient(180deg, #DC7AEF -52.56%, #9282FF 100%);
+
     }
 
     .auth__button--register {
